@@ -56,12 +56,30 @@ function CategoryCard({ name, count, image }) {
 
   return (
     <div
-      className="cursor-pointer group"
+      className="cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {/* Left border line drawing */}
+      <div
+        className="absolute top-0 left-0 w-[1.5px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
+        style={{
+          height: hovered ? "100%" : "0%",
+          transitionDelay: hovered ? "0s" : "0.3s"
+        }}
+      />
+
+      {/* Bottom border line drawing */}
+      <div
+        className="absolute bottom-0 left-0 h-[1.5px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
+        style={{
+          width: hovered ? "100%" : "0%",
+          transitionDelay: hovered ? "0.3s" : "0s"
+        }}
+      />
+
       {/* Image */}
-      <div className="rounded-2xl overflow-hidden mb-3 relative" style={{ height: "155px" }}>
+      <div className="rounded-2xl overflow-hidden mb-3 relative" style={{ height: "200px" }}>
         <img
           src={image}
           alt={name}
@@ -71,24 +89,24 @@ function CategoryCard({ name, count, image }) {
       </div>
 
       {/* Text */}
-      <p className={`text-sm font-semibold text-gray-900 leading-snug mb-0.5 transition-colors ${hovered ? "text-[#1a5c3a]" : ""}`}>
+      <p className={`text-lg font-bold text-gray-900 leading-snug mb-0.5 transition-colors ${hovered ? "text-[#085027]" : ""}`}>
         {name}
       </p>
-      <p className="text-xs text-gray-400">{count} businesses</p>
+      <p className="text-gray-400">{count} businesses</p>
     </div>
   );
 }
 
 export default function BrowseCategories() {
   return (
-    <section className="w-full bg-[#f8f7f3] py-14 px-6">
-      <div className="max-w-3xl mx-auto">
+    <section className="w-full bg-[#FAFAFA] py-20 px-6">
+      <div className="w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <p className="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase mb-2">
+        <div className="text-center mb-16">
+          <p className="font-semibold text-primary uppercase mb-2">
             What Are You Looking For?
           </p>
-          <h2 className="text-3xl font-bold text-gray-900">Browse Categories</h2>
+          <h2 className="text-4xl font-bold text-gray-900">Browse Categories</h2>
         </div>
 
         {/* Grid — 4 cols, 2 rows */}
@@ -100,7 +118,7 @@ export default function BrowseCategories() {
 
         {/* Browse All Button */}
         <div className="flex justify-center">
-          <button className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium px-8 py-3 rounded-full transition-colors shadow-sm">
+          <button className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-full transition-colors shadow-sm">
             Browse All Categories
           </button>
         </div>
