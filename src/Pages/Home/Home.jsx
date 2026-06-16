@@ -6,6 +6,8 @@ import BrowseCategories from '../../components/Browsecategories/Browsecategories
 import EventVenues from '../../components/Eventvenues/Eventvenues'
 import BrowseByCommunity from '../../components/Browsebycommunity/Browsebycommunity'
 import AboutMatana from '../../components/Aboutmatana/Aboutmatana'
+import ContactUs from '../../components/Contactus/Contactus'
+import Footer from '../../components/Footer/Footer'
 
 export default function Home() {
   return (
@@ -17,6 +19,8 @@ export default function Home() {
         <EventVenues />
         <BrowseByCommunity />
         <AboutMatana />
+        <ContactUs />
+        <Footer  />
     </div>
   )
 }
