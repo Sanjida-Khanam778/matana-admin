@@ -53,7 +53,6 @@ const categories = [
 
 function CategoryCard({ name, count, image }) {
   const [hovered, setHovered] = useState(false);
-
   return (
     <div
       className="cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
@@ -99,7 +98,7 @@ function CategoryCard({ name, count, image }) {
 
 export default function BrowseCategories() {
   return (
-    <section className="w-full bg-[#FAFAFA] py-20 px-6">
+    <section className="w-full bg-[#FAFAFA] py-20">
       <div className="w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
