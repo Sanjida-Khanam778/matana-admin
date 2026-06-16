@@ -100,7 +100,7 @@ function VenueCard({ venue }) {
                     draggable={false}
                 />
                 {venue.kosherCertified && (
-                    <div className="absolute top-3 left-3 flex items-center gap-1 bg-[#1a5c3a] text-white text-sm font-semibold px-2.5 py-1 rounded-full">
+                    <div className="absolute top-3 left-3 flex items-center gap-2 bg-[#1a5c3a] text-white text-xs lg:text-sm font-semibold px-2.5 py-1 rounded-full">
                         <FaStar />
                         Kosher Certified
                     </div>
@@ -157,7 +157,7 @@ function VenueCard({ venue }) {
 // ── Main Component ─────────────────────────────────
 export default function EventVenues() {
     return (
-        <section className="w-full py-14 px-6">
+        <section className="w-full py-14 px-6 font-inter">
             <div className="w-10/12 mx-auto">
                 {/* Header */}
                 <div className="text-center mb-10">
