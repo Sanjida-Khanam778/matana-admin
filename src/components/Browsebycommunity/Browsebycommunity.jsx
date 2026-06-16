@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaChevronRight, FaStar } from "react-icons/fa";
 
 const communities = [
   {
@@ -106,7 +107,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
   return (
     <div
       className="relative rounded-2xl overflow-hidden cursor-pointer group"
-      style={{ height: "220px" }}
+      style={{ height: "300px" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -122,33 +123,33 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
 
       {/* Rating badge — top right */}
-      <div className="absolute top-3 right-3 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-[11px] font-semibold px-2 py-1 rounded-full border border-white/30">
-        <StarIcon />
+      <div className="absolute top-6 right-6 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold px-2 py-1 rounded-full border border-white/30">
+        <FaStar className="text-yellow-500" />
         {rating}
       </div>
 
       {/* City + State — bottom left */}
       <div className="absolute bottom-0 left-0 p-4">
-        <p className="text-white text-[22px] font-bold leading-tight drop-shadow">{city}</p>
-        <p className="text-white/70 text-xs font-medium mb-3">{state}</p>
+        <p className="text-white text-2xl font-semibold leading-tight drop-shadow mb-2">{city}</p>
+        <p className="text-white/70 text-sm lg:text-base font-medium mb-4">{state}</p>
 
         {/* Stats */}
         <div className="flex items-center gap-4">
           <div>
-            <p className="text-white text-sm font-bold leading-none">{businesses}</p>
-            <p className="text-white/60 text-[10px]">businesses</p>
+            <p className="text-white text-xs lg:text-sm font-bold leading-none">{businesses}</p>
+            <p className="text-white/60 text-xs lg:text-sm">businesses</p>
           </div>
           <div>
-            <p className="text-white text-sm font-bold leading-none">{featured}</p>
-            <p className="text-white/60 text-[10px]">featured</p>
+            <p className="text-white text-xs lg:text-sm font-bold leading-none">{featured}</p>
+            <p className="text-white/60 text-xs lg:text-sm">featured</p>
           </div>
         </div>
       </div>
 
       {/* Arrow button — bottom right */}
       <div className="absolute bottom-4 right-4">
-        <div className={`w-8 h-8 rounded-full bg-white flex items-center justify-center shadow transition-transform duration-200 ${hovered ? "scale-110" : ""}`}>
-          <ChevronRightIcon />
+        <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-white/20 flex items-center justify-center shadow transition-transform duration-200 ${hovered ? "scale-110" : ""}`}>
+          <FaChevronRight className="text-white" />
         </div>
       </div>
     </div>
@@ -157,10 +158,10 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 
 export default function BrowseByCommunity() {
   return (
-    <section className="w-full bg-[#FAFAFA] py-14 px-6">
-      <div className="max-w-4xl mx-auto">
+    <section className="w-full bg-[#FAFAFA] py-20">
+      <div className="w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-16">
           <p className="font-bold text-primary uppercase mb-2">
             Discover Local Businesses
           </p>
