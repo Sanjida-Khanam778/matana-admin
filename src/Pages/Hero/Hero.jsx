@@ -1,4 +1,3 @@
-import { useState } from "react";
 import bg from "../../assets/images/hero-bg.png"
 import { LuShieldCheck } from "react-icons/lu";
 import { IoGiftOutline } from "react-icons/io5";

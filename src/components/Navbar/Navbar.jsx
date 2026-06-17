@@ -1,5 +1,6 @@
 import { useState } from "react";
 import logo from "../../assets/images/logo.png";
+import { Link, useLocation } from "react-router-dom";
 
 // ── Icons ──────────────────────────────────────────
 function SearchIcon() {
@@ -55,7 +56,9 @@ function VideoIcon() {
 }
 
 const CERT_OPTIONS = ["OU", "OK", "Vaad", "Star-K", "CRC", "Other"];
-const NAV_LINKS = ["Home", "Location", "About", "Contact"];
+const NAV_ITEMS = ["Home", "Location", "About", "Contact"];
+// const NAV_LINKS = ["/", "/", "/", "/"];
+
 
 // ── Step Indicator ─────────────────────────────────
 function StepIndicator({ step }) {
@@ -296,17 +299,21 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
   const [active, setActive] = useState("Home");
   const [showModal, setShowModal] = useState(false);
+  const location = useLocation();
 
   return (
     <>
-      <nav className="w-full bg-[#F6F4F1] border-b border-gray-200/60 py-4">
+      <nav className={`w-full border-b border-gray-200/60 py-4 ${location.pathname === "/" ? "bg-[#F6F4F1]" : "bg-[#EBE7E0CC]"}`}>
         <div className="w-10/12 flex items-center justify-between mx-auto">
           {/* Logo */}
+          <Link to={'/'}>
+          
           <img src={logo} className="w-24 h-auto object-contain" alt="Matana" />
+          </Link>
 
           {/* Nav Links */}
           <div className="flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
+            {NAV_ITEMS.map((link) => (
               <button
                 key={link}
                 onClick={() => setActive(link)}

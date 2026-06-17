@@ -12,7 +12,6 @@ import Footer from '../../components/Footer/Footer'
 export default function Home() {
   return (
     <div>
-        <Navbar />
         <HeroSection />
         <FeaturedBusinesses />
         <BrowseCategories />
@@ -20,7 +19,6 @@ export default function Home() {
         <BrowseByCommunity />
         <AboutMatana />
         <ContactUs />
-        <Footer  />
     </div>
   )
 }

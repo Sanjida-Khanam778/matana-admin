@@ -91,7 +91,7 @@ function GridCard({ name, count, image, onClick }) {
 }
 
 // ── Main Component ─────────────────────────────────
-export default function BusinessSearch() {
+export default function AllEvents() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selCats, setSelCats] = useState(["Custom Baked Goods"]);
   const [selLocs, setSelLocs] = useState(["Brooklyn, NY"]);

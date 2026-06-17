@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const categories = [
   {
@@ -117,9 +118,9 @@ export default function BrowseCategories() {
 
         {/* Browse All Button */}
         <div className="flex justify-center">
-          <button className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-full transition-colors shadow-sm">
+          <Link to={'/all-categories'} className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-full transition-colors shadow-sm">
             Browse All Categories
-          </button>
+          </Link>
         </div>
       </div>
     </section>
