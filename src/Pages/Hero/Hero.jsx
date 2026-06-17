@@ -63,7 +63,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl lg:text-7xl font-playfair font-bold leading-[1.15] text-[#1a2e1a] mb-6">
+          <h1 className="text-5xl lg:text-7xl font-playfair font-bold lg:leading-tight leading-snug text-[#1a2e1a] mb-6">
             Find{" "}
             <em className="font-playfair font-bold italic text-[#085027]">
               Trusted,

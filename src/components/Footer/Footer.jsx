@@ -1,16 +1,4 @@
-function MatanaLogo() {
-  return (
-    <div className="w-24 h-24 bg-[#8aaa8a] flex items-center justify-center flex-shrink-0">
-      <svg viewBox="0 0 64 64" width="68" height="68" xmlns="http://www.w3.org/2000/svg">
-        <path d="M22 24 C22 16 42 16 42 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-        <rect x="14" y="24" width="36" height="26" rx="3" fill="none" stroke="white" strokeWidth="2.2"/>
-        <text x="32" y="38" textAnchor="middle" fill="white" fontSize="5.5" fontFamily="serif" letterSpacing="1.5">MATANA</text>
-        <line x1="18" y1="42" x2="46" y2="42" stroke="white" strokeWidth="0.8"/>
-        <text x="32" y="46.5" textAnchor="middle" fill="white" fontSize="3.5" fontFamily="serif" letterSpacing="0.8">DIRECTORY</text>
-      </svg>
-    </div>
-  );
-}
+import MatanaLogo from "../../assets/images/logo.png"
 
 const links = {
   Browse: ["All Businesses", "Categories", "Locations", "Featured"],
@@ -20,16 +8,16 @@ const links = {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#1a4030]">
-      <div className="max-w-5xl mx-auto px-8 pt-12 pb-6">
+    <footer className="w-full bg-[#1E4D2B]">
+      <div className="w-10/12 mx-auto px-8 pt-12 pb-6">
 
         {/* Top row */}
-        <div className="grid grid-cols-[200px_1fr_1fr_1fr] gap-10 mb-10">
+        <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-10 mb-10">
 
           {/* Logo + tagline */}
           <div>
-            <MatanaLogo />
-            <p className="text-white/70 text-xs leading-relaxed mt-4">
+            <img src={MatanaLogo} className="w-40" alt="" />
+            <p className="text-white/70 text-xs lg:text-base leading-relaxed mt-4 lg:mt-8">
               Connecting Jewish communities with trusted businesses.
             </p>
           </div>
@@ -37,13 +25,13 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(links).map(([heading, items]) => (
             <div key={heading}>
-              <p className="text-white font-semibold text-sm mb-5">{heading}</p>
+              <p className="text-white font-semibold text-sm lg:text-lg mb-5">{heading}</p>
               <ul className="space-y-3">
                 {items.map((item) => (
                   <li key={item}>
                     <a
                       href="#"
-                      className="text-white/65 text-sm hover:text-white transition-colors"
+                      className="text-white/80 text-sm lg:text-base hover:text-white transition-colors"
                     >
                       {item}
                     </a>
@@ -55,8 +43,8 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/15 pt-5">
-          <p className="text-center text-white/50 text-xs">
+        <div className="border-t border-white/10 pt-5">
+          <p className="text-center text-white/80 text-sm lg:text-base">
             © 2026 MATANA. All rights reserved.
           </p>
         </div>

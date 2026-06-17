@@ -151,10 +151,10 @@ export default function ContactUs() {
               <button
                 onClick={handleSend}
                 disabled={!name.trim() || !email.trim() || !message.trim()}
-                className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-colors ${
+                className={`w-full py-3.5 rounded-full text-sm font-semibold transition-colors ${
                   name.trim() && email.trim() && message.trim()
-                    ? "bg-[#1a5c3a] hover:bg-[#155230] text-white"
-                    : "bg-[#1a5c3a]/50 text-white cursor-not-allowed"
+                    ? "bg-primary text-white"
+                    : "bg-primary/50 text-white cursor-not-allowed"
                 }`}
               >
                 {sent ? "✓ Message Sent!" : "Send Message"}
