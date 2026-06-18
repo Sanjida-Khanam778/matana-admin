@@ -1,63 +1,56 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useScrollReveal from "../../hooks/useScrollReveal";
+import { IMAGES } from "../../assets";
 
 const categories = [
   {
     id: 1,
-    name: "Baby Toys & Kids Gifts",
+    name: "Upsherin",
     count: 156,
-    image:
-      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80",
-  },
+    image: IMAGES.categoryImage1,
+    },
   {
     id: 2,
-    name: "Flower Bouquet & Floral Gifts",
-    count: 105,
-    image:
-      "https://images.unsplash.com/photo-1490750967868-88df5691cc45?w=400&q=80",
-  },
+    name: "Tu Bshvat",
+    count: 120,
+    image: IMAGES.categoryImage2,
+  },  
   {
     id: 3,
-    name: "Gift Bags & Wrapping Station",
-    count: 46,
-    image:
-      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80",
+    name: "Thankyou",
+    count: 100,
+    image: IMAGES.categoryImage3,
   },
   {
     id: 4,
-    name: "Watches & Accessories",
-    count: 48,
-    image:
-      "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&q=80",
+    name: "Sukkos",
+    count: 120,
+    image: IMAGES.categoryImage4,
   },
   {
     id: 5,
-    name: "Bags & Fashion Purses",
-    count: 156,
-    image:
-      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80",
+    name: "Shiva and Condolences",
+    count: 126,
+    image: IMAGES.categoryImage5,
   },
   {
     id: 6,
-    name: "Scented Candles",
-    count: 65,
-    image:
-      "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80",
+    name: "Shavuous",
+    count: 100,
+    image: IMAGES.categoryImage6,
   },
   {
     id: 7,
-    name: "Chocolates & Confectionery",
-    count: 180,
-    image:
-      "https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80",
+    name: "Shabbos",
+    count: 120,
+    image: IMAGES.categoryImage7,
   },
   {
     id: 8,
-    name: "Books",
-    count: 48,
-    image:
-      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=400&q=80",
+    name: "Rosh Hashana",
+    count: 120,
+    image: IMAGES.categoryImage8,
   },
 ];
 

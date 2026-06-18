@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronRight, FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useScrollRevealBounce } from "../../hooks/useScrollReveal";
+import { IMAGES } from "../../assets";
 
 const communities = [
   {
@@ -42,7 +43,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1549041471-15c5a1e51d89?w=600&q=80",
+      IMAGES.browse1,
   },
   {
     id: 5,
