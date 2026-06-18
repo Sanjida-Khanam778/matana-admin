@@ -106,11 +106,11 @@ const venueRevealStyles = ["reveal-scale", "reveal-slide-up", "reveal-swish"];
 
 function VenueCard({ venue, animationClass }) {
   const navigate = useNavigate();
-  
+
   const handleCardClick = () => {
     navigate("/category-details", { state: { venue } });
   };
-  
+
   return (
     <div
       className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col reveal ${animationClass} cursor-pointer`}

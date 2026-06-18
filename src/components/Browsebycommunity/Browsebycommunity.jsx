@@ -99,9 +99,13 @@ const communities = [
 function CommunityCard({ city, state, rating, businesses, featured, image }) {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
-    navigate("/category-details", { state: { community: { city, state, rating, businesses, featured, image } } });
+    navigate("/category-details", {
+      state: {
+        community: { city, state, rating, businesses, featured, image },
+      },
+    });
   };
 
   return (

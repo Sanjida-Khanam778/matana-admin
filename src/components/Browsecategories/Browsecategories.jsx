@@ -64,11 +64,13 @@ const categories = [
 function CategoryCard({ name, count, image, delayClass }) {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
-    navigate("/category-details", { state: { category: { name, count, image } } });
+    navigate("/category-details", {
+      state: { category: { name, count, image } },
+    });
   };
-  
+
   return (
     <div
       className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)] reveal reveal-slide-up ${delayClass}`}
