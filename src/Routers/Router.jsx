@@ -3,6 +3,7 @@ import Dashboard from "../Layouts/Dashboard";
 import Home from "../Pages/Home/Home";
 import AllCategories from "../components/AllCategories/AllCategories";
 import MainLayout from "../Layouts/MainLayout";
+import AllEvents from "../components/AllEvents/AllEvents";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "all-categories",
         element: <AllCategories />,
+      },
+      {
+        path: "all-events",
+        element: <AllEvents />,
       },
       {
         path: "/about",

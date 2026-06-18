@@ -2,7 +2,8 @@ import { useState } from "react";
 import logo from "../../assets/images/logo.png";
 import { Link, useLocation } from "react-router-dom";
 
-// ── Icons ──────────────────────────────────────────
+// ── Icons ──
+
 function SearchIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -281,7 +282,8 @@ function Step2({ onBack, onClose }) {
   );
 }
 
-// ── List Your Business Modal ───────────────────────
+// ── List Your Business Modal ──
+
 function ListBusinessModal({ onClose }) {
   const [step, setStep] = useState(1);
   return (
@@ -294,7 +296,8 @@ function ListBusinessModal({ onClose }) {
   );
 }
 
-// ── Navbar ─────────────────────────────────────────
+// ── Navbar ──
+
 export default function Navbar() {
   const [search, setSearch] = useState("");
   const [active, setActive] = useState("Home");
@@ -303,11 +306,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`w-full border-b border-gray-200/60 py-4 ${location.pathname === "/" ? "bg-[#F6F4F1]" : "bg-[#EBE7E0CC]"}`}>
+      <nav className={`w-full border-b border-gray-200/60 py-4 ${location.pathname === "/" ? "bg-[#FDFBF9]" : "bg-[#EBE7E0CC]"}`}>
         <div className="w-10/12 flex items-center justify-between mx-auto">
           {/* Logo */}
           <Link to={'/'}>
-          
           <img src={logo} className="w-24 h-auto object-contain" alt="Matana" />
           </Link>
 
@@ -326,7 +328,7 @@ export default function Navbar() {
 
           <div className="flex items-center">
             {/* Search */}
-            <div className="flex items-center gap-3 border border-gray-200 rounded-full px-4 py-2.5 shadow-sm mx-4">
+            <div className="flex items-center gap-3 border border-gray-300 rounded-full px-4 py-2.5 shadow-sm mx-4">
               <SearchIcon />
               <input
                 type="text"
@@ -336,6 +338,7 @@ export default function Navbar() {
                 className="text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none"
               />
             </div>
+
             {/* CTA */}
             <button
               onClick={() => setShowModal(true)}

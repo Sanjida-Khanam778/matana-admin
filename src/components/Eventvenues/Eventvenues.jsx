@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoChevronForwardSharp, IoLocationOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 const venues = [
     {
@@ -176,9 +177,9 @@ export default function EventVenues() {
 
                 {/* Browse All */}
                 <div className="flex justify-center">
-                    <button className="border border-gray-400 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium px-8 py-3 rounded-full transition-colors shadow-sm">
+                    <Link to="/all-events" className="border border-gray-400 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium px-8 py-3 rounded-full transition-colors shadow-sm">
                         Browse All Businesses
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

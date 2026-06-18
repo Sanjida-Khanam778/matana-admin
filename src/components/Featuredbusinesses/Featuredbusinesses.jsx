@@ -249,7 +249,7 @@ export default function FeaturedBusinesses() {
     const activeDot = dotMap[activeIdx];
 
     return (
-        <section className="w-full bg-white py-20">
+        <section className="w-full bg-[#D4E2E7]/20 py-20">
             {/* Header */}
             <div className="text-center mb-10">
                 <p className="font-bold tracking-[0.18em] text-primary uppercase mb-2">Premium Partners</p>

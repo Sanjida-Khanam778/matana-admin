@@ -1,6 +1,6 @@
 import bg from "../../assets/images/hero-bg.png"
 import { LuShieldCheck } from "react-icons/lu";
-import { IoGiftOutline } from "react-icons/io5";
+import { IoGiftOutline, IoChevronForwardSharp } from "react-icons/io5";
 
 // ── Location Cards ─────────────────────────────────
 const locations = [
@@ -37,46 +37,56 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
 // ── Hero Section ───────────────────────────────────
 export default function HeroSection() {
   return (
-    <section className="relative w-full bg-[#F6F4F1] overflow-hidden flex items-center font-inter min-h-[720px]">
+    <section className="relative w-full overflow-hidden flex items-center font-inter min-h-[720px]">
 
       {/* Background Map — full stretch and beautiful overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src={bg}
           alt="Map background"
-          className="w-full h-full object-cover object-right opacity-90"
+          className="w-full h-full object-cover object-right opacity-20"
         />
-        {/* Fade overlay — solid beige on left, fading to transparent on right */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F6F4F1] via-[#F6F4F1]/70 to-transparent" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 w-10/12 mx-auto py-16 flex flex-col lg:flex-row items-center justify-between gap-12">
 
         {/* LEFT — Text */}
-        <div className="w-full lg:w-[45%] z-10">
+        <div className="w-full lg:w-[45%] z-10 flex flex-col items-start">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 border border-gray-300 bg-[#8FAF9A33] rounded-full px-4 py-1.5 font-medium text-[#085027] mb-6 text-sm">
+          <div className="inline-flex items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-4 py-1.5 font-medium text-[#085027] mb-6 text-sm">
             <LuShieldCheck className="text-base" />
             The Premier Jewish Directory
           </div>
 
-          {/* Headline */}
-          <h1 className="text-5xl lg:text-7xl font-playfair font-bold lg:leading-tight leading-snug text-[#1a2e1a] mb-6">
-            Find{" "}
-            <em className="font-playfair font-bold italic text-[#085027]">
-              Trusted,
-            </em>
-            <br />
-            <span className="text-[#085027]">Jewish Businesses</span>
-            <br />
-            Near You
+          {/* Brand/Logo Text */}
+          <h1 className="text-6xl lg:text-7xl text-[#085027] mb-6 font-anton tracking-wider">
+            MATANA
           </h1>
 
+          {/* Divider with Gift */}
+          <div className="w-full max-w-[320px] flex items-center gap-4 mb-4">
+            <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
+            <IoGiftOutline className="text-2xl lg:text-4xl text-[#085027]" />
+            <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
+          </div>
+
+          {/* Headline */}
+          <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-[#085027] mb-6 lg:leading-normal leading-tight">
+            Stop Guessing<br />
+            Start Gifting
+          </h2>
+
           {/* Subtitle */}
-          <p className="text-gray-500 leading-relaxed text-lg max-w-lg">
-            Discover authentic local services, exquisite Judaica, premium dining, and trusted professionals across your community and around the world.
+          <p className="text-gray-500 leading-relaxed text-lg mb-8 max-w-md">
+            Find the perfect gift-in the perfect place. We got you Covered Give with Confidance
           </p>
+
+          {/* Button */}
+          <button className="inline-flex items-center gap-3 bg-[#085027] hover:bg-[#063b1d] text-white text-base font-semibold px-8 py-3.5 rounded-full transition-colors shadow-sm">
+            Explore Gifts
+            <IoChevronForwardSharp className="text-base lg:text-xl" />
+          </button>
         </div>
 
         {/* RIGHT — Location Cards */}
