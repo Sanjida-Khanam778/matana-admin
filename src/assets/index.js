@@ -13,6 +13,9 @@ import eventVenue4 from "../assets/images/event4.png?w=500&q=80";
 import eventVenue5 from "../assets/images/event5.png?w=500&q=80";
 import eventVenue6 from "../assets/images/event6.png?w=500&q=80";
 
+import browse1 from "../assets/images/browse1.png?w=600&q=80";
+
+
 export const IMAGES = {
   categoryImage1,
   categoryImage2,
@@ -28,5 +31,6 @@ export const IMAGES = {
   eventVenue4,
   eventVenue5,
   eventVenue6,
+  browse1,
 };
 export const ICONS = {};
