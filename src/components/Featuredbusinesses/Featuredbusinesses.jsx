@@ -130,7 +130,7 @@ function VideoModal({ business, onClose }) {
 
 function SlideCard({ business, onPlay }) {
   return (
-    <div className="relative rounded-2xl overflow-hidden flex-shrink-0 w-full h-[510px] select-none font-inter">
+    <div className="relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[510px] select-none font-inter">
       <img
         src={business.image}
         alt={business.name}
@@ -145,13 +145,14 @@ function SlideCard({ business, onPlay }) {
         className="absolute inset-0 flex items-center justify-center z-10"
         style={{ background: "none", border: "none" }}
       >
-        <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+        <div className="w-12 sm:w-16 md:w-20 h-12 sm:h-16 md:h-20 rounded-full bg-white/90 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="#1a5c3a"
+            className="sm:w-[32px] sm:h-[32px] md:w-[40px] md:h-[40px]"
           >
             <polygon points="5,3 19,12 5,21" />
           </svg>
@@ -159,35 +160,63 @@ function SlideCard({ business, onPlay }) {
       </button>
 
       {/* Info */}
-      <div className="absolute bottom-0 left-10 p-7 z-10">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow">
-            <HouseIcon />
+      <div className="absolute bottom-0 left-4 sm:left-6 md:left-8 lg:left-10 p-3 sm:p-4 md:p-5 lg:p-7 z-10 right-4 sm:right-6 md:right-8 lg:right-auto">
+        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 md:mb-6">
+          <div className="w-8 sm:w-9 md:w-11 h-8 sm:h-9 md:h-11 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#92713a"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="sm:w-[18px] sm:h-[18px] md:w-[20px] md:h-[20px]"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
           </div>
           <div>
-            <p className="text-white text-3xl font-semibold leading-tight drop-shadow">
+            <p className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight drop-shadow">
               {business.name}
             </p>
-            <p className="text-white/75 text-sm leading-tight">
+            <p className="text-white/75 text-xs sm:text-sm leading-tight">
               {business.tagline}
             </p>
           </div>
         </div>
-        <div className="flex gap-2 mb-6 flex-wrap">
+        <div className="flex gap-1.5 sm:gap-2 mb-3 sm:mb-4 md:mb-6 flex-wrap">
           {business.badges.map((b, i) => (
             <span
               key={i}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${i === 0 ? "bg-primary text-white" : "bg-white/20 text-white backdrop-blur-sm"}`}
+              className={`px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full text-xs sm:text-sm font-medium ${i === 0 ? "bg-primary text-white" : "bg-white/20 text-white backdrop-blur-sm"}`}
             >
               {b}
             </span>
           ))}
         </div>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 bg-white hover:bg-gray-100 text-black text-sm font-medium px-5 py-2.5 rounded-full transition-colors shadow">
-            <PhoneIcon /> Call Now
+        <div className="flex gap-2 sm:gap-3 flex-col sm:flex-row">
+          <button className="flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black text-xs sm:text-sm font-medium px-3 sm:px-5 py-2 sm:py-2.5 rounded-full transition-colors shadow">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="sm:w-[14px] sm:h-[14px]"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.55a16 16 0 0 0 6 6l1.27-.63a2 2 0 0 1 2.11.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17z" />
+            </svg>{" "}
+            Call Now
           </button>
-          <button className="bg-[#D4AF37] hover:bg-[#c49010] text-black text-sm font-medium px-5 py-2.5 rounded-full transition-colors shadow">
+          <button className="bg-[#D4AF37] hover:bg-[#c49010] text-black text-xs sm:text-sm font-medium px-3 sm:px-5 py-2 sm:py-2.5 rounded-full transition-colors shadow">
             Visit Website
           </button>
         </div>
@@ -310,13 +339,13 @@ export default function FeaturedBusinesses() {
   const activeDot = dotMap[activeIdx];
 
   return (
-    <section className="w-full bg-[#D4E2E7]/20 py-20">
+    <section className="w-full bg-[#D4E2E7]/20 py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
       {/* Header */}
-      <div className="text-center mb-10">
-        <p className="font-bold tracking-[0.18em] text-primary uppercase mb-2">
+      <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+        <p className="font-bold tracking-[0.18em] text-primary uppercase mb-1.5 sm:mb-2 text-xs sm:text-sm">
           Premium Partners
         </p>
-        <h2 className="text-4xl font-bold text-gray-900">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
           Featured Businesses
         </h2>
       </div>
@@ -324,7 +353,7 @@ export default function FeaturedBusinesses() {
       {/* Slider container */}
       <div
         ref={containerRef}
-        className="relative overflow-hidden w-10/12 mx-auto"
+        className="relative overflow-hidden w-full sm:w-11/12 md:w-5/6 lg:w-10/12 mx-auto px-3 sm:px-4 md:px-0"
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
@@ -359,7 +388,7 @@ export default function FeaturedBusinesses() {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center justify-center gap-2 mt-8">
+      <div className="flex items-center justify-center gap-2 mt-6 sm:mt-7 md:mt-8">
         {Array.from({ length: DOT_COUNT }).map((_, i) => (
           <button
             key={i}

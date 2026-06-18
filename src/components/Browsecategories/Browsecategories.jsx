@@ -122,20 +122,20 @@ export default function BrowseCategories() {
   useScrollReveal();
 
   return (
-    <section className="w-full bg-[#FAFAFA] py-20 reveal reveal-fade-in">
+    <section className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
       <div className="w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-16 reveal reveal-fade-in reveal-delay-05">
-          <p className="font-semibold text-primary uppercase mb-2">
+        <div className="text-center mb-8 lg:mb-16 reveal reveal-fade-in reveal-delay-05">
+          <p className="font-semibold text-sm lg:text-base text-primary uppercase mb-2">
             What Are You Looking For?
           </p>
-          <h2 className="text-4xl font-bold text-gray-900">
+          <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900">
             Browse Categories
           </h2>
         </div>
 
         {/* Grid — 4 cols, 2 rows */}
-        <div className="grid grid-cols-4 gap-5 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
           {categories.map((cat, index) => (
             <CategoryCard
               key={cat.id}

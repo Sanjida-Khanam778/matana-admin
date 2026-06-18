@@ -166,21 +166,21 @@ export default function BrowseByCommunity() {
   return (
     <section
       id="community"
-      className="w-full bg-[#FAFAFA] py-20 font-inter reveal reveal-slide-left"
+      className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 font-inter reveal reveal-slide-left"
     >
       <div className="w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="font-bold text-primary uppercase mb-2">
+        <div className="text-center mb-8 lg:mb-16">
+          <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">
             Discover Local Businesses
           </p>
-          <h2 className="text-4xl font-bold text-gray-900">
+          <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900">
             Browse By Community
           </h2>
         </div>
 
         {/* 3×3 Grid */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {communities.map((c) => (
             <CommunityCard key={c.id} {...c} />
           ))}

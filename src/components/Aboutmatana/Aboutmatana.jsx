@@ -13,14 +13,14 @@ export default function AboutMatana() {
   return (
     <section
       id="about"
-      className="w-full bg-white py-20 font-inter reveal reveal-fade-in"
+      className="w-full px-6 md:px-0 bg-white py-8 md:py-12 xl:py-20 font-inter reveal reveal-fade-in"
     >
       <div className="max-w-4xl mx-auto text-center">
         {/* Label */}
-        <p className="font-bold text-primary uppercase mb-2">About Matana</p>
+        <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">About Matana</p>
 
         {/* Heading */}
-        <h2 className="text-4xl font-bold text-gray-900 mb-8">
+        <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900 mb-8">
           Connecting Jewish Communities
         </h2>
 
@@ -35,13 +35,13 @@ export default function AboutMatana() {
         </p>
 
         {/* Stats */}
-        <div className="flex items-start justify-center gap-20">
+        <div className="flex items-start justify-center gap-10 md:gap-16 xl:gap-20">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
               className={`flex flex-col items-center reveal reveal-zoom ${statDelays[index % statDelays.length]}`}
             >
-              <span className="text-4xl font-bold text-primary mb-2">
+              <span className="text-2xl md:text-3xl xl:text-4xl font-bold text-primary mb-2">
                 {stat.value}
               </span>
               <span className="text-sm lg:text-base text-gray-700 tracking-wide">

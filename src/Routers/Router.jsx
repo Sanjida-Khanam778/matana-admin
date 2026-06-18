@@ -4,6 +4,7 @@ import Home from "../Pages/Home/Home";
 import AllCategories from "../components/AllCategories/AllCategories";
 import MainLayout from "../Layouts/MainLayout";
 import AllEvents from "../components/AllEvents/AllEvents";
+import DetailPage from "../Detailpage/Detailpage";
 
 export const router = createBrowserRouter([
   {
@@ -23,10 +24,10 @@ export const router = createBrowserRouter([
         path: "all-events",
         element: <AllEvents />,
       },
-      // {
-      //   path: "category/:id",
-      //   element: <CategoryDetails />,
-      // },
+      {
+        path: "category-details",
+        element: <DetailPage />,
+      },
       {
         path: "/about",
         element: <h1>Home</h1>,

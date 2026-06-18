@@ -111,20 +111,22 @@ export default function ContactUs() {
   return (
     <section
       id="contact"
-      className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-16 px-6 reveal reveal-fade-in"
+      className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-8 lg:py16 px-6 reveal reveal-fade-in"
     >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="font-bold text-primary uppercase mb-2">Get In Touch</p>
-          <h2 className="text-4xl font-bold text-gray-900 mb-3">Contact Us</h2>
+          <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">Get In Touch</p>
+          <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900 mb-3">
+            Contact Us
+          </h2>
           <p className="text-sm lg:text-base text-gray-500">
             Have questions? We're here to help you find what you need.
           </p>
         </div>
 
         {/* Two-col layout */}
-        <div className="grid grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {/* LEFT — contact info cards */}
           <div className="flex flex-col gap-4">
             {contactItems.map((item, index) => (
