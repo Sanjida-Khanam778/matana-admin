@@ -3,6 +3,7 @@ import { FaStar } from "react-icons/fa";
 import { IoChevronForwardSharp, IoLocationOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 const venues = [
     {
@@ -155,13 +156,32 @@ function VenueCard({ venue }) {
     );
 }
 
+// ── Reveal wrapper ──
+function RevealCard({ children, delay = 0 }) {
+    const [ref, visible] = useScrollReveal(0.1);
+    return (
+        <div
+            ref={ref}
+            className={visible ? "reveal-visible" : "reveal-hidden"}
+            style={{ animationDelay: `${delay}ms` }}
+        >
+            {children}
+        </div>
+    );
+}
+
 // ── Main Component ─────────────────────────────────
 export default function EventVenues() {
+    const [headerRef, headerVisible] = useScrollReveal(0.2);
+
     return (
         <section className="w-full py-14 px-6 font-inter">
             <div className="w-10/12 mx-auto">
                 {/* Header */}
-                <div className="text-center mb-10">
+                <div
+                    ref={headerRef}
+                    className={`text-center mb-10 ${headerVisible ? "reveal-text-visible" : "reveal-text-hidden"}`}
+                >
                     <p className="font-semibold text-primary uppercase mb-2">
                         Simchas &amp; Celebrations
                     </p>
@@ -170,8 +190,10 @@ export default function EventVenues() {
 
                 {/* Grid */}
                 <div className="grid grid-cols-3 gap-5 mb-10">
-                    {venues.map((venue) => (
-                        <VenueCard key={venue.id} venue={venue} />
+                    {venues.map((venue, i) => (
+                        <RevealCard key={venue.id} delay={i * 100}>
+                            <VenueCard venue={venue} />
+                        </RevealCard>
                     ))}
                 </div>
 

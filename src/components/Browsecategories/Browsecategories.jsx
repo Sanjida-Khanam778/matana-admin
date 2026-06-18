@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 const categories = [
   {
@@ -97,12 +98,31 @@ function CategoryCard({ name, count, image }) {
   );
 }
 
+// Reveal wrapper — animates its child card when scrolled into view
+function RevealCard({ children, delay = 0 }) {
+  const [ref, visible] = useScrollReveal(0.1);
+  return (
+    <div
+      ref={ref}
+      className={visible ? "reveal-visible" : "reveal-hidden"}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function BrowseCategories() {
+  const [headerRef, headerVisible] = useScrollReveal(0.2);
+
   return (
     <section className="w-full bg-[#FAFAFA] py-20">
       <div className="w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div
+          ref={headerRef}
+          className={`text-center mb-16 ${headerVisible ? "reveal-text-visible" : "reveal-text-hidden"}`}
+        >
           <p className="font-semibold text-primary uppercase mb-2">
             What Are You Looking For?
           </p>
@@ -111,8 +131,10 @@ export default function BrowseCategories() {
 
         {/* Grid — 4 cols, 2 rows */}
         <div className="grid grid-cols-4 gap-5 mb-10">
-          {categories.map((cat) => (
-            <CategoryCard key={cat.id} {...cat} />
+          {categories.map((cat, i) => (
+            <RevealCard key={cat.id} delay={i * 80}>
+              <CategoryCard {...cat} />
+            </RevealCard>
           ))}
         </div>
 

@@ -31,16 +31,7 @@ const businesses = [
         videoSub: "Promotional Video",
         videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
     },
-    {
-        id: 4,
-        name: "Elegant Judaica",
-        tagline: "Timeless Judaica for Every Occasion",
-        badges: ["OU Certified Kosher", "20% off this month"],
-        image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80",
-        videoTitle: "Elegant Judaica",
-        videoSub: "Promotional Video",
-        videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
-    },
+   
 ];
 
 const dotMap = [0, 1, 2, 0];

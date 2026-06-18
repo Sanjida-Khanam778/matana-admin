@@ -75,7 +75,7 @@ export default function ContactUs() {
   }
 
   return (
-    <section className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-16 px-6">
+    <section id="contact" className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-16 px-6">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}

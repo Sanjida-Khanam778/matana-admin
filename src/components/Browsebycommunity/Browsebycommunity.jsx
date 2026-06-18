@@ -144,7 +144,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 
 export default function BrowseByCommunity() {
   return (
-    <section className="w-full bg-[#FAFAFA] py-20 font-inter">
+    <section id="community" className="w-full bg-[#FAFAFA] py-20 font-inter">
       <div className="w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

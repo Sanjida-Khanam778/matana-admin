@@ -6,7 +6,7 @@ const stats = [
 
 export default function AboutMatana() {
   return (
-    <section className="w-full bg-white py-20 font-inter">
+    <section id="about" className="w-full bg-white py-20 font-inter">
       <div className="max-w-4xl mx-auto text-center">
 
         {/* Label */}

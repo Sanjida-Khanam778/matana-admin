@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -15,4 +19,28 @@
 .animate-float {
   animation: float var(--float-duration, 6s) ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
+}
+
+/* ── Scroll Reveal ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.reveal-visible {
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.reveal-text-hidden {
+  opacity: 0;
+}
+.reveal-text-visible {
+  animation: fadeIn 0.6s ease forwards;
 }

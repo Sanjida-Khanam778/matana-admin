@@ -1,6 +1,6 @@
 import { useState } from "react";
 import logo from "../../assets/images/logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // ── Icons ──
 
@@ -57,8 +57,14 @@ function VideoIcon() {
 }
 
 const CERT_OPTIONS = ["OU", "OK", "Vaad", "Star-K", "CRC", "Other"];
-const NAV_ITEMS = ["Home", "Location", "About", "Contact"];
-// const NAV_LINKS = ["/", "/", "/", "/"];
+
+// label → { route: string | null, sectionId: string | null }
+const NAV_CONFIG = [
+  { label: "Home",     route: "/",    sectionId: null },
+  { label: "Location", route: "/",   sectionId: "community" },
+  { label: "About",    route: "/",   sectionId: "about" },
+  { label: "Contact",  route: "/",   sectionId: "contact" },
+];
 
 
 // ── Step Indicator ─────────────────────────────────
@@ -303,6 +309,27 @@ export default function Navbar() {
   const [active, setActive] = useState("Home");
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  function handleNav(item) {
+    setActive(item.label);
+    if (!item.sectionId) {
+      // plain route navigation (Home)
+      navigate(item.route);
+      return;
+    }
+    const scrollToSection = () => {
+      const el = document.getElementById(item.sectionId);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    if (location.pathname !== item.route) {
+      // navigate to home first, then scroll after the page mounts
+      navigate(item.route);
+      setTimeout(scrollToSection, 300);
+    } else {
+      scrollToSection();
+    }
+  }
 
   return (
     <>
@@ -315,13 +342,13 @@ export default function Navbar() {
 
           {/* Nav Links */}
           <div className="flex items-center gap-8">
-            {NAV_ITEMS.map((link) => (
+            {NAV_CONFIG.map((item) => (
               <button
-                key={link}
-                onClick={() => setActive(link)}
-                className={`font-medium transition-colors ${active === link ? "text-gray-900" : "text-gray-600 hover:text-gray-900"}`}
+                key={item.label}
+                onClick={() => handleNav(item)}
+                className={`font-medium transition-colors ${active === item.label ? "text-gray-900" : "text-gray-600 hover:text-gray-900"}`}
               >
-                {link}
+                {item.label}
               </button>
             ))}
           </div>

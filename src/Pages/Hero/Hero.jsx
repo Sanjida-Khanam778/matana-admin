@@ -1,6 +1,7 @@
 import bg from "../../assets/images/hero-bg.png"
 import { LuShieldCheck } from "react-icons/lu";
 import { IoGiftOutline, IoChevronForwardSharp } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 // ── Location Cards ─────────────────────────────────
 const locations = [
@@ -16,7 +17,7 @@ const locations = [
 
 function LocationCard({ city, stores, top, left, delay, duration }) {
   return (
-    <div
+    <Link to={'/all-categories'}
       className="absolute bg-white rounded-[18px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-100/60 px-6 py-5 flex flex-col items-center justify-center text-center min-w-[155px] animate-float transition-all duration-300 hover:scale-105 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] cursor-pointer"
       style={{
         top,
@@ -30,7 +31,7 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
       </div>
       <p className="text-xl text-primary font-bold leading-tight">{city}</p>
       <p className="text-[13px] text-gray-400 font-medium mt-1">{stores} Store</p>
-    </div>
+    </Link>
   );
 }
 

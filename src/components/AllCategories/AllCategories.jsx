@@ -2,7 +2,7 @@ import { useState } from "react";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 
-// ── Data ───────────────────────────────────────────
+// ── Data ──
 const gridItems = [
   { name: "Home Gift", count: 156, image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80" },
   { name: "Floral Arrangements", count: 105, image: "https://images.unsplash.com/photo-1490750967868-88df5691cc45?w=400&q=80" },
@@ -18,7 +18,7 @@ const gridItems = [
 const ITEMS_PER_PAGE = 9;
 const TOTAL_PAGES = 3;
 
-// ── Icons ──────────────────────────────────────────
+// ── Icons ──
 function ChevronLeftIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -40,7 +40,6 @@ function ArrowLeftIcon() {
     </svg>
   );
 }
-
 
 // ── Grid Card ──────────────────────────────────────
 function GridCard({ name, count, image, onClick }) {
@@ -90,7 +89,7 @@ function GridCard({ name, count, image, onClick }) {
   );
 }
 
-// ── Main Component ─────────────────────────────────
+// ── Main Component ──
 export default function BusinessSearch() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selCats, setSelCats] = useState(["Custom Baked Goods"]);

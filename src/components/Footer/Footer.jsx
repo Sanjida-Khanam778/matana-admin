@@ -1,4 +1,4 @@
-import MatanaLogo from "../../assets/images/logo.png"
+import MatanaLogo from "../../assets/images/logoFooter.png"
 
 const links = {
   Browse: ["All Businesses", "Categories", "Locations", "Featured"],
@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="w-10/12 mx-auto px-8 pt-12 pb-6">
 
         {/* Top row */}
-        <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-10 mb-10">
+        <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-10 mb-8">
 
           {/* Logo + tagline */}
           <div>
