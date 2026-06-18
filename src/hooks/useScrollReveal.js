@@ -1,31 +1,57 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
-/**
- * Returns [ref, visible].
- * Attach `ref` to any DOM element — `visible` flips true once it enters the viewport.
- * @param {number} threshold  – 0..1, fraction visible before triggering (default 0.15)
- */
-export function useScrollReveal(threshold = 0.15) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
+export default function useScrollReveal({
+  selector = ".reveal",
+  threshold = [0, 0.15, 0.35],
+  rootMargin = "0px 0px -20% 0px",
+} = {}) {
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const elements = document.querySelectorAll(selector);
+    if (!elements.length) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el); // fire once only
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          const visible = entry.intersectionRatio > threshold[1];
+          entry.target.classList.toggle("reveal-visible", visible);
+        });
       },
-      { threshold }
+      {
+        threshold,
+        rootMargin,
+      },
     );
 
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
+    elements.forEach((el) => observer.observe(el));
 
-  return [ref, visible];
+    return () => observer.disconnect();
+  }, [selector, threshold, rootMargin]);
+}
+
+export function useScrollRevealGentle() {
+  useScrollReveal({
+    threshold: [0, 0.1, 0.25],
+    rootMargin: "0px 0px -30% 0px",
+  });
+}
+
+export function useScrollRevealSmooth() {
+  useScrollReveal({
+    threshold: [0, 0.15, 0.35],
+    rootMargin: "0px 0px -22% 0px",
+  });
+}
+
+export function useScrollRevealFloat() {
+  useScrollReveal({
+    threshold: [0, 0.12, 0.28],
+    rootMargin: "0px 0px -18% 0px",
+  });
+}
+
+export function useScrollRevealBounce() {
+  useScrollReveal({
+    threshold: [0, 0.2, 0.4],
+    rootMargin: "0px 0px -16% 0px",
+  });
 }
