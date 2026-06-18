@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoChevronForwardSharp, IoLocationOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useScrollRevealGentle } from "../../hooks/useScrollReveal";
 
 const venues = [
@@ -105,9 +105,16 @@ function CertBadge({ label }) {
 const venueRevealStyles = ["reveal-scale", "reveal-slide-up", "reveal-swish"];
 
 function VenueCard({ venue, animationClass }) {
+  const navigate = useNavigate();
+  
+  const handleCardClick = () => {
+    navigate("/category-details", { state: { venue } });
+  };
+  
   return (
     <div
-      className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col reveal ${animationClass}`}
+      className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col reveal ${animationClass} cursor-pointer`}
+      onClick={handleCardClick}
     >
       {/* Image */}
       <div className="relative h-52 flex-shrink-0">
@@ -188,7 +195,7 @@ export default function EventVenues() {
           <p className="font-semibold text-sm lg:text-base text-primary uppercase mb-2">
             Simchas &amp; Celebrations
           </p>
-          <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900">
+          <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900">
             Event Venues &amp; Spaces
           </h2>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaChevronRight, FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useScrollRevealBounce } from "../../hooks/useScrollReveal";
 
 const communities = [
@@ -97,6 +98,11 @@ const communities = [
 
 function CommunityCard({ city, state, rating, businesses, featured, image }) {
   const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    navigate("/category-details", { state: { community: { city, state, rating, businesses, featured, image } } });
+  };
 
   return (
     <div
@@ -104,6 +110,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       style={{ height: "300px" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={handleClick}
     >
       {/* Background image */}
       <img

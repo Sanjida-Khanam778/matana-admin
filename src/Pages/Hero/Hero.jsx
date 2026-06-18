@@ -100,7 +100,7 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
 // ── Hero Section ───────────────────────────────────
 export default function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden flex items-center font-inter min-h-screen sm:min-h-[600px] md:min-h-[700px] lg:min-h-[720px]">
+    <section className="relative w-full overflow-hidden flex items-center font-inter">
       {/* Background Map — full stretch and beautiful overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -111,7 +111,7 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto py-8 sm:py-12 md:py-8 lg:py16 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
+      <div className="relative z-10 w-10/12 mx-auto py-8 sm:py-12 md:py-8 lg:py16 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
         {/* LEFT — Text */}
         <div className="w-full lg:w-[45%] z-10 flex flex-col items-start">
           {/* Badge */}
@@ -153,18 +153,18 @@ export default function HeroSection() {
         </div>
 
         {/* RIGHT — Location Cards (Visible on all devices) */}
-        <div className="w-full lg:w-[55%] relative h-auto md:h-[400px] lg:h-[620px] overflow-visible">
-          <div className="flex flex-col sm:flex-wrap md:flex-wrap lg:flex-none gap-4 sm:gap-6 lg:gap-0">
+        <div className="w-full relative h-auto md:h-[400px] lg:h-[620px] overflow-visible">
+          <div className="flex flex-col gap-4 sm:gap-6 lg:gap-0">
             {locations.map((loc, i) => (
               <div
                 key={i}
-                className="w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-auto"
+                className=""
               >
                 <LocationCard {...loc} />
               </div>
             ))}
           </div>
-        </div>
+        </div> 
       </div>
     </section>
   );

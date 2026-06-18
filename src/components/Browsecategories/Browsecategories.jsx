@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useScrollReveal from "../../hooks/useScrollReveal";
 
 const categories = [
@@ -63,11 +63,18 @@ const categories = [
 
 function CategoryCard({ name, count, image, delayClass }) {
   const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    navigate("/category-details", { state: { category: { name, count, image } } });
+  };
+  
   return (
     <div
       className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)] reveal reveal-slide-up ${delayClass}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={handleClick}
     >
       {/* Left border line drawing */}
       <div
@@ -129,7 +136,7 @@ export default function BrowseCategories() {
           <p className="font-semibold text-sm lg:text-base text-primary uppercase mb-2">
             What Are You Looking For?
           </p>
-          <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900">
+          <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900">
             Browse Categories
           </h2>
         </div>

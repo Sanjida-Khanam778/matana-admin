@@ -20,7 +20,7 @@ export default function AboutMatana() {
         <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">About Matana</p>
 
         {/* Heading */}
-        <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900 mb-8">
+        <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900 mb-8">
           Connecting Jewish Communities
         </h2>
 

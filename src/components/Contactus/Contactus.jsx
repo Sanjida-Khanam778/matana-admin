@@ -117,7 +117,7 @@ export default function ContactUs() {
         {/* Header */}
         <div className="text-center mb-12">
           <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">Get In Touch</p>
-          <h2 className="text-2xl md:text-3xl xl:text-4xlfont-bold text-gray-900 mb-3">
+          <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900 mb-3">
             Contact Us
           </h2>
           <p className="text-sm lg:text-base text-gray-500">
