@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoChevronForwardSharp, IoLocationOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { useScrollRevealGentle } from "../../hooks/useScrollReveal";
+import { IMAGES } from "../../assets";
 
 const venues = [
   {
     id: 1,
-    name: "Grand Simcha Hall",
+    name: "Anniversaries",
     description:
       "Brooklyn's premier kosher event venue for weddings, bar/bat mitzvahs, and simchas.",
     address: "123 Main Street, Brooklyn, NY 11230",
@@ -17,26 +17,24 @@ const venues = [
     phone: "(718) 555-0123",
     certifications: ["OU", "Vaad"],
     kosherCertified: true,
-    image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80",
+    image: IMAGES.eventVenue1,
   },
   {
     id: 2,
-    name: "Kosher Delights Restaurant",
+    name: "Bar Mitzvahs",
     description:
       "Upscale kosher dining with a modern twist. Fresh ingredients, traditional recipes, and contemporary.",
     address: "456 Oak Avenue, Lakewood, NJ 08701",
     rating: 4.8,
     reviews: 256,
-    phone: "(732) 555-0458",
+    phone: "(732) 555-0456",
     certifications: ["OK", "Vaad"],
     kosherCertified: true,
-    image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&q=80",
+    image: IMAGES.eventVenue2,
   },
   {
     id: 3,
-    name: "Modern Catering",
+    name: "Corporate Gift",
     description:
       "Exceptional kosher catering for all your special events. From intimate gatherings to grand.",
     address: "789 Cedar Lane, Queens, NY 11375",
@@ -45,12 +43,11 @@ const venues = [
     phone: "(718) 555-0789",
     certifications: ["OU", "OK"],
     kosherCertified: false,
-    image:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&q=80",
+    image: IMAGES.eventVenue3,
   },
   {
     id: 4,
-    name: "Modern Jewish Home",
+    name: "Birthdays",
     description:
       "Stylish and modern home decor with a Jewish touch. Transform your space with our curated.",
     address: "321 Elm Street, Brooklyn, NY 11204",
@@ -59,12 +56,11 @@ const venues = [
     phone: "(718) 555-0321",
     certifications: ["Certified"],
     kosherCertified: false,
-    image:
-      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=500&q=80",
+    image: IMAGES.eventVenue4,
   },
   {
     id: 5,
-    name: "Royal Vault Cafe",
+    name: "Shabbos Host",
     description:
       "Experience fine dining with authentic kosher cuisine in an elegant setting.",
     address: "555 Main Ave, Queens, NY 11375",
@@ -72,13 +68,12 @@ const venues = [
     reviews: 298,
     phone: "(718) 555-0555",
     certifications: ["OU", "OK"],
-    kosherCertified: true,
-    image:
-      "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=500&q=80",
+    kosherCertified: false,
+    image: IMAGES.eventVenue5,
   },
   {
     id: 6,
-    name: "Celebration Events",
+    name: "Engagements, Vorts & Weddings",
     description:
       "Full-service event planning and coordination for all your special occasions.",
     address: "888 Party Lane, Miami, FL 33101",
@@ -87,8 +82,7 @@ const venues = [
     phone: "(305) 555-0888",
     certifications: ["Certified"],
     kosherCertified: true,
-    image:
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=500&q=80",
+    image: IMAGES.eventVenue6,
   },
 ];
 
