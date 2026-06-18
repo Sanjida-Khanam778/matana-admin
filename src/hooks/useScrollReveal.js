@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function useScrollReveal({
   selector = ".reveal",
   threshold = [0, 0.15, 0.35],
-  rootMargin = "0px 0px -20% 0px",
+  rootMargin = "0px 0px -10% 0px",
 } = {}) {
   useEffect(() => {
     const elements = document.querySelectorAll(selector);

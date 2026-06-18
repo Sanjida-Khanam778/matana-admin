@@ -1,18 +1,59 @@
 import { useState } from "react";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
+import { Link, useNavigate } from "react-router-dom";
+import { IMAGES } from "../../assets";
 
 // ── Data ──
 const gridItems = [
-  { name: "Home Gift", count: 156, image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80" },
-  { name: "Floral Arrangements", count: 105, image: "https://images.unsplash.com/photo-1490750967868-88df5691cc45?w=400&q=80" },
-  { name: "Custom Gifts", count: 46, image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80" },
-  { name: "Fish Boards", count: 156, image: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?w=400&q=80" },
-  { name: "Bakery & Cakes", count: 65, image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80" },
-  { name: "Custom Baked Goods", count: 190, image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80" },
-  { name: "Judaica", count: 65, image: "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=400&q=80" },
-  { name: "Layette & Baby Gifts", count: 190, image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80" },
-  { name: "Liquor & Wine", count: 46, image: "https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&q=80" },
+  {
+    id: 1,
+    name: "Upsherin",
+    count: 156,
+    image: IMAGES.categoryImage1,
+  },
+  {
+    id: 2,
+    name: "Tu Bshvat",
+    count: 120,
+    image: IMAGES.categoryImage2,
+  },
+  {
+    id: 3,
+    name: "Thankyou",
+    count: 100,
+    image: IMAGES.categoryImage3,
+  },
+  {
+    id: 4,
+    name: "Sukkos",
+    count: 120,
+    image: IMAGES.categoryImage4,
+  },
+  {
+    id: 5,
+    name: "Shiva and Condolences",
+    count: 126,
+    image: IMAGES.categoryImage5,
+  },
+  {
+    id: 6,
+    name: "Shavuous",
+    count: 100,
+    image: IMAGES.categoryImage6,
+  },
+  {
+    id: 7,
+    name: "Shabbos",
+    count: 120,
+    image: IMAGES.categoryImage7,
+  },
+  {
+    id: 8,
+    name: "Rosh Hashana",
+    count: 120,
+    image: IMAGES.categoryImage8,
+  },
 ];
 
 const ITEMS_PER_PAGE = 9;
@@ -21,22 +62,53 @@ const TOTAL_PAGES = 3;
 // ── Icons ──
 function ChevronLeftIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#374151"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polyline points="15 18 9 12 15 6" />
     </svg>
   );
 }
 function ChevronRightSmIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#374151"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polyline points="9 18 15 12 9 6" />
     </svg>
   );
 }
 function ArrowLeftIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#374151"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="12 19 5 12 12 5" />
     </svg>
   );
 }
@@ -44,20 +116,27 @@ function ArrowLeftIcon() {
 // ── Grid Card ──────────────────────────────────────
 function GridCard({ name, count, image, onClick }) {
   const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/category-details", {
+      state: { category: { name, count, image } },
+    });
+  };
 
   return (
     <div
-      onClick={onClick}
-      className="cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+      className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none reveal reveal-slide-up`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={handleClick}
     >
       {/* Left border line drawing */}
       <div
         className="absolute top-0 left-0 w-[1.5px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
         style={{
           height: hovered ? "100%" : "0%",
-          transitionDelay: hovered ? "0s" : "0.3s"
+          transitionDelay: hovered ? "0s" : "0.3s",
         }}
       />
 
@@ -66,12 +145,15 @@ function GridCard({ name, count, image, onClick }) {
         className="absolute bottom-0 left-0 h-[1.5px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
         style={{
           width: hovered ? "100%" : "0%",
-          transitionDelay: hovered ? "0.3s" : "0s"
+          transitionDelay: hovered ? "0.3s" : "0s",
         }}
       />
 
       {/* Image */}
-      <div className="rounded-2xl overflow-hidden mb-3 relative" style={{ height: "200px" }}>
+      <div
+        className="rounded-2xl overflow-hidden mb-3 relative"
+        style={{ height: "200px" }}
+      >
         <img
           src={image}
           alt={name}
@@ -81,7 +163,9 @@ function GridCard({ name, count, image, onClick }) {
       </div>
 
       {/* Text */}
-      <p className={`text-lg font-bold text-gray-900 leading-snug mb-0.5 transition-colors ${hovered ? "text-[#085027]" : ""}`}>
+      <p
+        className={`text-lg font-bold text-gray-900 leading-snug mb-0.5 transition-colors ${hovered ? "text-[#085027]" : ""}`}
+      >
         {name}
       </p>
       <p className="text-gray-400">{count} businesses</p>
@@ -98,7 +182,7 @@ export default function BusinessSearch() {
   const [page, setPage] = useState(2);
 
   function toggle(arr, setArr, val) {
-    setArr((p) => p.includes(val) ? p.filter((x) => x !== val) : [...p, val]);
+    setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));
   }
 
   return (
@@ -148,7 +232,7 @@ export default function BusinessSearch() {
               </div>
 
               {/* Pagination */}
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2 mt-[100px]">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
@@ -160,10 +244,11 @@ export default function BusinessSearch() {
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${page === n
+                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                      page === n
                         ? "bg-[#085027] text-white"
                         : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                      }`}
+                    }`}
                   >
                     {n}
                   </button>

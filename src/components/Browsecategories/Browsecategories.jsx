@@ -9,13 +9,13 @@ const categories = [
     name: "Upsherin",
     count: 156,
     image: IMAGES.categoryImage1,
-    },
+  },
   {
     id: 2,
     name: "Tu Bshvat",
     count: 120,
     image: IMAGES.categoryImage2,
-  },  
+  },
   {
     id: 3,
     name: "Thankyou",
@@ -66,7 +66,7 @@ function CategoryCard({ name, count, image, delayClass }) {
 
   return (
     <div
-      className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)] reveal reveal-slide-up ${delayClass}`}
+      className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none reveal reveal-slide-up ${delayClass}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleClick}

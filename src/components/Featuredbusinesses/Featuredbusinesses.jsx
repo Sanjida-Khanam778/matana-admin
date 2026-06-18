@@ -130,7 +130,7 @@ function VideoModal({ business, onClose }) {
 
 function SlideCard({ business, onPlay }) {
   return (
-    <div className="relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[510px] select-none font-inter">
+    <div className="relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[510px] select-none font-inter shadow-none">
       <img
         src={business.image}
         alt={business.name}
