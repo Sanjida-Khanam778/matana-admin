@@ -18,7 +18,7 @@ const categories = [
   },
   {
     id: 3,
-    name: "Thankyou",
+    name: "Thank You",
     count: 100,
     image: IMAGES.categoryImage3,
   },

@@ -536,45 +536,92 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
         <div className="space-y-4">
           {/* Contact */}
           {d.contact && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-              <h3 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3 lg:mb-6">
+            <div className="bg-[#f8f9fa] rounded-[24px] border border-gray-200/80 p-5 flex flex-col gap-4 font-inter">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 font-inter">
                 Contact Information
               </h3>
-              <div className="space-y-2.5">
+              
+              <div className="flex flex-col gap-3">
+                {/* Phone */}
                 {d.contact.phone && (
-                  <div className="flex items-center gap-2.5 text-xs md:text-base lg:text-lg text-gray-600">
-                    <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
-                      <FiPhone size={16} color="#085027" />
+                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                      <FiPhone size={18} color="#085027" />
                     </div>
-                    {d.contact.phone}
+                    <div className="flex flex-col text-left">
+                      <span className="text-[11px] text-gray-400 font-medium font-inter">
+                        Phone
+                      </span>
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 leading-tight mt-0.5 font-inter">
+                        {d.contact.phone}
+                      </span>
+                    </div>
                   </div>
                 )}
+
+                {/* Email */}
                 {d.contact.email && (
-                  <div className="flex items-center gap-2.5 text-xs md:text-base lg:text-lg text-gray-600">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <FiMail size={16} color="#3b82f6" />
+                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+                      <FiMail size={18} color="#d97706" />
                     </div>
-                    {d.contact.email}
+                    <div className="flex flex-col text-left">
+                      <span className="text-[11px] text-gray-400 font-medium">
+                        Email
+                      </span>
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 leading-tight mt-0.5 break-all">
+                        {d.contact.email}
+                      </span>
+                    </div>
                   </div>
                 )}
+
+                {/* Address */}
                 {d.contact.address && (
-                  <div className="flex items-center gap-2.5 text-xs md:text-base lg:text-lg text-gray-600">
-                    <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <FiMapPin size={16} color="#f97316" />
+                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                      <FiMapPin size={18} color="#059669" />
                     </div>
-                    {d.contact.address}
+                    <div className="flex flex-col text-left">
+                      <span className="text-[11px] text-gray-400 font-medium">
+                        Address
+                      </span>
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 leading-tight mt-0.5">
+                        {d.contact.address}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Website */}
+                {(d.contact.website || d.actions?.website) && (
+                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <FiGlobe size={18} color="#2563eb" />
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className="text-[11px] text-gray-400 font-medium">
+                        Website
+                      </span>
+                      <span className="text-sm sm:text-base font-inter font-semibold text-gray-900 leading-tight mt-0.5 break-all">
+                        {d.contact.website || d.actions?.website}
+                      </span>
+                    </div>
                   </div>
                 )}
               </div>
 
-              <button className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-xs lg:text-base font-semibold py-2.5 rounded-xl transition-colors mt-4">
-                <FiNavigation size={16} /> Get Directions
+              {/* Get Directions Button */}
+              <button className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-sm sm:text-base font-bold py-3 rounded-full transition-colors mt-2 shadow-sm">
+                <FiNavigation size={18} className="rotate-45" /> Get Directions
               </button>
-              <div className="flex gap-2 mt-2">
-                <button className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 text-gray-600 text-xs lg:text-base py-2 rounded-xl hover:bg-gray-50 transition-colors">
+
+              {/* Action buttons */}
+              <div className="flex gap-3">
+                <button className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 bg-white text-gray-700 text-sm py-2.5 rounded-full hover:bg-gray-50 transition-colors font-bold shadow-sm">
                   <FiShare2 size={16} /> Share
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 text-gray-600 text-xs lg:text-base py-2 rounded-xl hover:bg-gray-50 transition-colors">
+                <button className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 bg-white text-gray-700 text-sm py-2.5 rounded-full hover:bg-gray-50 transition-colors font-bold shadow-sm">
                   <FiHeart size={16} /> Save
                 </button>
               </div>
