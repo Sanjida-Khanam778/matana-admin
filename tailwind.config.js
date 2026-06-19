@@ -7,6 +7,7 @@ export default {
         inter: ['Inter', 'sans-serif'],
         playfair: ['Playfair Display', 'serif'],
         anton: ['Anton', 'sans-serif'],
+        bebas: ['Bebas Neue', 'sans-serif'],
       },
       colors: {
         primary: "#085027",

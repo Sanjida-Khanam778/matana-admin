@@ -15,7 +15,7 @@ export default function Home() {
         <HeroSection />
         <FeaturedBusinesses />
         <BrowseCategories />
-        <EventVenues />
+        {/* <EventVenues /> */}
         <BrowseByCommunity />
         <AboutMatana />
         <ContactUs />
