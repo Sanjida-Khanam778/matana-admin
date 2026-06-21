@@ -92,7 +92,6 @@ function CategoryCard({ name, count, image, delayClass }) {
       {/* Image */}
       <div
         className="rounded-2xl overflow-hidden mb-3 relative"
-        style={{ height: "200px" }}
       >
         <img
           src={image}

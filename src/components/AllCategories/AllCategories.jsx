@@ -50,9 +50,93 @@ const gridItems = [
   },
   {
     id: 8,
-    name: "Rosh Hashana",
+    name: "Rosh Hashana8",
     count: 120,
     image: IMAGES.categoryImage8,
+  },
+  {
+    id: 9,
+    name: "Purim",
+    count: 120,
+    image: IMAGES.categoryImage9,
+  },
+  {
+    id: 10,
+    name: "Pesach",
+    count: 120,
+    image: IMAGES.categoryImage10,
+  },
+  {
+    id: 11,
+    name: "Party",
+    count: 120,
+    image: IMAGES.categoryImage11,
+  },
+  {
+    id: 12,
+    name: "Kiddush",
+    count: 120,
+    image: IMAGES.categoryImage12,
+  },
+  {
+    id: 13,
+    name: "Just Because",
+    count: 120,
+    image: IMAGES.categoryImage13,
+  },
+  {
+    id: 14,
+    name: "Graduation",
+    count: 120,
+    image: IMAGES.categoryImage14,
+  },
+  {
+    id: 15,
+    name: "Engagements, vorts and weddings",
+    count: 120,
+    image: IMAGES.categoryImage15,
+  },
+  {
+    id: 16,
+    name: "Corporate gifting and catering",
+    count: 120,
+    image: IMAGES.categoryImage16,
+  },
+  {
+    id: 17,
+    name: "Chanuka",
+    count: 120,
+    image: IMAGES.categoryImage17,
+  },
+  {
+    id: 18,
+    name: "Bris",
+    count: 120,
+    image: IMAGES.categoryImage18,
+  },
+  {
+    id: 19,
+    name: "Birthday",
+    count: 120,
+    image: IMAGES.categoryImage19,
+  },
+  {
+    id: 20,
+    name: "Bar Mitzvah",
+    count: 120,
+    image: IMAGES.categoryImage20,
+  },
+  {
+    id: 21,
+    name: "Baby",
+    count: 120,
+    image: IMAGES.categoryImage21,
+  },
+  {
+    id: 22,
+    name: "Anniversary",
+    count: 120,
+    image: IMAGES.categoryImage22,
   },
 ];
 
@@ -152,7 +236,7 @@ function GridCard({ name, count, image, onClick }) {
       {/* Image */}
       <div
         className="rounded-2xl overflow-hidden mb-3 relative"
-        style={{ height: "200px" }}
+        style={{  }}
       >
         <img
           src={image}

@@ -6,6 +6,20 @@ import categoryImage5 from "../assets/images/category5.png?w=400&q=80";
 import categoryImage6 from "../assets/images/category6.png?w=400&q=80";
 import categoryImage7 from "../assets/images/category7.png?w=400&q=80";
 import categoryImage8 from "../assets/images/category8.png?w=400&q=80";
+import categoryImage9 from "../assets/images/category9.png?w=400&q=80";
+import categoryImage10 from "../assets/images/category10.png?w=400&q=80";
+import categoryImage11 from "../assets/images/category11.png?w=400&q=80";
+import categoryImage12 from "../assets/images/category12.png?w=400&q=80";
+import categoryImage13 from "../assets/images/category13.png?w=400&q=80";
+import categoryImage14 from "../assets/images/category14.png?w=400&q=80";
+import categoryImage15 from "../assets/images/category15.png?w=400&q=80";
+import categoryImage16 from "../assets/images/category16.png?w=400&q=80";
+import categoryImage17 from "../assets/images/category17.png?w=400&q=80";
+import categoryImage18 from "../assets/images/category18.png?w=400&q=80";
+import categoryImage19 from "../assets/images/category19.png?w=400&q=80";
+import categoryImage20 from "../assets/images/category20.png?w=400&q=80";
+import categoryImage21 from "../assets/images/category21.png?w=400&q=80";
+import categoryImage22 from "../assets/images/category22.png?w=400&q=80";
 import eventVenue1 from "../assets/images/event1.png?w=500&q=80";
 import eventVenue2 from "../assets/images/event2.png?w=500&q=80";
 import eventVenue3 from "../assets/images/event3.png?w=500&q=80";
@@ -25,6 +39,20 @@ export const IMAGES = {
   categoryImage6,
   categoryImage7,
   categoryImage8,
+  categoryImage9,
+  categoryImage10,
+  categoryImage11,
+  categoryImage12,
+  categoryImage13,
+  categoryImage14,
+  categoryImage15,
+  categoryImage16,
+  categoryImage17,
+  categoryImage18,
+  categoryImage19,
+  categoryImage20,
+  categoryImage21,
+  categoryImage22,
   eventVenue1,
   eventVenue2,
   eventVenue3,

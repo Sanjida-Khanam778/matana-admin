@@ -7,44 +7,110 @@ const hideScrollbarStyle = `
 
 // ── Data ───────────────────────────────────────────
 const categories = [
+  { name: "Anniversary", count: 87 },
+  { name: "Baby", count: 87 },
+  { name: "Bakery & Cakes", count: 65 },
+  { name: "Bar Mitzvah", count: 87 },
+  { name: "Birthday", count: 87 },
+  { name: "Bris", count: 87 },
+  { name: "Cafe", count: 75 },
+  { name: "Catering", count: 83 },
+  { name: "Chicken Boards", count: 120 },
+  { name: "Chanukah", count: 87 },
+  { name: "Corporate Gifting & Catering", count: 87 },
   { name: "Custom Baked Goods", count: 156 },
   { name: "Custom Gifts", count: 89 },
   { name: "Custom Merchandise", count: 42 },
   { name: "Desserts", count: 78 },
+  { name: "Engagements, Vorts & Weddings", count: 87 },
   { name: "Fish Boards", count: 34 },
-  { name: "Homemade Baked Goods", count: 56 },
   { name: "Floral Arrangements", count: 105 },
+  { name: "Graduation", count: 87 },
+  { name: "Home Gift", count: 156 },
+  { name: "Homemade Baked Goods", count: 56 },
   { name: "Judaica", count: 65 },
-  { name: "Bakery & Cakes", count: 65 },
+  { name: "Just Because", count: 87 },
+  { name: "Kiddush", count: 87 },
   { name: "Layette & Baby Gifts", count: 190 },
   { name: "Liquor & Wine", count: 46 },
-  { name: "Home Gift", count: 156 },
+  { name: "Meat Boards", count: 86 },
+  { name: "Nut & Candy Arrangements", count: 112 },
+  { name: "Party", count: 87 },
+  { name: "Pas Yisroel", count: 134 },
+  { name: "Pareve Only", count: 204 },
+  { name: "Pesach", count: 87 },
+  { name: "Purim", count: 99 },
+  { name: "Rosh Hashana", count: 99 },
+  { name: "Shabbos", count: 112 },
+  { name: "Shavuot", count: 120 },
+  { name: "Shiva & Condolences", count: 57 },
+  { name: "Shiva and Condolences", count: 57 },
+  { name: "Silver Gifts", count: 145 },
+  { name: "Sukkos", count: 42 },
+  { name: "Thank you", count: 55 },
+  { name: "Tu Bshvat", count: 60 },
+  { name: "Upsherin", count: 80 },
 ];
 
 const locations = [
-  { name: "Queens, NY", count: 175 },
+  { name: "Baltimore, MD", count: 97 },
   { name: "Brooklyn, NY", count: 358 },
   { name: "Five Towns, NY", count: 1781 },
-  { name: "Los Angeles, CA", count: 204 },
   { name: "Lakewood, NJ", count: 234 },
+  { name: "Los Angeles, CA", count: 204 },
   { name: "Miami, FL", count: 188 },
   { name: "Monsey, NY", count: 122 },
-  { name: "Baltimore, MD", count: 97 },
+  { name: "Queens, NY", count: 175 },
 ];
 
 const kosherLevels = [
-  { name: "Glatt Kosher", count: 175 },
   { name: "Cholov Yisroel", count: 358 },
-  { name: "Standard Supervision", count: 1781 },
+  { name: "Glatt Kosher", count: 175 },
+  { name: "Mehadrin", count: 88 },
   { name: "Pareve Only", count: 204 },
   { name: "Pas Yisroel", count: 134 },
-  { name: "Mehadrin", count: 88 },
+  { name: "Standard Supervision", count: 1781 },
 ];
 
+const occasions = [
+  { name: "Anniversaries", count: 88 },
+  { name: "Baby Gifts", count: 88 },
+  { name: "Bar Mitzvah", count: 88 },
+  { name: "Bas Mitzvah", count: 88 },
+  { name: "Birthdays", count: 34 },
+  { name: "Corporate Gifts", count: 56 },
+  { name: "Engagements, Vorts & Weddings", count: 28 },
+  { name: "Just Because", count: 112 },
+  { name: "Shabbos Host", count: 67 },
+  { name: "Showers", count: 124 },
+  { name: "Thank you", count: 86 },
+];
+
+const tov = [
+  { name: "Anniversary", count: 88 },
+  { name: "Baby", count: 88 },
+  { name: "Bar Mitzvah", count: 88 },
+  { name: "Birthday", count: 134 },
+  { name: "Bris", count: 204 },
+  { name: "Chanukah", count: 1781 },
+  { name: "Corporate Gifting & Catering", count: 358 },
+  { name: "Engagements, Vorts & Weddings", count: 175 },
+  { name: "Home Gift", count: 88 },
+];
 // ── Icons ──────────────────────────────────────────
 function ChevronUpIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#6b7280"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polyline points="18 15 12 9 6 15" />
     </svg>
   );
@@ -52,7 +118,17 @@ function ChevronUpIcon() {
 
 function ChevronDownIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#6b7280"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polyline points="6 9 12 15 18 9" />
     </svg>
   );
@@ -66,7 +142,17 @@ function Checkbox({ checked, onChange }) {
       className={`w-4 h-4 rounded flex items-center justify-center cursor-pointer flex-shrink-0 border transition-colors ${checked ? "bg-[#085027] border-[#085027]" : "bg-white border-gray-300"}`}
     >
       {checked && (
-        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="10"
+          height="10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polyline points="20 6 9 17 4 12" />
         </svg>
       )}
@@ -91,7 +177,10 @@ function SidebarSection({ title, items, selected, onToggle }) {
 
       {/* Items — scroll if more than 6 */}
       {open && (
-        <div className="hide-scrollbar overflow-y-auto pr-1" style={{ maxHeight: "210px" }}>
+        <div
+          className="hide-scrollbar overflow-y-auto pr-1"
+          style={{ maxHeight: "210px" }}
+        >
           {items.map((item) => (
             <label
               key={item.name}
@@ -123,12 +212,18 @@ export default function SidebarFilter({
   onToggleLocation,
   selectedKosherLevels = [],
   onToggleKosherLevel,
+  selectedOccasions = [],
+  onToggleOccasion,
+  selectedTov = [],
+  onToggleTov,
 }) {
   return (
     <aside className="w-80 flex-shrink-0 mr-8">
       <style>{hideScrollbarStyle}</style>
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-4 sticky top-6">
-        <p className="text-base font-bold text-gray-900 mb-3">Search Businesses</p>
+        <p className="text-base font-bold text-gray-900 mb-3">
+          Search Businesses
+        </p>
 
         {/* Divider */}
         <div className="border-t border-gray-100" />
@@ -138,6 +233,18 @@ export default function SidebarFilter({
           items={categories}
           selected={selectedCategories}
           onToggle={onToggleCategory}
+        />
+        <SidebarSection
+          title="Occasions"
+          items={occasions}
+          selected={selectedOccasions}
+          onToggle={onToggleOccasion}
+        />
+        <SidebarSection
+          title="toV"
+          items={tov}
+          selected={selectedTov}
+          onToggle={onToggleTov}
         />
         <div className="border-t border-gray-100" />
         <SidebarSection
