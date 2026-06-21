@@ -5,6 +5,8 @@ import AllCategories from "../components/AllCategories/AllCategories";
 import MainLayout from "../Layouts/MainLayout";
 import AllEvents from "../components/AllEvents/AllEvents";
 import DetailPage from "../Detailpage/Detailpage";
+import CommunityDetails from "../Detailpage/CommunityDetails";
+import AllCommunity from "../components/Browsebycommunity/AllCommunity";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ export const router = createBrowserRouter([
       {
         path: "category-details",
         element: <DetailPage />,
+      },
+      {
+        path: "community-details",
+        element: <AllCommunity />,
+      },
+      {
+        path: "community/:id",
+        element: <CommunityDetails />,
       },
       {
         path: "/about",

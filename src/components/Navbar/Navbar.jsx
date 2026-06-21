@@ -536,15 +536,15 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`w-full border-b border-gray-200/60 py-3 md:py-4 ${location.pathname === "/" ? "bg-[#FDFBF9]" : "bg-[#EBE7E0CC]"}`}
+        className={`w-full border-b border-gray-200/60 py-3 md:py-4 ${location.pathname === "/" ? "bg-[#FDFBF9]" : "bg-[#f8f7f3]"}`}
       >
-        <div className="w-10/12 mx-auto">
+        <div className="w-full lg:w-11/12 xl:w-10/12 mx-auto px-4 lg:px-0">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to={"/"} className="flex-shrink-0">
               <img
                 src={logo}
-                className="w-20 md:w-24 h-auto object-contain"
+                className=" h-auto object-contain"
                 alt="Matana"
               />
             </Link>
@@ -585,9 +585,9 @@ export default function Navbar() {
 
             {/* Mobile: Search Icon & Hamburger Menu */}
             <div className="flex md:hidden items-center gap-2">
-              <button className="p-2 text-gray-600 hover:text-gray-900">
+              {/* <button className="p-2 text-gray-600 hover:text-gray-900">
                 <SearchIcon />
-              </button>
+              </button> */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 text-gray-600 hover:text-gray-900"

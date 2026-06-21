@@ -255,6 +255,9 @@ export default function BusinessSearch() {
   const [selLocs, setSelLocs] = useState(["Brooklyn, NY"]);
   const [selLevels, setSelLevels] = useState(["Cholov Yisroel"]);
   const [page, setPage] = useState(2);
+  const [selOccasions, setSelOccasions] = useState([]);
+  const [selTov, setSelTov] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -270,8 +273,8 @@ export default function BusinessSearch() {
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
-      {/* Back button */}
-      <div className="px-8 pt-6 pb-2">
+      {/* Back button and filters toggle on mobile */}
+      <div className="px-4 sm:px-8 pt-6 pb-2 flex items-center justify-between">
         <button
           onClick={() => {
             if (selectedCategory) {
@@ -281,12 +284,37 @@ export default function BusinessSearch() {
             }
           }}
           className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          selectedOccasions={selOccasions}
+          onToggleOccasion={(v) => toggle(selOccasions, setSelOccasions, v)}
+          selectedTov={selTov}
+          onToggleTov={(v) => toggle(selTov, setSelTov, v)}
         >
           <ArrowLeftIcon /> Back
         </button>
+
+        {/* Filters Toggle Button for mobile/tablet */}
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="lg:hidden flex items-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
+          Filters
+        </button>
       </div>
 
-      <div className="flex gap-0 px-8 pb-12">
+      <div className="flex flex-col lg:flex-row gap-0 px-4 sm:px-8 pb-12">
         {/* ── Sidebar ── */}
         <SidebarFilter
           selectedCategories={selCats}
@@ -295,6 +323,12 @@ export default function BusinessSearch() {
           onToggleLocation={(v) => toggle(selLocs, setSelLocs, v)}
           selectedKosherLevels={selLevels}
           onToggleKosherLevel={(v) => toggle(selLevels, setSelLevels, v)}
+          selectedOccasions={selOccasions}
+          onToggleOccasion={(v) => toggle(selOccasions, setSelOccasions, v)}
+          selectedTov={selTov}
+          onToggleTov={(v) => toggle(selTov, setSelTov, v)}
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
         />
 
         {/* ── Main content ── */}
@@ -315,7 +349,7 @@ export default function BusinessSearch() {
               </div>
 
               {/* Pagination */}
-              <div className="flex items-center justify-center gap-2 mt-[100px]">
+              <div className="flex items-center justify-center gap-2 mt-[60px] md:mt-[100px]">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"

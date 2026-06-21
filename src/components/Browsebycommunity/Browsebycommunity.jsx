@@ -102,7 +102,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/category-details", {
+    navigate("/community-details", {
       state: {
         community: { city, state, rating, businesses, featured, image },
       },
@@ -139,7 +139,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
         <p className="text-white text-2xl font-semibold leading-tight drop-shadow mb-2">
           {city}
         </p>
-        <p className="text-white/70 text-sm lg:text-base font-medium mb-4">
+        <p className="text-white/80 text-sm lg:text-base font-medium mb-4">
           {state}
         </p>
 
@@ -149,13 +149,13 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
             <p className="text-white text-xs lg:text-sm font-bold leading-none">
               {businesses}
             </p>
-            <p className="text-white/60 text-xs lg:text-sm">businesses</p>
+            <p className="text-white/80 text-xs lg:text-sm">businesses</p>
           </div>
           <div>
             <p className="text-white text-xs lg:text-sm font-bold leading-none">
               {featured}
             </p>
-            <p className="text-white/60 text-xs lg:text-sm">featured</p>
+            <p className="text-white/80 text-xs lg:text-sm">featured</p>
           </div>
         </div>
       </div>

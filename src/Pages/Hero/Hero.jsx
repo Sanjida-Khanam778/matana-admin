@@ -50,7 +50,7 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
         <div className="-top-10 absolute text-primary flex items-center justify-center">
           <IoGiftOutline size={28} />
         </div>
-        <p className="text-sm font-bold text-[#085027] leading-tight">
+        <p className="text-sm xl:text-base font-bold text-[#085027] leading-tight">
           {city}
         </p>
         <p className="text-xs text-gray-400 mt-0.5">{stores} Store</p>

@@ -216,51 +216,96 @@ export default function SidebarFilter({
   onToggleOccasion,
   selectedTov = [],
   onToggleTov,
+  isOpen = false,
+  onClose,
 }) {
   return (
-    <aside className="w-80 flex-shrink-0 mr-8">
+    <>
       <style>{hideScrollbarStyle}</style>
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-4 sticky top-6">
-        <p className="text-base font-bold text-gray-900 mb-3">
-          Search Businesses
-        </p>
 
-        {/* Divider */}
-        <div className="border-t border-gray-100" />
+      {/* Backdrop for mobile */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden transition-opacity duration-300 ${
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+      />
 
-        <SidebarSection
-          title="Categories"
-          items={categories}
-          selected={selectedCategories}
-          onToggle={onToggleCategory}
-        />
-        <SidebarSection
-          title="Occasions"
-          items={occasions}
-          selected={selectedOccasions}
-          onToggle={onToggleOccasion}
-        />
-        <SidebarSection
-          title="toV"
-          items={tov}
-          selected={selectedTov}
-          onToggle={onToggleTov}
-        />
-        <div className="border-t border-gray-100" />
-        <SidebarSection
-          title="Locations"
-          items={locations}
-          selected={selectedLocations}
-          onToggle={onToggleLocation}
-        />
-        <div className="border-t border-gray-100" />
-        <SidebarSection
-          title="Kosher Vetting Levels"
-          items={kosherLevels}
-          selected={selectedKosherLevels}
-          onToggle={onToggleKosherLevel}
-        />
-      </div>
-    </aside>
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50 w-80 bg-white transform transition-transform duration-300 ease-in-out flex flex-col
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:relative lg:translate-x-0 lg:z-auto lg:inset-auto lg:w-80 lg:flex-shrink-0 lg:mr-8 lg:block lg:overflow-visible lg:bg-transparent
+        `}
+      >
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-4 lg:sticky lg:top-6 h-full lg:h-auto flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-3 flex-shrink-0">
+            <p className="text-base font-bold text-gray-900">
+              Search Businesses
+            </p>
+            {/* Close button on mobile */}
+            <button
+              onClick={onClose}
+              className="lg:hidden p-1.5 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-gray-100 flex-shrink-0" />
+
+          {/* Scrollable container for sections inside sidebar */}
+          <div className="flex-1 overflow-y-auto lg:overflow-visible hide-scrollbar pr-1 mt-2">
+            <SidebarSection
+              title="Categories"
+              items={categories}
+              selected={selectedCategories}
+              onToggle={onToggleCategory}
+            />
+            <SidebarSection
+              title="Occasions"
+              items={occasions}
+              selected={selectedOccasions}
+              onToggle={onToggleOccasion}
+            />
+            <SidebarSection
+              title="toV"
+              items={tov}
+              selected={selectedTov}
+              onToggle={onToggleTov}
+            />
+            <div className="border-t border-gray-100 my-2" />
+            <SidebarSection
+              title="Locations"
+              items={locations}
+              selected={selectedLocations}
+              onToggle={onToggleLocation}
+            />
+            <div className="border-t border-gray-100 my-2" />
+            <SidebarSection
+              title="Kosher Vetting Levels"
+              items={kosherLevels}
+              selected={selectedKosherLevels}
+              onToggle={onToggleKosherLevel}
+            />
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }

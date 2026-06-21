@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { IMAGES } from "../../assets";
 
 const businesses = [
   {
@@ -8,15 +9,15 @@ const businesses = [
     category: "Gift Shops",
     location: "Lakewood, N J",
     image:
-      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80",
-  },
+        IMAGES.business1,
+    },
   {
     id: 2,
     name: "Home Gift",
     category: "Gift Shops",
     location: "Lakewood, N J",
     image:
-      "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
+      IMAGES.business2,
   },
   {
     id: 3,
@@ -24,7 +25,7 @@ const businesses = [
     category: "Gift Shops",
     location: "Lakewood, N J",
     image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
+      IMAGES.business3,
   },
 ];
 
@@ -64,13 +65,13 @@ function BusinessCard({ name, category, location, image, onClick }) {
       </div>
       {/* Info */}
       <div className="py-3.5">
-        <p className="text-sm lg:text-base font-bold text-gray-900 mb-1">
+        <p className="text-sm md:text-base font-bold text-gray-900 mb-1">
           {name}
         </p>
-        <p className="text-xs lg:text-base text-gray-400 mb-2">{category}</p>
+        <p className="text-xs md:text-sm text-gray-400 mb-2">{category}</p>
         <div className="flex items-center gap-1">
           <LocationIcon />
-          <span className="text-xs lg:text-base text-gray-500">{location}</span>
+          <span className="text-xs md:text-sm text-gray-500">{location}</span>
         </div>
       </div>
     </div>
@@ -90,17 +91,17 @@ export default function BusinessResults({ categoryName }) {
   return (
     <div className="py-2">
       {/* Result count */}
-      <h1 className="text-xl font-bold text-gray-900 mb-5">
+      <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-5">
         {businesses.length} Businesses Found
       </h1>
 
       {/* Category label */}
-      <p className="text-sm lg:text-lg font-semibold text-gray-700 mb-4">
+      <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-700 mb-4">
         {groupLabel}
       </p>
 
       {/* Responsive grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
         {businesses.map((b) => (
           <BusinessCard
             key={b.id}

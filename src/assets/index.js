@@ -37,6 +37,11 @@ import browse7 from "../assets/images/browse7.png?w=600&q=80";
 import browse8 from "../assets/images/browse8.png?w=600&q=80";
 import browse9 from "../assets/images/browse9.png?w=600&q=80";
 
+import business1 from "../assets/images/business1.png?w=600&q=80";
+import business2 from "../assets/images/business3.png?w=600&q=80";
+import business3 from "../assets/images/business2.png?w=600&q=80";
+
+
 
 export const IMAGES = {
   categoryImage1,
@@ -75,6 +80,9 @@ export const IMAGES = {
   browse6,
   browse7,
   browse8,
-  browse9
+  browse9,
+  business1,
+  business2,
+  business3,
 };
 export const ICONS = {};

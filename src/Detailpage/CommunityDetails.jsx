@@ -27,78 +27,102 @@ import related2 from "../assets/images/related2.png";
 import logo from "../assets/icons/details_logo.png";
 import { LocateIcon, PlayCircle, PlayIcon } from "lucide-react";
 import { GrLocation } from "react-icons/gr";
-// ══════════════════════════════════════════════════
-//  SAMPLE DATA
-// ══════════════════════════════════════════════════
-export const SAMPLE_BUSINESS = {
-  type: "business",
+
+export const SAMPLE_CAFE = {
+  type: "cafe",
   badge: "Featured Business",
-  name: "Home Decor Gifts",
-  subtitle: "Home Gift · Home Store",
-  coverImage: detailsImage,
+  name: "Brooklyn Brew Cafe",
+  subtitle: "Cafe & Bakery",
+
+  coverImage:
+    "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80",
   logoImage: logo,
+
   actions: {
-    call: "+1(212) 555-0066",
-    website: "homedecoratgifts.com",
-    instagram: "@homedecoratgifts",
-    visitLabel: "Visit Store",
+    call: "+1 (718) 555-3456",
+    website: "brooklynbrewcafe.com",
+    instagram: "@brooklynbrewcafe",
+    visitLabel: "Visit Website",
   },
+
   about:
-    "Elegant gifts and home decor for every occasion. We carry a premium selection of gift baskets, candles, and luxury products for any lifestyle. Our curated store inventory is full of everything you need to refresh and update all your gift-giving occasions.",
-  gallery: [decor1, decor2, decor3],
+    "Founded in 2018, Brooklyn Brew Cafe is where handcrafted coffee meets artisan baking. From expertly roasted espresso to buttery croissants and fresh pastries, every item is made with premium ingredients. Whether you're grabbing your morning coffee, meeting friends, or working remotely, our cozy atmosphere is designed to make every visit memorable.",
+
+  gallery: [
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
+    "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80",
+    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
+  ],
+
   video: null,
-  tags: [],
+
+  tags: [
+    "Coffee",
+    "Cafe",
+    "Bakery",
+    "Breakfast",
+    "Free WiFi",
+  ],
+
   related: [
     {
-      name: "Home Gift",
-      businesses: 12,
+      name: "Zenith Space",
+      businesses: 8,
       image: related1,
     },
     {
-      name: "Home Store",
-      businesses: 8,
+      name: "Crust & Crumb",
+      businesses: 14,
       image: related2,
     },
   ],
+
   reviews: [
     {
-      name: "Caleb Cohen",
+      name: "Sarah Cohen",
       badge: "Verified",
       rating: 5,
-      text: "Exceptional experience! The team is outstanding and the service and environment of the community.",
-      date: "2w ago",
+      text: "Absolutely wonderful experience! The coffee is outstanding and the service is exceptional. Highly recommend everyone to visit.",
+      date: "May 15, 2025",
     },
     {
-      name: "Patrick Miller",
+      name: "David Levy",
+      badge: "Verified",
+      rating: 5,
+      text: "Best cafe in the area. Great selection and very helpful staff. We'll definitely be coming back.",
+      date: "April 23, 2025",
+    },
+    {
+      name: "Rachel Goldstein",
       badge: "Verified",
       rating: 4,
-      text: "Had a wonderful experience here! Highly recommend by visiting here!",
-      date: "3w ago",
-    },
-    {
-      name: "Rachel Coleman",
-      badge: null,
-      rating: 5,
-      text: "Absolutely outstanding! The professionality and attitude of the staff is fantastic.",
-      date: "1m ago",
+      text: "Good quality pastries and friendly service. Prices are fair and the atmosphere is welcoming.",
+      date: "April 5, 2025",
     },
   ],
+
   contact: {
-    phone: "+1(212) 555-0066",
-    email: "info@homedecoratgifts.com",
-    address: "48 Pine Ave, Lakewood, NJ 08717",
+    phone: "(718) 555-3456",
+    email: "info@brooklynbrewcafe.com",
+    address: "126 Oak Avenue, Brooklyn, NY 11201",
   },
+
   hours: {
-    Monday: "9:00 AM – 6:00 PM",
-    Tuesday: "9:00 AM – 6:00 PM",
-    Wednesday: "10:00 AM – 5:00 PM",
-    Thursday: "9:00 AM – 6:00 PM",
-    Friday: "9:00 AM – 3:00 PM",
-    Saturday: "Closed",
-    Sunday: "Closed",
+    Sunday: "9:00 AM – 7:00 PM",
+    Monday: "6:00 AM – 7:00 PM",
+    Tuesday: "6:00 AM – 7:00 PM",
+    Wednesday: "6:00 AM – 7:00 PM",
+    Thursday: "6:00 AM – 7:00 PM",
+    Friday: "6:00 AM – 8:00 PM",
+    Saturday: "8:00 AM – 6:00 PM",
   },
-  certifications: ["OU", "Vaad"],
-  inquiry: { fields: ["name", "email", "phone", "message"] },
+
+  certifications: ["OK", "Health"],
+
+  inquiry: {
+    fields: ["name", "email", "phone", "message"],
+  },
 };
 
 // ══════════════════════════════════════════════════
@@ -207,7 +231,7 @@ function InquiryForm({ fields = [] }) {
 // ══════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
-export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
+export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
   const location = useLocation();
   const stateBusiness = location.state?.business;
   const d = data;
@@ -326,7 +350,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
           {d.gallery?.length > 0 && (
             <section>
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2 lg:mb-4">
-                Gallery
+                Inside The Caffe
               </h2>
               <div className="grid grid-cols-3 gap-2">
                 {d.gallery.map((img, i) => (

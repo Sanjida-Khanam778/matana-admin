@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="space-y-4">
             <img
               src={MatanaLogo}
-              className="w-32 sm:w-36 md:w-40"
+              className="w-32 sm:w-36 h-auto object-contain"
               alt="Matana logo"
             />
             <p className="text-white/70 text-xs sm:text-sm md:text-base leading-relaxed mt-2 sm:mt-3">
