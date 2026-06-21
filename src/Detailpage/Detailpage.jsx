@@ -307,9 +307,9 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
       </div>
 
       {/* Two-col layout */}
-      <div className="lg:w-10/12 w-11/12 mx-auto pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="lg:w-10/12 w-11/12 mx-auto pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-6">
         {/* ── LEFT ── */}
-        <div className="space-y-6 col-span-2 lg:col-span-2">
+        <div className="space-y-6 col-span-2 lg:col-span-2 mb-6 md:mb-0">
           {/* About */}
           {d.about && (
             <section>
@@ -328,7 +328,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2 lg:mb-4">
                 Gallery
               </h2>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {d.gallery.map((img, i) => (
                   <div
                     key={i}

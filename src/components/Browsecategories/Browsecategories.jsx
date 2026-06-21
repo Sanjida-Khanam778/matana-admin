@@ -132,7 +132,7 @@ export default function BrowseCategories() {
         </div>
 
         {/* Grid — 4 cols, 2 rows */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
           {categories.map((cat, index) => (
             <CategoryCard
               key={cat.id}

@@ -129,22 +129,22 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       <div className="absolute inset-0 bg-[#040404]/40" />
 
       {/* Rating badge — top right */}
-      <div className="absolute top-6 right-6 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold px-2 py-1 rounded-full border border-white/30">
+      <div className="absolute md:top-6 md:right-6 top-3 right-3 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-semibold px-2 py-1 rounded-full border border-white/30">
         <FaStar className="text-yellow-500" />
         {rating}
       </div>
 
       {/* City + State — bottom left */}
       <div className="absolute bottom-0 left-0 p-4">
-        <p className="text-white text-2xl font-semibold leading-tight drop-shadow mb-2">
+        <p className="text-white text-lg md:text-2xl font-semibold leading-tight drop-shadow mb-2">
           {city}
         </p>
-        <p className="text-white/80 text-sm lg:text-base font-medium mb-4">
+        <p className="text-white/80 text-xs md:text-sm font-medium mb-4">
           {state}
         </p>
 
         {/* Stats */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <div>
             <p className="text-white text-xs lg:text-sm font-bold leading-none">
               {businesses}
@@ -192,7 +192,7 @@ export default function BrowseByCommunity() {
         </div>
 
         {/* 3×3 Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           {communities.map((c) => (
             <CommunityCard key={c.id} {...c} />
           ))}

@@ -2,7 +2,7 @@ import MatanaLogo from "../../assets/images/logoFooter.png";
 
 const links = {
   Browse: ["All Businesses", "Categories", "Locations", "Featured"],
-  Categories: ["Gift Shops", "Event Planning"],
+  Categories: ["Gift Shops", "Community"],
   Company: [
     "About MATANA",
     "List Your Business",
