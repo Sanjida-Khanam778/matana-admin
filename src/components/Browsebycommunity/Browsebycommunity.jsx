@@ -13,7 +13,7 @@ const communities = [
     businesses: 342,
     featured: 12,
     image:
-      "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80",
+      IMAGES.browse1,
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const communities = [
     businesses: 178,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80",
+      IMAGES.browse2,
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const communities = [
     businesses: 178,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?w=600&q=80",
+      IMAGES.browse3,
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      IMAGES.browse1,
+      IMAGES.browse4,
   },
   {
     id: 5,
@@ -53,7 +53,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
+      IMAGES.browse5,
   },
   {
     id: 6,
@@ -63,7 +63,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+      IMAGES.browse6,
   },
   {
     id: 7,
@@ -73,7 +73,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80",
+      IMAGES.browse7,
   },
   {
     id: 8,
@@ -83,7 +83,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&q=80",
+      IMAGES.browse8,
   },
   {
     id: 9,
@@ -93,7 +93,7 @@ const communities = [
     businesses: 250,
     featured: 8,
     image:
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80",
+      IMAGES.browse9,
   },
 ];
 
@@ -126,7 +126,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       />
 
       {/* Dark overlay — gradient from bottom */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
+      <div className="absolute inset-0 bg-[#040404]/40" />
 
       {/* Rating badge — top right */}
       <div className="absolute top-6 right-6 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold px-2 py-1 rounded-full border border-white/30">

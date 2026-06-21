@@ -28,6 +28,14 @@ import eventVenue5 from "../assets/images/event5.png?w=500&q=80";
 import eventVenue6 from "../assets/images/event6.png?w=500&q=80";
 
 import browse1 from "../assets/images/browse1.png?w=600&q=80";
+import browse2 from "../assets/images/browse2.png?w=600&q=80";
+import browse3 from "../assets/images/browse3.png?w=600&q=80";
+import browse4 from "../assets/images/browse4.png?w=600&q=80";
+import browse5 from "../assets/images/browse5.png?w=600&q=80";
+import browse6 from "../assets/images/browse6.png?w=600&q=80";
+import browse7 from "../assets/images/browse7.png?w=600&q=80";
+import browse8 from "../assets/images/browse8.png?w=600&q=80";
+import browse9 from "../assets/images/browse9.png?w=600&q=80";
 
 
 export const IMAGES = {
@@ -60,5 +68,13 @@ export const IMAGES = {
   eventVenue5,
   eventVenue6,
   browse1,
+  browse2,
+  browse3,
+  browse4,
+  browse5,
+  browse6,
+  browse7,
+  browse8,
+  browse9
 };
 export const ICONS = {};

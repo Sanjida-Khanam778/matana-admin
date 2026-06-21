@@ -59,9 +59,7 @@ function CategoryCard({ name, count, image, delayClass }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/category-details", {
-      state: { category: { name, count, image } },
-    });
+    navigate(`/all-categories?category=${encodeURIComponent(name)}`);
   };
 
   return (
@@ -90,9 +88,7 @@ function CategoryCard({ name, count, image, delayClass }) {
       />
 
       {/* Image */}
-      <div
-        className="rounded-2xl overflow-hidden mb-3 relative"
-      >
+      <div className="rounded-2xl overflow-hidden mb-3 relative">
         <img
           src={image}
           alt={name}

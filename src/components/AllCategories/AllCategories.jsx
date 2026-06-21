@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IMAGES } from "../../assets";
 
 // ── Data ──
@@ -200,20 +200,13 @@ function ArrowLeftIcon() {
 // ── Grid Card ──────────────────────────────────────
 function GridCard({ name, count, image, onClick }) {
   const [hovered, setHovered] = useState(false);
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/category-details", {
-      state: { category: { name, count, image } },
-    });
-  };
 
   return (
     <div
       className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none reveal reveal-slide-up`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={handleClick}
+      onClick={onClick}
     >
       {/* Left border line drawing */}
       <div
@@ -234,10 +227,7 @@ function GridCard({ name, count, image, onClick }) {
       />
 
       {/* Image */}
-      <div
-        className="rounded-2xl overflow-hidden mb-3 relative"
-        style={{  }}
-      >
+      <div className="rounded-2xl overflow-hidden mb-3 relative">
         <img
           src={image}
           alt={name}
@@ -259,11 +249,20 @@ function GridCard({ name, count, image, onClick }) {
 
 // ── Main Component ──
 export default function BusinessSearch() {
+  const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selCats, setSelCats] = useState(["Custom Baked Goods"]);
   const [selLocs, setSelLocs] = useState(["Brooklyn, NY"]);
   const [selLevels, setSelLevels] = useState(["Cholov Yisroel"]);
   const [page, setPage] = useState(2);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categoryFromUrl = params.get("category");
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [location.search]);
 
   function toggle(arr, setArr, val) {
     setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));

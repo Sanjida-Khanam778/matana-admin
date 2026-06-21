@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import {
   FiPhone,
   FiMail,
@@ -276,6 +277,8 @@ function InquiryForm({ fields = [] }) {
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
 export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
+  const location = useLocation();
+  const stateBusiness = location.state?.business;
   const d = data;
   const days = [
     "Sunday",
@@ -540,7 +543,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
               <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 font-inter">
                 Contact Information
               </h3>
-              
+
               <div className="flex flex-col gap-3">
                 {/* Phone */}
                 {d.contact.phone && (
