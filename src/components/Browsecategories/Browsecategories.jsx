@@ -119,7 +119,7 @@ export default function BrowseCategories() {
   useScrollReveal();
 
   return (
-    <section className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
+    <section id="categories" className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
       <div className="w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-8 lg:mb-16 reveal reveal-fade-in reveal-delay-05">

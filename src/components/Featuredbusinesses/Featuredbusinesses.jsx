@@ -304,7 +304,8 @@ export default function FeaturedBusinesses() {
   const activeDot = dotMap[activeIdx];
 
   return (
-    <section className="w-full bg-[#EEF3F5] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
+    <section       id="featured"
+ className="w-full bg-[#EEF3F5] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
         <p className="font-bold tracking-[0.18em] text-primary uppercase mb-1.5 sm:mb-2 text-xs sm:text-sm">
