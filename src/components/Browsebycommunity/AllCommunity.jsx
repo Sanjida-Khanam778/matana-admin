@@ -5,12 +5,14 @@ import {
   IoChevronDown,
   IoChevronForward,
   IoChevronBack,
+  IoArrowForwardOutline,
 } from "react-icons/io5";
-import { FaStar } from "react-icons/fa";
+import { FaArrowRight, FaStar } from "react-icons/fa";
 import { BsArrowRight } from "react-icons/bs";
 import { LuMapPin } from "react-icons/lu";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 import { useNavigate } from "react-router-dom";
+import { CiLocationArrow1 } from "react-icons/ci";
 
 // ── Data ───
 const community = {
@@ -152,26 +154,26 @@ function BusinessCard({ business, onClick }) {
 
       {/* Body */}
       <div className="p-4 flex flex-col flex-1">
-        <p className="text-[10px] font-semibold tracking-widest text-gray-400 uppercase mb-1">
+        <p className="text-xs font-semibold tracking-widest text-[#855300] uppercase mb-1">
           {business.tag}
         </p>
-        <h3 className="text-[15px] font-bold text-gray-900 mb-2 leading-snug">
+        <h3 className="text-sm lg:text-base xl:text-lg font-bold text-gray-900 mb-2 leading-snug">
           {business.name}
         </h3>
-        <p className="text-[12px] text-gray-500 leading-relaxed flex-1 mb-3">
+        <p className="text-xs lg:text-sm text-gray-500 leading-relaxed flex-1 mb-3">
           {business.desc}
         </p>
 
         {/* Address + Arrow */}
         <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-1.5 text-[11px] text-gray-400">
-            <LuMapPin size={11} />
+          <div className="flex items-center gap-1.5 text-xs text-gray-900">
+            <CiLocationArrow1 size={18} />
             <span>{business.address}</span>
           </div>
-          <div className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center group-hover:bg-[#085027] group-hover:border-[#085027] transition-colors">
-            <BsArrowRight
-              size={13}
-              className="text-gray-400 group-hover:text-white transition-colors"
+          <div className="w-9 h-9 rounded-full border border-gray flex items-center justify-center group-hover:bg-[#085027] group-hover:border-[#085027] transition-colors">
+            <IoArrowForwardOutline
+              size={19}
+              className="text-gray-900 group-hover:text-white transition-colors"
             />
           </div>
         </div>
@@ -195,7 +197,7 @@ export default function AllCommunity() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const openBusinessDetails = (business) => {
-    navigate(`/community/${business.id}`, {
+    navigate(`/community-details/${business.id}`, {
       state: { business },
     });
   };
@@ -236,7 +238,7 @@ export default function AllCommunity() {
             {/* Info overlay */}
             <div className="absolute bottom-0 left-0 w-full">
               <div className="flex items-center px-4 sm:px-6 gap-1.5 text-white/70 text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest mb-1">
-                <IoLocationOutline size={13} color="#f59e0b" />
+                <IoLocationOutline size={18} color="#f59e0b" />
                 {community.district}
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 px-4 sm:px-6">
@@ -261,18 +263,20 @@ export default function AllCommunity() {
                   </p>
                 </div>
                 <div className="w-px h-8 bg-white/20" />
+                <div className="">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-white text-base sm:text-lg font-bold leading-none">
+                    <p className="text-white text-base sm:text-lg font-bold leading-none">
                     {community.rating}
                   </p>
                   <FaStar size={13} color="#f59e0b" />
+                </div>
                   <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider">
-                    Rating
+                   average Rating
                   </p>
                 </div>
               </div>
               {/* ── Search bar ── */}
-              <div className="bg-white border-b border-gray-100 px-4 sm:px-5 w-full py-4 shadow-sm rounded-t-2xl border">
+              <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mx-auto">
                   {/* Search input */}
                   <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-white hover:border-gray-300 transition-colors">

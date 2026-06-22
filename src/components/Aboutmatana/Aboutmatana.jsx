@@ -13,7 +13,7 @@ export default function AboutMatana() {
   return (
     <section
       id="about"
-      className="w-full px-6 md:px-0 bg-white py-8 md:py-12 xl:py-20 font-inter reveal reveal-fade-in"
+      className="w-full px-6 lg:px-0 bg-white py-8 md:py-12 xl:py-20 font-inter reveal reveal-fade-in"
     >
       <div className="max-w-4xl mx-auto text-center">
         {/* Label */}

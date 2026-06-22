@@ -240,7 +240,7 @@ function Step1({ onNext, onClose }) {
       <div className="space-y-4">
         {/* Business Name */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+          <label className="block text-xs font-semibold text-primary mb-1.5">
             Business Name <span className="text-red-500">*</span>
           </label>
           <input
@@ -252,7 +252,7 @@ function Step1({ onNext, onClose }) {
         </div>
         {/* Category */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+          <label className="block text-xs font-semibold text-primary mb-1.5">
             Category <span className="text-red-500">*</span>
           </label>
           <input
@@ -264,7 +264,7 @@ function Step1({ onNext, onClose }) {
         </div>
         {/* Description */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+          <label className="block text-xs font-semibold text-primary mb-1.5">
             Description <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -277,7 +277,7 @@ function Step1({ onNext, onClose }) {
         </div>
         {/* Street Address */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+          <label className="block text-xs font-semibold text-primary mb-1.5">
             Street Address <span className="text-red-500">*</span>
           </label>
           <input
@@ -290,7 +290,7 @@ function Step1({ onNext, onClose }) {
         {/* City / State / ZIP */}
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-primary mb-1.5">
               City <span className="text-red-500">*</span>
             </label>
             <input
@@ -300,7 +300,7 @@ function Step1({ onNext, onClose }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-primary mb-1.5">
               State <span className="text-red-500">*</span>
             </label>
             <input
@@ -310,7 +310,7 @@ function Step1({ onNext, onClose }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-primary mb-1.5">
               ZIP <span className="text-red-500">*</span>
             </label>
             <input
@@ -323,7 +323,7 @@ function Step1({ onNext, onClose }) {
         {/* Phone / Email */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-primary mb-1.5">
               Phone <span className="text-red-500">*</span>
             </label>
             <input
@@ -334,7 +334,7 @@ function Step1({ onNext, onClose }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-primary mb-1.5">
               Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -345,9 +345,33 @@ function Step1({ onNext, onClose }) {
             />
           </div>
         </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-semibold text-primary mb-1.5">
+              Available Day <span className="text-red-500">*</span>
+            </label>
+            <input
+              className={inputCls}
+              placeholder="Sun-Thu"
+              value={form.availableDay}
+              onChange={(e) => set("availableDay", e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-primary mb-1.5">
+              Available Time <span className="text-red-500">*</span>
+            </label>
+            <input
+              className={inputCls}
+              placeholder="09:00 AM - 07:00 PM"
+              value={form.availableTime}
+              onChange={(e) => set("availableTime", e.target.value)}
+            />
+          </div>
+        </div>
         {/* Kosher Supervision */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+          <label className="block text-xs font-semibold text-primary mb-1.5">
             Kosher Supervision Level
           </label>
           <input
@@ -358,7 +382,7 @@ function Step1({ onNext, onClose }) {
         </div>
         {/* Kosher Certifications */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-2">
+          <label className="block text-xs font-semibold text-primary mb-2">
             Kosher Certifications
           </label>
           <div className="flex flex-wrap gap-2">
@@ -536,7 +560,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`w-full border-b border-gray-200/60 py-3 md:py-4 ${location.pathname === "/" ? "bg-[#FDFBF9]" : "bg-[#f8f7f3]"}`}
+        className={`w-full py-3 md:py-4 ${location.pathname === "/" ? "bg-[#FAF8F4]" : "bg-[#f8f7f3]"}`}
       >
         <div className="w-full lg:w-11/12 xl:w-10/12 mx-auto px-4 lg:px-0">
           <div className="flex items-center justify-between">

@@ -27,6 +27,7 @@ import related2 from "../assets/images/related2.png";
 import logo from "../assets/icons/details_logo.png";
 import { LocateIcon, PlayCircle, PlayIcon } from "lucide-react";
 import { GrLocation } from "react-icons/gr";
+import Navbar from "../components/Navbar/Navbar";
 // ══════════════════════════════════════════════════
 //  SAMPLE DATA
 // ══════════════════════════════════════════════════
@@ -225,7 +226,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
       {/* Cover */}
-      <div className="overflow-hidden relative" style={{ height: 380 }}>
+      <div className="overflow-hidden relative" style={{ height: 500 }}>
         <img
           src={d.coverImage}
           alt={d.name}
@@ -235,12 +236,15 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/40"></div>
 
+       <div>
+         <Navbar />
         <button
           onClick={onBack || (() => window.history.back())}
           className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-sm text-black bg-white/40 backdrop-blur-sm px-3 py-1.5 rounded-full transition-colors"
         >
           <FiArrowLeft size={15} /> Back
         </button>
+       </div>
       </div>
 
       {/* Header */}

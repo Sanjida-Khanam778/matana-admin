@@ -203,14 +203,14 @@ function GridCard({ name, count, image, onClick }) {
 
   return (
     <div
-      className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none reveal reveal-slide-up`}
+      className={`cursor-pointer group bg-white p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-xl`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={onClick}
     >
       {/* Left border line drawing */}
       <div
-        className="absolute top-0 left-0 w-[1.5px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
+        className="absolute top-0 left-0 w-[2px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
         style={{
           height: hovered ? "100%" : "0%",
           transitionDelay: hovered ? "0s" : "0.3s",
@@ -219,7 +219,7 @@ function GridCard({ name, count, image, onClick }) {
 
       {/* Bottom border line drawing */}
       <div
-        className="absolute bottom-0 left-0 h-[1.5px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
+        className="absolute bottom-0 left-0 h-[2px] bg-[#085027]/20 transition-all duration-200 ease-linear z-20"
         style={{
           width: hovered ? "100%" : "0%",
           transitionDelay: hovered ? "0.3s" : "0s",
@@ -338,7 +338,7 @@ export default function BusinessSearch() {
           ) : (
             <>
               {/* 3-col grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {gridItems.map((item) => (
                   <GridCard
                     key={item.name}

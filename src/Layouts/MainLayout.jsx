@@ -6,7 +6,12 @@ export default function MainLayout() {
     const location = useLocation();
     return (
         <div className="font-rubik">
-            <Navbar />
+            {
+                location.pathname === "/category-details" || location.pathname.includes("/community-details")
+                ? null
+                : <Navbar />
+            }
+            
             <Outlet />
             <Footer />
         </div>

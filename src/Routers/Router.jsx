@@ -31,11 +31,11 @@ export const router = createBrowserRouter([
         element: <DetailPage />,
       },
       {
-        path: "community-details",
+        path: "all-community",
         element: <AllCommunity />,
       },
       {
-        path: "community/:id",
+        path: "community-details/:id",
         element: <CommunityDetails />,
       },
       {

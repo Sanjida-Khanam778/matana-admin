@@ -104,7 +104,7 @@ export default function HeroSection() {
         <img
           src={bg}
           alt=""
-          className="w-full h-full object-cover opacity-10 sm:opacity-15 md:opacity-20"
+          className="w-full h-full object-cover opacity-10 sm:opacity-15 md:opacity-40"
           draggable={false}
         />
       </div>
@@ -156,7 +156,7 @@ export default function HeroSection() {
         <img
           src={bg}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-20"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
           draggable={false}
         />
         {/* Top: Left text */}

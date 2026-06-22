@@ -102,7 +102,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/community-details", {
+    navigate("/all-community", {
       state: {
         community: { city, state, rating, businesses, featured, image },
       },
