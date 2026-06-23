@@ -6,58 +6,46 @@ import { Link, useNavigate } from "react-router-dom";
 
 // ── Scattered positions matching the screenshot layout ──
 const locations = [
-  { city: "Brooklyn/boro park", stores: 43, top: "6%", left: "0%" },
-  { city: "Queens", stores: 63, top: "0%", left: "20%" },
-  { city: "Staten Island", stores: 23, top: "3%", left: "38%" },
+  { city: "Brooklyn/boro park", stores: 43, top: "12%", left: "20%" },
+  // { city: "Queens", stores: 63, top: "0%", left: "20%" },
+  // { city: "Staten Island", stores: 23, top: "3%", left: "38%" },
   { city: "Five towns", stores: 73, top: "0%", left: "58%" },
-  { city: "Hollywood", stores: 115, top: "5%", left: "75%" },
-  { city: "Far Rockaway", stores: 43, top: "30%", left: "6%" },
-  { city: "Riverdale", stores: 133, top: "20%", left: "24%" },
+  // { city: "Hollywood", stores: 115, top: "5%", left: "75%" },
+  // { city: "Far Rockaway", stores: 43, top: "30%", left: "6%" },
+  // { city: "Riverdale", stores: 133, top: "20%", left: "24%" },
   { city: "Cleveland", stores: 45, top: "24%", left: "45%" },
-  { city: "Houston", stores: 32, top: "24%", left: "64%" },
-  { city: "Baltimore", stores: 43, top: "24%", left: "85%" },
-  { city: "Chicago", stores: 102, top: "54%", left: "2%" },
-  { city: "Lakewood", stores: 43, top: "44%", left: "20%" },
-  { city: "Monsey", stores: 93, top: "46%", left: "40%" },
-  { city: "Jackson", stores: 163, top: "45%", left: "57%" },
-  { city: "Tom's river", stores: 43, top: "44%", left: "76%" },
-  { city: "Teaneck", stores: 43, top: "75%", left: "10%" },
-  { city: "Detroit", stores: 43, top: "65%", left: "28%" },
-  { city: "Los Angeles", stores: 43, top: "70%", left: "48%" },
-  { city: "Montreal", stores: 43, top: "65%", left: "68%" },
-  { city: "Edison", stores: 103, top: "70%", left: "88%" },
-  { city: "Manhattan", stores: 123, top: "88%", left: "26%" },
-  { city: "Passaic", stores: 63, top: "94%", left: "42%" },
-  { city: "Boca", stores: 57, top: "91%", left: "62%" },
-  { city: "Miami", stores: 68, top: "95%", left: "82%" },
+  // { city: "Houston", stores: 32, top: "24%", left: "64%" },
+  // { city: "Baltimore", stores: 43, top: "24%", left: "85%" },
+  // { city: "Chicago", stores: 102, top: "54%", left: "2%" },
+  { city: "Lakewood", stores: 43, top: "55%", left: "30%" },
+  { city: "Monsey", stores: 93, top: "46%", left: "60%" },
+  // { city: "Jackson", stores: 163, top: "45%", left: "57%" },
+  // { city: "Tom's river", stores: 43, top: "44%", left: "76%" },
+  // { city: "Teaneck", stores: 43, top: "75%", left: "10%" },
+  // { city: "Detroit", stores: 43, top: "65%", left: "28%" },
+  // { city: "Los Angeles", stores: 43, top: "70%", left: "48%" },
+  // { city: "Montreal", stores: 43, top: "65%", left: "68%" },
+  // { city: "Edison", stores: 103, top: "70%", left: "88%" },
+  // { city: "Manhattan", stores: 123, top: "88%", left: "26%" },
+  { city: "Toronto", stores: 63, top: "74%", left: "50%" },
+  { city: "Passaic", stores: 43, top: "30%", left: "80%" },
+  // { city: "Boca", stores: 57, top: "91%", left: "62%" },
+  // { city: "Miami", stores: 68, top: "95%", left: "82%" },
 ];
 
-// ── Scattered positions matching the screenshot layout ──
 const locationsPhone = [
-  { city: "Brooklyn/boro park", stores: 43, top: "6%", left: "2%" },
-  { city: "Queens", stores: 63, top: "4%", left: "42%" },
-  // { city: "Staten Island", stores: 23, top: "3%", left: "43%" },
-  { city: "Five towns", stores: 73, top: "0%", left: "70%" },
-  // { city: "Hollywood", stores: 115, top: "5%", left: "75%" },
-  { city: "Far Rockaway", stores: 43, top: "30%", left: "4%" },
-  { city: "Riverdale", stores: 133, top: "20%", left: "29%" },
-  { city: "Cleveland", stores: 45, top: "29%", left: "60%" },
-  { city: "Houston", stores: 32, top: "15%", left: "64%" },
-  // { city: "Baltimore", stores: 43, top: "24%", left: "85%" },
-  { city: "Chicago", stores: 102, top: "48%", left: "2%" },
-  { city: "Lakewood", stores: 43, top: "38%", left: "34%" },
-  // { city: "Monsey", stores: 93, top: "46%", left: "40%" },
-  { city: "Jackson", stores: 163, top: "45%", left: "68%" },
-  // { city: "Tom's river", stores: 43, top: "44%", left: "76%" },
-  { city: "Teaneck", stores: 43, top: "65%", left: "10%" },
-  { city: "Detroit", stores: 43, top: "55%", left: "34%" },
-  { city: "Los Angeles", stores: 43, top: "70%", left: "40%" },
-  { city: "Montreal", stores: 43, top: "59%", left: "68%" },
-  // { city: "Edison", stores: 103, top: "70%", left: "88%" },
-  { city: "Manhattan", stores: 123, top: "82%", left: "12%" },
-  { city: "Passaic", stores: 63, top: "86%", left: "42%" },
-  { city: "Boca", stores: 57, top: "76%", left: "68%" },
-  // { city: "Miami", stores: 68, top: "95%", left: "82%" },
+  { city: "Brooklyn/boro park", stores: 43, top: "18%", left: "5%" },
+  
+  { city: "Five towns", stores: 73, top: "7%", left: "50%" },
+ 
+  { city: "Cleveland", stores: 45, top: "40%", left: "38%" },
+ 
+  { city: "Lakewood", stores: 43, top: "55%", left: "8%" },
+  { city: "Monsey", stores: 93, top: "60%", left: "68%" },
+  
+  { city: "Toronto", stores: 63, top: "75%", left: "38%" },
+  { city: "Passaic", stores: 43, top: "30%", left: "70%" },
+ 
 ];
 
 function LocationCard({ city, stores, top, left, delay, duration }) {
@@ -128,7 +116,7 @@ export default function HeroSection() {
               <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
             </div>
             <h2 className="text-5xl font-playfair font-bold text-[#085027] leading-tight mb-5">
-              Stop Guessing.
+              Stop Guessing,
               <br />
               Start Gifting.
             </h2>
@@ -138,7 +126,9 @@ export default function HeroSection() {
           </div>
 
           {/* RIGHT — absolutely scattered cards */}
-          <div className="flex-1 relative" style={{ height: "560px" }}>
+          <div className="flex-1 relative" 
+          style={{ height: "560px" }}
+          >
             {locations.map((loc, i) => (
               <LocationCard
                 key={i}
@@ -163,7 +153,7 @@ export default function HeroSection() {
           draggable={false}
         />
         {/* Top: Left text */}
-        <div className="w-11/12 mx-auto pt-10 pb-6 flex flex-col items-start">
+        <div className="w-10/12 mx-auto pt-10 pb-6 flex flex-col items-start">
           <div className="inline-flex items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-3 py-1.5 text-xs font-medium text-[#085027] mb-5">
             <LuShieldCheck size={12} />
             The Premier Jewish Directory
@@ -187,7 +177,7 @@ export default function HeroSection() {
         </div>
 
         {/* Bottom: scattered cards on map */}
-        <div className="relative w-full" style={{ height: "660px" }}>
+        <div className="relative w-full" style={{ height: "380px" }}>
 
           <div className="absolute inset-0 bg-[#f5f3ee]/20" />
           {locationsPhone.map((loc, i) => (

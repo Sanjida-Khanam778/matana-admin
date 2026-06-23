@@ -55,7 +55,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <button                     onClick={() => scrollToSection("categories")}
+                  <button onClick={() => scrollToSection("categories")}
 
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
                   >

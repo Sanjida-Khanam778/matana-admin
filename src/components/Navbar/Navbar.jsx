@@ -27,7 +27,7 @@ function SearchIcon() {
 // label → { route: string | null, sectionId: string | null }
 const NAV_CONFIG = [
   { label: "Home", route: "/", sectionId: null },
-  { label: "Location", route: "/", sectionId: "community" },
+  { label: "Locations", route: "/", sectionId: "community" },
   { label: "About", route: "/", sectionId: "about" },
   { label: "Contact", route: "/", sectionId: "contact" },
 ];
