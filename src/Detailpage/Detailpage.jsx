@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { ScrollRestoration, useLocation } from "react-router-dom";
 import {
   FiPhone,
   FiMail,
@@ -225,6 +225,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
+      <ScrollRestoration />
       {/* Cover */}
       <div className="overflow-hidden relative" style={{ height: 500 }}>
         <img

@@ -8,7 +8,7 @@ import {
   IoArrowForwardOutline,
 } from "react-icons/io5";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { useNavigate } from "react-router-dom";
+import { ScrollRestoration, useNavigate } from "react-router-dom";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 
@@ -205,6 +205,8 @@ export default function AllCommunity() {
 
   return (
     <div className="font-inter min-h-screen bg-[#f8f7f3] flex w-full justify-center">
+            <ScrollRestoration />
+      
       <div className="flex flex-col lg:flex-row w-full lg:w-11/12 xl:w-10/12 mx-auto my-4 lg:my-10 px-4 lg:px-0">
         {/* ── Sidebar ── */}
         <SidebarFilter

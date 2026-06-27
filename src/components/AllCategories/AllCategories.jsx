@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, ScrollRestoration } from "react-router-dom";
 import { IMAGES } from "../../assets";
 
 // ── Data ──
@@ -273,6 +273,8 @@ export default function BusinessSearch() {
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
+            <ScrollRestoration />
+      
       {/* Back button and filters toggle on mobile */}
       <div className="px-4 sm:px-8 pt-6 pb-2 flex items-center justify-between">
         <button

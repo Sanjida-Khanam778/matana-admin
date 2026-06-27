@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { ScrollRestoration, useLocation } from "react-router-dom";
 import {
   FiPhone,
   FiMail,
@@ -8,7 +8,7 @@ import {
   FiInstagram,
   FiArrowLeft,
   FiShare2,
-  FiHeart,   
+  FiHeart,
   FiSend,
   FiNavigation,
   FiShield,
@@ -248,6 +248,8 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
+      <ScrollRestoration />
+
       {/* Cover */}
       <div className="overflow-hidden relative" style={{ height: 380 }}>
         <img

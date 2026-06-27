@@ -102,7 +102,7 @@ export default function HeroSection() {
             </div>
             <div className="flex flex-col lg:flex-row gap-4 mt-5 w-52">
               <button
-                onClick={() => setShowModal(true)}
+               onClick={() => navigate("/all-categories")}
                 className="flex-shrink-0 bg-[#085027] xl:text-lg w-full hover:bg-teal-900 text-white text-xs lg:text-sm font-medium px-4 lg:px-5 py-2 lg:py-2.5 rounded-full transition-colors whitespace-nowrap"
               >
                 Explore Stores
@@ -153,8 +153,7 @@ export default function HeroSection() {
             <div className="flex-1 h-[1px] bg-[#085027]/30" />
           </div>
           <button
-            onClick={() => setShowModal(true)}
-            className="bg-[#085027] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors mb-2 w-full"
+ onClick={() => navigate("/all-categories")}            className="bg-[#085027] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors mb-2 w-full"
           >
             Explore Stores
           </button>
