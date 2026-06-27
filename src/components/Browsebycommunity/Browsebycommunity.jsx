@@ -128,11 +128,11 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       {/* Dark overlay — gradient from bottom */}
       <div className="absolute inset-0 bg-[#040404]/40" />
 
-      {/* Rating badge — top right */}
+      {/* Rating badge — top right
       <div className="absolute md:top-6 md:right-6 top-3 right-3 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-semibold px-2 py-1 rounded-full border border-white/30">
         <FaStar className="text-yellow-500" />
         {rating}
-      </div>
+      </div> */}
 
       {/* City + State — bottom left */}
       <div className="absolute bottom-0 left-0 p-4">

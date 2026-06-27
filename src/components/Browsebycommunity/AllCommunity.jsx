@@ -7,12 +7,10 @@ import {
   IoChevronBack,
   IoArrowForwardOutline,
 } from "react-icons/io5";
-import { FaArrowRight, FaStar } from "react-icons/fa";
-import { BsArrowRight } from "react-icons/bs";
-import { LuMapPin } from "react-icons/lu";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 import { useNavigate } from "react-router-dom";
 import { CiLocationArrow1 } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 
 // ── Data ───
 const community = {
@@ -109,19 +107,19 @@ const businesses = [
 const TOTAL_PAGES = 4;
 
 // ── Components ───
-function RatingBadge({ rating }) {
-  return (
-    <div className="flex items-center gap-1 bg-white/95 text-gray-800 text-[11px] font-bold px-2 py-1 rounded-full shadow-sm">
-      <FaStar size={9} color="#f59e0b" />
-      {rating}
-    </div>
-  );
-}
+// function RatingBadge({ rating }) {
+//   return (
+//     <div className="flex items-center gap-1 bg-white/95 text-gray-800 text-[11px] font-bold px-2 py-1 rounded-full shadow-sm">
+//       <FaStar size={9} color="#f59e0b" />
+//       {rating}
+//     </div>
+//   );
+// }
 
 function FeaturedBadge() {
   return (
-    <div className="flex items-center gap-1 bg-[#f59e0b] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm uppercase tracking-wide">
-      <FaStar size={8} color="white" />
+    <div className="flex items-center gap-1 bg-[#f59e0b] text-white text-xs px-2.5 py-1 rounded-full shadow-sm tracking-wide">
+      <FaStar size={12} color="white" />
       Featured
     </div>
   );
@@ -145,11 +143,11 @@ function BusinessCard({ business, onClick }) {
         <div className="absolute top-3 left-3">
           {business.badge === "FEATURED" && <FeaturedBadge />}
         </div>
-        {business.rating && (
+        {/* {business.rating && (
           <div className="absolute top-3 right-3">
             <RatingBadge rating={business.rating} />
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Body */}
@@ -263,7 +261,7 @@ export default function AllCommunity() {
                   </p>
                 </div>
                 <div className="w-px h-8 bg-white/20" />
-                <div className="">
+                {/* <div className="">
                 <div className="flex items-center gap-1.5">
                     <p className="text-white text-base sm:text-lg font-bold leading-none">
                     {community.rating}
@@ -273,7 +271,7 @@ export default function AllCommunity() {
                   <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider">
                    average Rating
                   </p>
-                </div>
+                </div> */}
               </div>
               {/* ── Search bar ── */}
               <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
@@ -380,11 +378,10 @@ export default function AllCommunity() {
                   <button
                     key={i}
                     onClick={() => setPage(i + 1)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
-                      page === i + 1
+                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${page === i + 1
                         ? "bg-[#085027] text-white"
                         : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     {i + 1}
                   </button>

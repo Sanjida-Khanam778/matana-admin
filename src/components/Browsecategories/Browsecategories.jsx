@@ -5,16 +5,23 @@ import { IMAGES } from "../../assets";
 
 const categories = [
   {
-    id: 1,
-    name: "Upsherin",
-    count: 156,
-    image: IMAGES.categoryImage1,
+    id: 7,
+    name: "Shabbos",
+    count: 120,
+    image: IMAGES.categoryImage7,
   },
+
   {
     id: 2,
     name: "Tu Bshvat",
     count: 120,
     image: IMAGES.categoryImage2,
+  },
+  {
+    id: 12,
+    name: "Kiddush",
+    count: 120,
+    image: IMAGES.categoryImage12,
   },
   {
     id: 3,
@@ -23,35 +30,30 @@ const categories = [
     image: IMAGES.categoryImage3,
   },
   {
-    id: 4,
-    name: "Sukkos",
+    id: 19,
+    name: "Birthday",
     count: 120,
-    image: IMAGES.categoryImage4,
+    image: IMAGES.categoryImage19,
   },
   {
-    id: 5,
-    name: "Shiva and Condolences",
-    count: 126,
-    image: IMAGES.categoryImage5,
-  },
-  {
-    id: 6,
-    name: "Shavuous",
-    count: 100,
-    image: IMAGES.categoryImage6,
-  },
-  {
-    id: 7,
-    name: "Shabbos",
+    id: 15,
+    name: "Engagements, vorts and weddings",
     count: 120,
-    image: IMAGES.categoryImage7,
+    image: IMAGES.categoryImage15,
   },
   {
-    id: 8,
-    name: "Rosh Hashana",
+    id: 16,
+    name: "Corporate gifting and catering",
     count: 120,
-    image: IMAGES.categoryImage8,
+    image: IMAGES.categoryImage16,
   },
+  {
+    id: 11,
+    name: "Party",
+    count: 120,
+    image: IMAGES.categoryImage11,
+  },
+
 ];
 
 function CategoryCard({ name, count, image, delayClass }) {
@@ -88,7 +90,7 @@ function CategoryCard({ name, count, image, delayClass }) {
       />
 
       {/* Image */}
-      <div className="rounded-2xl overflow-hidden mb-3 relative">
+      <div className="rounded-2xl bg-[#EAF2EC] overflow-hidden mb-3 relative">
         <img
           src={image}
           alt={name}
@@ -119,7 +121,7 @@ export default function BrowseCategories() {
   useScrollReveal();
 
   return (
-    <section id="categories" className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
+    <section id="    " className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
       <div className="w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-8 lg:mb-16 reveal reveal-fade-in reveal-delay-05">

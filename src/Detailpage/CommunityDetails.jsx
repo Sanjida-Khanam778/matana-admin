@@ -434,7 +434,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
           )}
 
           {/* Reviews */}
-          {d.reviews?.length > 0 && (
+          {/* {d.reviews?.length > 0 && (
             <section>
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3">
                 Customer Reviews
@@ -487,7 +487,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
                 ))}
               </div>
             </section>
-          )}
+          )} */}
         </div>
 
         {/* ── RIGHT ── */}

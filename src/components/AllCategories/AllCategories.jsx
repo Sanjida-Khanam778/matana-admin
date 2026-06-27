@@ -227,11 +227,11 @@ function GridCard({ name, count, image, onClick }) {
       />
 
       {/* Image */}
-      <div className="rounded-2xl overflow-hidden mb-3 relative">
+      <div className="rounded-2xl bg-[#EAF2EC] p-4 h-52 overflow-hidden mb-3 relative flex justify-center items-center">
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           draggable={false}
         />
       </div>
@@ -361,11 +361,10 @@ export default function BusinessSearch() {
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
-                      page === n
+                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${page === n
                         ? "bg-[#085027] text-white"
                         : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     {n}
                   </button>

@@ -414,7 +414,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
           )}
 
           {/* Reviews */}
-          {d.reviews?.length > 0 && (
+          {/* {d.reviews?.length > 0 && (
             <section>
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3">
                 Customer Reviews
@@ -467,7 +467,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
                 ))}
               </div>
             </section>
-          )}
+          )} */}
         </div>
 
         {/* ── RIGHT ── */}
