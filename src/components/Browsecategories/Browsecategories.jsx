@@ -90,11 +90,11 @@ function CategoryCard({ name, count, image, delayClass }) {
       />
 
       {/* Image */}
-      <div className="rounded-2xl bg-[#EAF2EC] overflow-hidden mb-3 relative">
+      <div className="rounded-2xl bg-[#EAF2EC] overflow-hidden mb-3 relative flex items-center justify-center h-52">
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className=" object-cover transition-transform duration-500 group-hover:scale-105"
           draggable={false}
         />
       </div>

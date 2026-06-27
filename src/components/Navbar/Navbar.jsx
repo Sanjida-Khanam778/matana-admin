@@ -63,7 +63,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`w-full py-3 md:py-4 ${location.pathname === "/" ? "bg-[#FAF8F4]" : "bg-[#f8f7f3]"}`}
+        className={`w-full relative z-50 py-3 md:py-4 ${location.pathname === "/" ? "bg-transparent" : "bg-[#f8f7f3]"}`}
       >
         <div className="w-full lg:w-11/12 xl:w-10/12 mx-auto px-4 lg:px-0">
           <div className="flex items-center justify-between">
@@ -156,7 +156,7 @@ export default function Navbar() {
                   setShowModal(true);
                   setMobileMenuOpen(false);
                 }}
-                className="w-full bg-[#085027] hover:bg-teal-900 text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
+                className="w-full bg-[#085027] text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
               >
                 List Your Business
               </button>

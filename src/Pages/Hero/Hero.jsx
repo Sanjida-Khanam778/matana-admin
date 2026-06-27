@@ -3,49 +3,34 @@ import bg from "../../assets/images/hero-bg.png";
 import { LuShieldCheck } from "react-icons/lu";
 import { IoGiftOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
+import ListBusinessModal from "../../components/Modals/ListBusinessModal";
 
 // ── Scattered positions matching the screenshot layout ──
 const locations = [
   { city: "Brooklyn/boro park", stores: 43, top: "12%", left: "20%" },
-  // { city: "Queens", stores: 63, top: "0%", left: "20%" },
-  // { city: "Staten Island", stores: 23, top: "3%", left: "38%" },
   { city: "Five towns", stores: 73, top: "0%", left: "58%" },
-  // { city: "Hollywood", stores: 115, top: "5%", left: "75%" },
-  // { city: "Far Rockaway", stores: 43, top: "30%", left: "6%" },
-  // { city: "Riverdale", stores: 133, top: "20%", left: "24%" },
   { city: "Cleveland", stores: 45, top: "24%", left: "45%" },
-  // { city: "Houston", stores: 32, top: "24%", left: "64%" },
-  // { city: "Baltimore", stores: 43, top: "24%", left: "85%" },
-  // { city: "Chicago", stores: 102, top: "54%", left: "2%" },
   { city: "Lakewood", stores: 43, top: "55%", left: "30%" },
   { city: "Monsey", stores: 93, top: "46%", left: "60%" },
-  // { city: "Jackson", stores: 163, top: "45%", left: "57%" },
-  // { city: "Tom's river", stores: 43, top: "44%", left: "76%" },
-  // { city: "Teaneck", stores: 43, top: "75%", left: "10%" },
-  // { city: "Detroit", stores: 43, top: "65%", left: "28%" },
-  // { city: "Los Angeles", stores: 43, top: "70%", left: "48%" },
-  // { city: "Montreal", stores: 43, top: "65%", left: "68%" },
-  // { city: "Edison", stores: 103, top: "70%", left: "88%" },
-  // { city: "Manhattan", stores: 123, top: "88%", left: "26%" },
   { city: "Toronto", stores: 63, top: "74%", left: "50%" },
   { city: "Passaic", stores: 43, top: "30%", left: "80%" },
-  // { city: "Boca", stores: 57, top: "91%", left: "62%" },
-  // { city: "Miami", stores: 68, top: "95%", left: "82%" },
+
 ];
 
 const locationsPhone = [
   { city: "Brooklyn/boro park", stores: 43, top: "18%", left: "5%" },
-  
+
   { city: "Five towns", stores: 73, top: "7%", left: "50%" },
- 
+
   { city: "Cleveland", stores: 45, top: "40%", left: "38%" },
- 
+
   { city: "Lakewood", stores: 43, top: "55%", left: "8%" },
   { city: "Monsey", stores: 93, top: "60%", left: "68%" },
-  
+
   { city: "Toronto", stores: 63, top: "75%", left: "38%" },
   { city: "Passaic", stores: 43, top: "30%", left: "70%" },
- 
+
 ];
 
 function LocationCard({ city, stores, top, left, delay, duration }) {
@@ -77,6 +62,8 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
 
 export default function HeroSection() {
   const [isMobile, setIsMobile] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -86,49 +73,56 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden font-inter">
-      {/* Background Map */}
+    <section className="relative w-full overflow-hidden font-inter" style={{ minHeight: "100vh" }}>
+      {/* Background Map — anchored to top */}
+      <Navbar />
 
-
+      <div className="absolute inset-0 z-0">
+        <img
+          src={bg}
+          alt=""
+          className="w-full h-full object-cover object-top"
+          draggable={false}
+        />
+      </div>
       {/* ══════════ LARGE SCREEN ══════════ */}
       <div className="hidden sm:flex relative z-10 mx-auto py-16">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={bg}
-            alt=""
-            className="w-full h-full object-cover opacity-10 sm:opacity-15 md:opacity-40"
-            draggable={false}
-          />
-        </div>
         <div className="sm:flex w-10/12 mx-auto items-start justify-between gap-8">
           {/* LEFT */}
           <div className="w-[30%] flex-shrink-0 flex flex-col items-start pt-4">
             <div className="inline-flex items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-4 py-1.5 text-sm font-medium text-[#085027] mb-6">
-              <LuShieldCheck size={14} />
+              <LuShieldCheck size={18} />
               The Premier Jewish Directory
             </div>
-            <h1 className="lg:text-7xl xl:text-9xl text-[#085027] mb-5 font-bebas tracking-widest leading-none">
-              MATANA
-            </h1>
-            <div className="w-full max-w-[300px] flex items-center gap-4 mb-5">
-              <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
-              <IoGiftOutline size={28} color="#085027" />
-              <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
-            </div>
-            <h2 className="text-5xl font-playfair font-bold text-[#085027] leading-tight mb-5">
-              Stop Guessing,
-              <br />
-              Start Gifting.
+            <h2 className="text-5xl xl:text-7xl font-playfair font-bold text-[#085027] xl:leading-tight mb-5">
+              One Place, Endless Possibilities.
             </h2>
-            <p className="text-lg text-gray-500 leading-relaxed">
+            <p className="text-lg text-[#0E3D2BCC] leading-relaxed">
               Find the perfect gift in the perfect place.
             </p>
+            <div className="w-full max-w-[400px] flex items-center gap-4 mt-5">
+              <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
+              <IoGiftOutline size={32} color="#085027" />
+              <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
+            </div>
+            <div className="flex gap-4 mt-5 w-52">
+              <button
+                onClick={() => setShowModal(true)}
+                className="flex-shrink-0 bg-[#085027] xl:text-lg w-full hover:bg-teal-900 text-white text-xs lg:text-sm font-medium px-4 lg:px-5 py-2 lg:py-2.5 rounded-full transition-colors whitespace-nowrap"
+              >
+                Explore Stores
+              </button>
+              <button
+                onClick={() => navigate("/all-community")}
+                className="flex-shrink-0 xl:text-lg border border-[#085027]/20 w-full bg-[#085027]/5 text-[#0E3D2B] text-xs lg:text-sm font-medium px-4 lg:px-5 py-2 lg:py-2.5 rounded-full transition-colors whitespace-nowrap"
+              >
+                Browse Locations
+              </button>
+            </div>
           </div>
 
           {/* RIGHT — absolutely scattered cards */}
-          <div className="flex-1 relative" 
-          style={{ height: "560px" }}
-          >
+          <div className="flex-1 relative" style={{ height: "560px" }}>
             {locations.map((loc, i) => (
               <LocationCard
                 key={i}
@@ -144,42 +138,41 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ══════════ MOBILE / TABLET ══════════ */}
-      <div className="sm:hidden relative z-10">
-        <img
-          src={bg}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-          draggable={false}
-        />
-        {/* Top: Left text */}
-        <div className="w-10/12 mx-auto pt-10 pb-6 flex flex-col items-start">
-          <div className="inline-flex items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-3 py-1.5 text-xs font-medium text-[#085027] mb-5">
-            <LuShieldCheck size={12} />
+      {/* ══════════ MOBILE ══════════ */}
+      <div className="sm:hidden relative z-10 flex" style={{ minHeight: "calc(100vh - 64px)" }}>
+        {/* LEFT — text */}
+        <div className="w-[42%] flex-shrink-0 flex flex-col justify-start pt-6 pl-4 pr-2">
+          <div className="inline-flex items-center gap-1.5 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#085027] mb-4">
+            <LuShieldCheck size={10} />
             The Premier Jewish Directory
           </div>
-          <h1 className="text-5xl sm:text-6xl text-[#085027] mb-4 font-bebas tracking-widest leading-none">
-            MATANA
-          </h1>
-          <div className="w-full max-w-[240px] flex items-center gap-3 mb-4">
-            <div className="flex-1 h-[1px] bg-[#085027]/30" />
-            <IoGiftOutline size={20} color="#085027" />
-            <div className="flex-1 h-[1px] bg-[#085027]/30" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-playfair font-bold text-[#085027] leading-tight mb-4">
-            Stop Guessing.
-            <br />
-            Start Gifting.
+          <h2 className="text-2xl font-playfair font-bold text-[#085027] leading-tight mb-3">
+            One Place,<br />Endless<br />Possibilities.
           </h2>
-          <p className="text-sm sm:text-base text-gray-500 leading-relaxed">
+          <p className="text-xs text-[#0E3D2BCC] leading-relaxed mb-4">
             Find the perfect gift in the perfect place.
           </p>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex-1 h-[1px] bg-[#085027]/30" />
+            <IoGiftOutline size={16} color="#085027" />
+            <div className="flex-1 h-[1px] bg-[#085027]/30" />
+          </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-[#085027] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors mb-2 w-full"
+          >
+            Explore Stores
+          </button>
+          <button
+            onClick={() => navigate("/all-community")}
+            className="border border-[#085027]/30 bg-[#085027]/5 text-[#0E3D2B] text-xs font-medium px-4 py-2 rounded-full transition-colors w-full"
+          >
+            Browse Locations
+          </button>
         </div>
 
-        {/* Bottom: scattered cards on map */}
-        <div className="relative w-full" style={{ height: "380px" }}>
-
-          <div className="absolute inset-0 bg-[#f5f3ee]/20" />
+        {/* RIGHT — scattered cards on map */}
+        <div className="flex-1 relative">
           {locationsPhone.map((loc, i) => (
             <LocationCard
               key={i}
@@ -204,6 +197,7 @@ export default function HeroSection() {
           animation: float ease-in-out infinite;
         }
       `}</style>
+      {showModal && <ListBusinessModal onClose={() => setShowModal(false)} />}
     </section>
   );
 }

@@ -7,7 +7,7 @@ export default function MainLayout() {
     return (
         <div className="font-rubik">
             {
-                location.pathname === "/category-details" || location.pathname.includes("/community-details")
+                location.pathname === "/category-details" || location.pathname.includes("/community-details") || location.pathname === "/"
                 ? null
                 : <Navbar />
             }
