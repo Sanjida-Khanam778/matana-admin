@@ -31,7 +31,7 @@ export default function StatsBar() {
               className="flex-1 flex flex-col items-center gap-1.5 px-4 sm:px-8"
             >
               <span className="text-[#085027]">{stat.icon}</span>
-              <p className="text-3xl sm:text-4xl font-bold text-[#085027] leading-none mt-1">
+              <p className="text-xl sm:text-3xl lg:text-4xl font-bold text-[#085027] leading-none mt-1">
                 {stat.value}
               </p>
               <p className="text-[10px] sm:text-xs font-semibold tracking-widest text-[#085027]/60 uppercase">

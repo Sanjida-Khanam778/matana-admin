@@ -9,12 +9,12 @@ import ListBusinessModal from "../../components/Modals/ListBusinessModal";
 // ── Scattered positions matching the screenshot layout ──
 const locations = [
   { city: "Toronto", stores: 63, top: "0%", left: "80%" },
-  { city: "Monsey", stores: 93, top: "25%", left: "70%" },
-  { city: "Lakewood", stores: 43, top: "25%", left: "90%" },
-  { city: "Brooklyn/boro park", stores: 43, top: "50%", left: "82%" },
-  { city: "Cleveland", stores: 45, top: "80%", left: "72%" },
-  { city: "Passaic", stores: 43, top: "80%", left: "94%" },
-  { city: "Five towns", stores: 73, top: "100%", left: "85%" },
+  { city: "Monsey", stores: 93, top: "20%", left: "70%" },
+  { city: "Lakewood", stores: 43, top: "20%", left: "90%" },
+  { city: "Brooklyn/boro park", stores: 43, top: "40%", left: "82%" },
+  { city: "Cleveland", stores: 45, top: "60%", left: "72%" },
+  { city: "Passaic", stores: 43, top: "60%", left: "94%" },
+  { city: "Five towns", stores: 73, top: "80%", left: "85%" },
 
 ];
 
