@@ -81,8 +81,8 @@ export default function HeroSection() {
         />
       </div>
       {/* ══════════ LARGE SCREEN ══════════ */}
-      <div className="hidden lg:flex relative z-10 mx-auto py-16">
-        <div className="lg:flex w-10/12 mx-auto items-start justify-between gap-8">
+      <div className="hidden md:flex relative z-10 mx-auto py-16">
+        <div className="md:flex w-full sm:w-10/12 mx-auto items-start justify-between">
           {/* LEFT */}
           <div className="w-[30%] flex-shrink-0 flex flex-col items-start pt-4">
             <div className="inline-flex w-fit items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-4 py-1.5 text-sm font-medium text-[#085027] mb-6">
@@ -100,7 +100,7 @@ export default function HeroSection() {
               <IoGiftOutline size={32} color="#085027" />
               <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
             </div>
-            <div className="flex gap-4 mt-5 w-52">
+            <div className="flex flex-col lg:flex-row gap-4 mt-5 w-52">
               <button
                 onClick={() => setShowModal(true)}
                 className="flex-shrink-0 bg-[#085027] xl:text-lg w-full hover:bg-teal-900 text-white text-xs lg:text-sm font-medium px-4 lg:px-5 py-2 lg:py-2.5 rounded-full transition-colors whitespace-nowrap"
@@ -134,7 +134,7 @@ export default function HeroSection() {
       </div>
 
       {/* ══════════ MOBILE ══════════ */}
-      <div className="lg:hidden relative z-10 flex" style={{ minHeight: "calc(60vh - 64px)" }}>
+      <div className="md:hidden relative z-10 flex" style={{ minHeight: "calc(60vh - 64px)" }}>
         {/* LEFT — text */}
         <div className="flex-1 flex-shrink-0 flex flex-col justify-start pt-6 pl-4 pr-2">
           <div className="inline-flex items-center gap-1.5 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#085027] mb-4">

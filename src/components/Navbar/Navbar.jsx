@@ -65,13 +65,13 @@ export default function Navbar() {
       <nav
         className={`w-full relative z-50 py-3 md:py-4 ${location.pathname === "/" ? "bg-transparent" : "bg-[#f8f7f3]"}`}
       >
-        <div className="w-full lg:w-11/12 xl:w-10/12 mx-auto px-4 lg:px-0">
+        <div className="w-full w-11/12 lg:w-10/12 mx-auto px-4 md:px-8 lg:px-0">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to={"/"} className="flex-shrink-0">
               <img
                 src={logo}
-                className="h-28 md:h-auto object-contain"
+                className="h-20 md:h-24 lg:h-32 xl:h-auto object-contain"
                 alt="Matana"
               />
             </Link>

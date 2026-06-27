@@ -308,7 +308,7 @@ export default function FeaturedBusinesses() {
       className="w-full bg-gradient-to-b from-[#FAF5ED] to-[#FAFAFA] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-        <p className="font-bold text-primary uppercase mb-1.5 sm:mb-2 text-2xl md:text-3xl xl:text-4xl">
+        <p className="font-bold text-primary mb-1.5 sm:mb-2 text-2xl md:text-3xl xl:text-4xl">
           Premium Partners
         </p>
         {/* <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
