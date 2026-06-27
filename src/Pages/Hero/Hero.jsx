@@ -68,11 +68,11 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden font-inter" style={{ minHeight: "100vh" }}>
+    <section className="relative w-full overflow-hidden font-inter" >
       {/* Background Map — anchored to top */}
       <Navbar />
 
-      <div className="absolute inset-0 z-0 h-screen">
+      <div className="absolute inset-0 z-0">
         <img
           src={bg}
           alt=""
