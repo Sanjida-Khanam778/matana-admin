@@ -22,7 +22,7 @@ const stats = [
 
 export default function StatsBar() {
   return (
-    <section className="w-full bg-[#F2ECDF] py-8 sm:py-10">
+    <section className="w-full bg-[#FAF5ED] py-8 sm:py-10">
       <div className="w-11/12 xl:w-10/12 mx-auto">
         <div className="flex items-center justify-center divide-x divide-[#085027]/20">
           {stats.map((stat, i) => (

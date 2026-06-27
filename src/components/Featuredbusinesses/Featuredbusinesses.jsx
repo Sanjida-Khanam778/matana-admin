@@ -110,7 +110,7 @@ function SlideCard({ business, onPlay }) {
         className="absolute inset-0 flex items-center justify-center z-10"
         style={{ background: "none", border: "none" }}
       >
-        <div className="w-12 sm:w-16 md:w-20 h-12 sm:h-16 md:h-20 rounded-full bg-white/90 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+        <div className="w-12 md:w-16 h-12 md:h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -125,8 +125,8 @@ function SlideCard({ business, onPlay }) {
       </button>
 
       {/* Info */}
-      <div className="absolute bottom-0 left-4 sm:left-6 md:left-8 lg:left-10 p-3 sm:p-4 md:p-5 lg:p-7 z-10 right-4 sm:right-6 md:right-8 lg:right-auto">
-        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 md:mb-6">
+      <div className="absolute bottom-0 left-2 sm:left-6 md:left-8 lg:left-10 pb-2 sm:p-4 md:p-5 lg:p-7 z-10 right-4 sm:right-6 md:right-8 lg:right-auto">
+        <div className="flex items-center gap-2 sm:gap-3 mb-2 md:mb-4 md:mb-6">
           <div className="w-8 sm:w-9 md:w-11 h-8 sm:h-9 md:h-11 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +153,7 @@ function SlideCard({ business, onPlay }) {
             </p>
           </div>
         </div>
-        <div className="flex gap-1.5 sm:gap-2 mb-3 sm:mb-4 md:mb-6 flex-wrap">
+        <div className="flex gap-1.5 sm:gap-2 mb-2 md:mb-4 md:mb-6 flex-wrap">
           {business.badges.map((b, i) => (
             <span
               key={i}
@@ -164,7 +164,7 @@ function SlideCard({ business, onPlay }) {
           ))}
         </div>
         <div className="flex gap-2 sm:gap-3">
-          <button className="flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black text-xs sm:text-sm font-medium px-3 sm:px-5 py-2 sm:py-2.5 rounded-full transition-colors shadow">
+          <button className="flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black text-xs sm:text-sm font-medium px-3 sm:px-5 py-0 sm:py-2.5 rounded-full transition-colors shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -305,7 +305,7 @@ export default function FeaturedBusinesses() {
 
   return (
     <section id="featured"
-      className="w-full bg-gradient-to-b from-[#F2ECDF] to-[#FAFAFA] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
+      className="w-full bg-gradient-to-b from-[#FAF5ED] to-[#FAFAFA] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
         <p className="font-bold text-primary uppercase mb-1.5 sm:mb-2 text-2xl md:text-3xl xl:text-4xl">

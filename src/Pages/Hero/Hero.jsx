@@ -81,11 +81,11 @@ export default function HeroSection() {
         />
       </div>
       {/* ══════════ LARGE SCREEN ══════════ */}
-      <div className="hidden sm:flex relative z-10 mx-auto py-16">
-        <div className="sm:flex w-10/12 mx-auto items-start justify-between gap-8">
+      <div className="hidden lg:flex relative z-10 mx-auto py-16">
+        <div className="lg:flex w-10/12 mx-auto items-start justify-between gap-8">
           {/* LEFT */}
           <div className="w-[30%] flex-shrink-0 flex flex-col items-start pt-4">
-            <div className="inline-flex items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-4 py-1.5 text-sm font-medium text-[#085027] mb-6">
+            <div className="inline-flex w-fit items-center gap-2 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-4 py-1.5 text-sm font-medium text-[#085027] mb-6">
               <LuShieldCheck size={18} />
               The Premier Jewish Directory
             </div>
@@ -117,7 +117,7 @@ export default function HeroSection() {
           </div>
 
           {/* RIGHT — absolutely scattered cards */}
-          <div className="flex-1 relative" style={{ height: "560px" }}>
+          <div className="flex-1 relative mr-12" style={{ height: "560px" }}>
             {locations.map((loc, i) => (
               <LocationCard
                 key={i}
@@ -134,7 +134,7 @@ export default function HeroSection() {
       </div>
 
       {/* ══════════ MOBILE ══════════ */}
-      <div className="sm:hidden relative z-10 flex" style={{ minHeight: "calc(60vh - 64px)" }}>
+      <div className="lg:hidden relative z-10 flex" style={{ minHeight: "calc(60vh - 64px)" }}>
         {/* LEFT — text */}
         <div className="flex-1 flex-shrink-0 flex flex-col justify-start pt-6 pl-4 pr-2">
           <div className="inline-flex items-center gap-1.5 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#085027] mb-4">
