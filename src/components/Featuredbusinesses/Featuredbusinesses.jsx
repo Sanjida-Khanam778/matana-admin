@@ -305,7 +305,7 @@ export default function FeaturedBusinesses() {
 
   return (
     <section id="featured"
-      className="w-full bg-[#EEF3F5] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
+      className="w-full bg-gradient-to-b from-[#F2ECDF] to-[#FAFAFA] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
         <p className="font-bold text-primary uppercase mb-1.5 sm:mb-2 text-2xl md:text-3xl xl:text-4xl">

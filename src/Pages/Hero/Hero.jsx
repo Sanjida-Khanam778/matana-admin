@@ -8,36 +8,31 @@ import ListBusinessModal from "../../components/Modals/ListBusinessModal";
 
 // ── Scattered positions matching the screenshot layout ──
 const locations = [
-  { city: "Brooklyn/boro park", stores: 43, top: "12%", left: "20%" },
-  { city: "Five towns", stores: 73, top: "0%", left: "58%" },
-  { city: "Cleveland", stores: 45, top: "24%", left: "45%" },
-  { city: "Lakewood", stores: 43, top: "55%", left: "30%" },
-  { city: "Monsey", stores: 93, top: "46%", left: "60%" },
-  { city: "Toronto", stores: 63, top: "74%", left: "50%" },
-  { city: "Passaic", stores: 43, top: "30%", left: "80%" },
+  { city: "Toronto", stores: 63, top: "0%", left: "80%" },
+  { city: "Monsey", stores: 93, top: "25%", left: "70%" },
+  { city: "Lakewood", stores: 43, top: "25%", left: "90%" },
+  { city: "Brooklyn/boro park", stores: 43, top: "50%", left: "82%" },
+  { city: "Cleveland", stores: 45, top: "80%", left: "72%" },
+  { city: "Passaic", stores: 43, top: "80%", left: "94%" },
+  { city: "Five towns", stores: 73, top: "100%", left: "85%" },
 
 ];
 
 const locationsPhone = [
-  { city: "Brooklyn/boro park", stores: 43, top: "18%", left: "5%" },
-
-  { city: "Five towns", stores: 73, top: "7%", left: "50%" },
-
-  { city: "Cleveland", stores: 45, top: "40%", left: "38%" },
-
-  { city: "Lakewood", stores: 43, top: "55%", left: "8%" },
-  { city: "Monsey", stores: 93, top: "60%", left: "68%" },
-
-  { city: "Toronto", stores: 63, top: "75%", left: "38%" },
-  { city: "Passaic", stores: 43, top: "30%", left: "70%" },
-
+  { city: "Toronto", stores: 63, top: "0%", left: "30%" },
+  { city: "Monsey", stores: 93, top: "12%", left: "10%" },
+  { city: "Lakewood", stores: 43, top: "25%", left: "33%" },
+  { city: "Brooklyn/boro park", stores: 43, top: "38%", left: "12%" },
+  { city: "Cleveland", stores: 45, top: "52%", left: "32%" },
+  { city: "Passaic", stores: 43, top: "65%", left: "12%" },
+  { city: "Five towns", stores: 73, top: "80%", left: "35%" },
 ];
 
 function LocationCard({ city, stores, top, left, delay, duration }) {
   return (
     <Link
       to="/all-community"
-      className="absolute bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-2.5 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
+      className="absolute w-fit bg-white rounded-xl shadow-sm border border-gray-100 px-1.5 md:px-3 py-1.5 md:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
       style={{
         top,
         left,
@@ -48,13 +43,13 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
       }}
     >
       <div className="relative flex flex-col items-center justify-center text-center">
-        <div className="-top-10 absolute text-primary flex items-center justify-center">
+        {/* <div className="-top-10 absolute text-primary">
           <IoGiftOutline size={28} />
-        </div>
-        <p className="text-sm xl:text-base font-bold text-[#085027] leading-tight">
+        </div> */}
+        <p className="text-sm xl:text-base font-bold text-[#085027]">
           {city}
         </p>
-        <p className="text-xs text-gray-400 mt-0.5">{stores} Store</p>
+        <p className="text-xs text-gray-400 mt-0.5">{stores} Stores</p>
       </div>
     </Link>
   );
@@ -77,7 +72,7 @@ export default function HeroSection() {
       {/* Background Map — anchored to top */}
       <Navbar />
 
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 h-screen">
         <img
           src={bg}
           alt=""
@@ -139,9 +134,9 @@ export default function HeroSection() {
       </div>
 
       {/* ══════════ MOBILE ══════════ */}
-      <div className="sm:hidden relative z-10 flex" style={{ minHeight: "calc(100vh - 64px)" }}>
+      <div className="sm:hidden relative z-10 flex" style={{ minHeight: "calc(60vh - 64px)" }}>
         {/* LEFT — text */}
-        <div className="w-[42%] flex-shrink-0 flex flex-col justify-start pt-6 pl-4 pr-2">
+        <div className="flex-1 flex-shrink-0 flex flex-col justify-start pt-6 pl-4 pr-2">
           <div className="inline-flex items-center gap-1.5 border border-[#085027]/20 bg-[#085027]/5 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#085027] mb-4">
             <LuShieldCheck size={10} />
             The Premier Jewish Directory

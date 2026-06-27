@@ -71,7 +71,7 @@ export default function Navbar() {
             <Link to={"/"} className="flex-shrink-0">
               <img
                 src={logo}
-                className=" h-auto object-contain"
+                className="h-28 md:h-auto object-contain"
                 alt="Matana"
               />
             </Link>
