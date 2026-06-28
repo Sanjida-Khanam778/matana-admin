@@ -107,7 +107,7 @@ function VenueCard({ venue, animationClass }) {
 
   return (
     <div
-      className={`bg-white rounded-2xl overflow-hidden shadow-none border border-gray-100 hover:shadow-none transition-shadow flex flex-col reveal ${animationClass} cursor-pointer`}
+      className={`bg-white rounded-2xl overflow-hidden shadow-none border border-gray-100 hover:shadow-none transition-shadow flex flex-col cursor-pointer`}
       onClick={handleCardClick}
     >
       {/* Image */}

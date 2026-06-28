@@ -65,7 +65,7 @@ function CategoryCard({ name, count, image, delayClass }) {
 
   return (
     <div
-      className={`cursor-pointer group bg-white p-2 md:p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none reveal reveal-slide-up ${delayClass}`}
+      className={`cursor-pointer group bg-white p-2 md:p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleClick}
@@ -145,7 +145,7 @@ export default function BrowseCategories() {
         </div>
 
         {/* Browse All Button */}
-        <div className="flex justify-center reveal reveal-zoom reveal-delay-2">
+        <div className="flex justify-center">
           <Link
             to={"/all-categories"}
             className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-full transition-colors shadow-sm"

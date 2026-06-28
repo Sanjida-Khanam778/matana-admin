@@ -130,7 +130,7 @@ export default function ContactUs() {
             {contactItems.map((item, index) => (
               <div
                 key={item.title}
-                className={`bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-5 flex items-start gap-4 reveal reveal-slide-left ${index % 2 === 0 ? "reveal-delay-1" : "reveal-delay-2"}`}
+                className={`bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-5 flex items-start gap-4`}
               >
                 <div
                   className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}
@@ -155,7 +155,7 @@ export default function ContactUs() {
           </div>
 
           {/* RIGHT — message form */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-7 reveal reveal-slide-right reveal-delay-2">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-7">
             <h3 className="text-xl font-bold text-gray-900 mb-6">
               Send us a Message
             </h3>

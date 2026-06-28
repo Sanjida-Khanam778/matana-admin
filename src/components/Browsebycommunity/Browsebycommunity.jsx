@@ -110,7 +110,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden cursor-pointer group reveal reveal-slide-right reveal-delay-1"
+      className="relative rounded-2xl overflow-hidden cursor-pointer group"
       style={{ height: "300px" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -176,7 +176,7 @@ export default function BrowseByCommunity() {
   return (
     <section
       id="community"
-      className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 font-inter reveal reveal-slide-left"
+      className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 font-inter"
     >
       <div className="w-10/12 mx-auto">
         {/* Header */}
