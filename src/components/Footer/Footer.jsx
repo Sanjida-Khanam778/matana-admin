@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import MatanaLogo from "../../assets/images/logoFooter.png";
+import MatanaLogo from "../../assets/images/logoFooter.svg";
 import ListBusinessModal from "../Modals/ListBusinessModal";
 
 export default function Footer() {
