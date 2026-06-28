@@ -95,7 +95,7 @@ function VideoModal({ business, onClose }) {
 
 function SlideCard({ business, onPlay }) {
   return (
-    <div className="relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[510px] select-none font-inter shadow-none">
+    <div className="relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[510px] select-none font-inter shadow-none">
       <img
         src={business.image}
         alt={business.name}
@@ -296,9 +296,9 @@ export default function FeaturedBusinesses() {
     }
   };
 
-  // translateX: each slide = 90% width of track, gap is 16px
-  // base: -activeIdx * 90% - activeIdx * 16px + liveOffset px
-  const translateX = `calc(${-activeIdx * 90}% - ${activeIdx * 16}px + ${liveOffset}px)`;
+  // translateX: each slide = 100% width of track, gap is 16px
+  // base: -activeIdx * 100% - activeIdx * 16px + liveOffset px
+  const translateX = `calc(${-activeIdx * 100}% - ${activeIdx * 16}px + ${liveOffset}px)`;
   const isSnapping = !isDragging.current;
 
   const activeDot = dotMap[activeIdx];
@@ -341,7 +341,7 @@ export default function FeaturedBusinesses() {
           }}
         >
           {businesses.map((biz, i) => (
-            <div key={i} className="flex-shrink-0 w-[90%]">
+            <div key={i} className="flex-shrink-0 w-full">
               <SlideCard
                 business={biz}
                 onPlay={() => {
