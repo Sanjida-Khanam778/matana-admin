@@ -33,7 +33,7 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
   return (
     <Link
       to="/all-community"
-      className="absolute w-fit bg-white rounded-md sm:rounded-lg lg:rounded-xl shadow-sm border border-gray-100 px-3 py-1 sm:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
+      className="absolute w-fit bg-white rounded-md sm:rounded-lg lg:rounded-xl shadow-sm border border-gray-100 px-1.5 md:px-3 py-1 sm:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
       style={{
         top,
         left,
@@ -46,10 +46,10 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
           {/* <IoGiftOutline size={28} /> */}
           <img src={map} className="w-6 sm:w-10" alt="" />
         </div>
-        <p className="text-[10px] sm:text-sm xl:text-base font-bold text-[#085027]">
+        <p className="text-[9px] sm:text-sm xl:text-base font-bold text-[#085027]">
           {city}
         </p>
-        <p className="text-[8px] sm:text-xs text-gray-400 mt-0 sm:mt-0.5">{stores} Stores</p>
+        <p className="text-[7px] sm:text-xs text-gray-400 mt-0 sm:mt-0.5">{stores} Stores</p>
       </div>
     </Link>
   );
