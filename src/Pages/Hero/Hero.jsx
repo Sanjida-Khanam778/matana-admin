@@ -20,38 +20,36 @@ const locations = [
 ];
 
 const locationsPhone = [
-  { city: "Toronto", stores: 63, top: "0%", left: "30%" },
-  { city: "Monsey", stores: 93, top: "12%", left: "10%" },
-  { city: "Lakewood", stores: 43, top: "25%", left: "33%" },
-  { city: "Brooklyn/boro park", stores: 43, top: "38%", left: "12%" },
-  { city: "Cleveland", stores: 45, top: "52%", left: "32%" },
-  { city: "Passaic", stores: 43, top: "65%", left: "12%" },
-  { city: "Five towns", stores: 73, top: "80%", left: "35%" },
+  { city: "Toronto", stores: 63, top: "0%", left: "50%" },
+  { city: "Monsey", stores: 93, top: "12%", left: "30%" },
+  { city: "Lakewood", stores: 43, top: "25%", left: "53%" },
+  { city: "Brooklyn", stores: 43, top: "38%", left: "32%" },
+  { city: "Cleveland", stores: 45, top: "52%", left: "52%" },
+  { city: "Passaic", stores: 43, top: "65%", left: "32%" },
+  { city: "Five towns", stores: 73, top: "80%", left: "55%" },
 ];
 
 function LocationCard({ city, stores, top, left, delay, duration }) {
   return (
     <Link
       to="/all-community"
-      className="absolute w-fit bg-white rounded-xl shadow-sm border border-gray-100 px-1.5 md:px-3 py-1.5 md:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
+      className="absolute w-fit bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-1 sm:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
       style={{
         top,
         left,
         animationDelay: delay,
         animationDuration: duration,
-        minWidth: "110px",
-        maxWidth: "155px",
       }}
     >
       <div className="relative flex flex-col items-center justify-center text-center">
-        <div className="-top-7 sm:top-10 -left-7 sm:left-10 absolute text-primary">
+        <div className="-top-5 sm:-top-10 -left-6 sm:-left-9 absolute text-primary">
           {/* <IoGiftOutline size={28} /> */}
-          <img src={map} className="w-8 sm:w-auto" alt="" />
+          <img src={map} className="w-6 sm:w-10" alt="" />
         </div>
-        <p className="text-sm xl:text-base font-bold text-[#085027]">
+        <p className="text-[10px] sm:text-sm xl:text-base font-bold text-[#085027]">
           {city}
         </p>
-        <p className="text-xs text-gray-400 mt-0.5">{stores} Stores</p>
+        <p className="text-[8px] sm:text-xs text-gray-400 mt-0 sm:mt-0.5">{stores} Stores</p>
       </div>
     </Link>
   );

@@ -90,8 +90,8 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Search & CTA */}
-            <div className="hidden md:flex items-center gap-2 lg:gap-4">
-              <div className="flex items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
+            <div className="hidden sm:flex items-center gap-2 lg:gap-4">
+              <div className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
                 <SearchIcon />
                 <input
                   type="text"
@@ -112,6 +112,16 @@ export default function Navbar() {
 
             {/* Mobile: Hamburger Menu */}
             <div className="flex md:hidden items-center gap-2">
+                <div className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
+                <SearchIcon />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="text-xs lg:text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none w-32 lg:w-40"
+                />
+              </div>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 text-gray-600 hover:text-gray-900"
@@ -136,19 +146,7 @@ export default function Navbar() {
                 ))}
               </div>
 
-              {/* Mobile Search Bar */}
-              <div className="mb-4">
-                <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2.5 shadow-sm">
-                  <SearchIcon />
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none flex-1"
-                  />
-                </div>
-              </div>
+             
 
               {/* Mobile CTA */}
               <button
