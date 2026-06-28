@@ -22,18 +22,18 @@ const locations = [
 const locationsPhone = [
   { city: "Toronto", stores: 63, top: "0%", left: "50%" },
   { city: "Monsey", stores: 93, top: "12%", left: "30%" },
-  { city: "Lakewood", stores: 43, top: "25%", left: "53%" },
-  { city: "Brooklyn", stores: 43, top: "38%", left: "32%" },
+  { city: "Lakewood", stores: 43, top: "25%", left: "50%" },
+  { city: "Brooklyn", stores: 43, top: "38%", left: "20%" },
   { city: "Cleveland", stores: 45, top: "52%", left: "52%" },
   { city: "Passaic", stores: 43, top: "65%", left: "32%" },
-  { city: "Five towns", stores: 73, top: "80%", left: "55%" },
+  { city: "Five towns", stores: 73, top: "80%", left: "50%" },
 ];
 
 function LocationCard({ city, stores, top, left, delay, duration }) {
   return (
     <Link
       to="/all-community"
-      className="absolute w-fit bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-1 sm:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
+      className="absolute w-fit bg-white rounded-md sm:rounded-lg lg:rounded-xl shadow-sm border border-gray-100 px-3 py-1 sm:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
       style={{
         top,
         left,
