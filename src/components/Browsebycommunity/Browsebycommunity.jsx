@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FaChevronRight, FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useScrollRevealBounce } from "../../hooks/useScrollReveal";
 import { IMAGES } from "../../assets";
 
 const communities = [
@@ -173,7 +172,6 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 }
 
 export default function BrowseByCommunity() {
-  useScrollRevealBounce();
 
   return (
     <section

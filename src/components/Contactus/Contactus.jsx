@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useScrollRevealGentle } from "../../hooks/useScrollReveal";
 
 // ── Icons ──────────────────────────────────────────
 function EmailIcon() {
@@ -92,7 +91,6 @@ const contactItems = [
 ];
 
 export default function ContactUs() {
-  useScrollRevealGentle();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");

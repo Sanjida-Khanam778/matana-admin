@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useScrollReveal from "../../hooks/useScrollReveal";
 import { IMAGES } from "../../assets";
 
 const categories = [
@@ -118,7 +117,6 @@ const categoryRevealDelay = [
 ];
 
 export default function BrowseCategories() {
-  useScrollReveal();
 
   return (
     <section id="categories" className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
