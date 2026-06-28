@@ -119,10 +119,10 @@ const categoryRevealDelay = [
 export default function BrowseCategories() {
 
   return (
-    <section id="categories" className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 reveal reveal-fade-in">
+    <section id="categories" className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20">
       <div className="w-11/12 md:w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 lg:mb-16 reveal reveal-fade-in reveal-delay-05">
+        <div className="text-center mb-8 lg:mb-16 reveal-delay-05">
           <p className="font-semibold text-sm lg:text-base text-primary uppercase mb-2">
             What Are You Looking For?
           </p>

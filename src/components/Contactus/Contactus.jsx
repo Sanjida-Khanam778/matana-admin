@@ -109,7 +109,7 @@ export default function ContactUs() {
   return (
     <section
       id="contact"
-      className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-8 lg:py16 px-6 reveal reveal-fade-in"
+      className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-8 lg:py16 px-6"
     >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -207,11 +207,10 @@ export default function ContactUs() {
               <button
                 onClick={handleSend}
                 disabled={!name.trim() || !email.trim() || !message.trim()}
-                className={`w-full py-3.5 rounded-full text-sm font-semibold transition-colors ${
-                  name.trim() && email.trim() && message.trim()
+                className={`w-full py-3.5 rounded-full text-sm font-semibold transition-colors ${name.trim() && email.trim() && message.trim()
                     ? "bg-primary text-white"
                     : "bg-primary/50 text-white cursor-not-allowed"
-                }`}
+                  }`}
               >
                 {sent ? "✓ Message Sent!" : "Send Message"}
               </button>
