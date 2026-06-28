@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import bg from "../../assets/images/hero-bg.png";
+import map from "../../assets/images/map.png";
 import { LuShieldCheck } from "react-icons/lu";
 import { IoGiftOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
@@ -43,9 +44,10 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
       }}
     >
       <div className="relative flex flex-col items-center justify-center text-center">
-        {/* <div className="-top-10 absolute text-primary">
-          <IoGiftOutline size={28} />
-        </div> */}
+        <div className="-top-7 sm:top-10 -left-7 sm:left-10 absolute text-primary">
+          {/* <IoGiftOutline size={28} /> */}
+          <img src={map} className="w-8 sm:w-auto" alt="" />
+        </div>
         <p className="text-sm xl:text-base font-bold text-[#085027]">
           {city}
         </p>
@@ -102,7 +104,7 @@ export default function HeroSection() {
             </div>
             <div className="flex flex-col lg:flex-row gap-4 mt-5 w-52">
               <button
-               onClick={() => navigate("/all-categories")}
+                onClick={() => navigate("/all-categories")}
                 className="flex-shrink-0 bg-[#085027] xl:text-lg w-full hover:bg-teal-900 text-white text-xs lg:text-sm font-medium px-4 lg:px-5 py-2 lg:py-2.5 rounded-full transition-colors whitespace-nowrap"
               >
                 Explore Stores
@@ -153,7 +155,7 @@ export default function HeroSection() {
             <div className="flex-1 h-[1px] bg-[#085027]/30" />
           </div>
           <button
- onClick={() => navigate("/all-categories")}            className="bg-[#085027] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors mb-2 w-full"
+            onClick={() => navigate("/all-categories")} className="bg-[#085027] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors mb-2 w-full"
           >
             Explore Stores
           </button>
