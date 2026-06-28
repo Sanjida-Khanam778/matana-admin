@@ -139,7 +139,7 @@ export default function Navbar() {
                   <button
                     key={item.label}
                     onClick={() => handleNav(item)}
-                    className={`block w-full text-left px-3 py-2 text-sm font-medium rounded-lg transition-colors ${active === item.label ? "bg-[#085027] text-white" : "text-gray-600 hover:bg-gray-100"}`}
+                    className={`block w-full text-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${active === item.label ? "border border-[#085027] text-[#085027]" : "text-gray-600 hover:bg-gray-100"}`}
                   >
                     {item.label}
                   </button>
