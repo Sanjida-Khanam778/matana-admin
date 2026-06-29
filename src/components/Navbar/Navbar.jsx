@@ -135,7 +135,7 @@ export default function Navbar() {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t border-gray-200/60 pt-4">
               <div className="space-y-3 mb-4">
-                {NAV_CONFIG.map((item) => (
+                {NAV_CONFIG.map ((item) => (
                   <button
                     key={item.label}
                     onClick={() => handleNav(item)}

@@ -69,7 +69,7 @@ const contactItems = [
     iconBg: "bg-green-50",
     title: "Email Us",
     subtitle: "Send us an email anytime",
-    value: "info@matana.com",
+    value: "info@matanashop.com",
     valueColor: "text-gray-900",
   },
   {
@@ -77,7 +77,7 @@ const contactItems = [
     iconBg: "bg-yellow-50",
     title: "Call Us",
     subtitle: "Mon-Fri from 9am to 6pm EST",
-    value: "+1 (555) 123-4567",
+    value: "929-205-6513",
     valueColor: "text-gray-900 font-semibold",
   },
   {
