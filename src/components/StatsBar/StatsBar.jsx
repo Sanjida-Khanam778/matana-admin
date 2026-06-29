@@ -46,7 +46,7 @@ export default function StatsBar() {
   ];
 
   return (
-    <section className="w-full bg-[#FAF9F6] py-12 md:py-16 xl:py-20 font-inter">
+    <section className="w-full bg-[#FBF5ED] py-12 md:py-16 xl:py-20 font-inter">
       <div className="w-11/12 lg:w-10/12 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {statsData.map((stat, i) => {
