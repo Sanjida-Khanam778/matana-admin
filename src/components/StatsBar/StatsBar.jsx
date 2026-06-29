@@ -67,7 +67,7 @@ export default function StatsBar() {
               >
                 {/* Icon wrapper */}
                 <div
-                  className={`w-14 h-14 rounded-full flex items-center justify-center mb-4 md:mb-8 ${
+                  className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 md:mb-8 ${
                     isDark
                       ? "bg-white/10 border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                       : "bg-white/70 border border-white shadow-sm"
@@ -78,14 +78,14 @@ export default function StatsBar() {
 
                 {/* Content */}
                 <h3
-                  className={`text-4xl sm:text-5xl font-extrabold tracking-tight mb-2 ${
+                  className={`text-2xl md:text-5xl font-extrabold tracking-tight mb-2 ${
                     isDark ? "text-white" : "text-[#085027]"
                   }`}
                 >
                   {stat.value}
                 </h3>
                 <p
-                  className={`text-xs sm:text-sm font-bold tracking-widest uppercase mb-4 ${
+                  className={`text-xs sm:text-sm font-bold tracking-widest uppercase mb-2 sm:mb-4 ${
                     isDark ? "text-white/90" : "text-[#085027]"
                   }`}
                 >
