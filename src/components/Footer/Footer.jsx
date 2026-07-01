@@ -30,11 +30,13 @@ export default function Footer() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-8">
             {/* Logo + tagline */}
             <div className="space-y-4">
-              <img
-                src={MatanaLogo}
-                className="w-32 sm:w-36 h-auto object-contain"
-                alt="Matana logo"
-              />
+              <div className="relative -left-5">
+                <img
+                  src={MatanaLogo}
+                  className="w-32 sm:w-36 h-auto object-contain"
+                  alt="Matana logo"
+                />
+              </div>
               <p className="text-white/70 text-xs sm:text-sm md:text-base leading-relaxed mt-2 sm:mt-3">
                 Connecting Jewish communities with trusted businesses.
               </p>
@@ -55,8 +57,8 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <button onClick={() => scrollToSection("categories")}
-
+                  <button
+                    onClick={() => scrollToSection("categories")}
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
                   >
                     Categories

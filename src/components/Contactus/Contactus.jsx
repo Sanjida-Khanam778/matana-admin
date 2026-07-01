@@ -85,7 +85,7 @@ const contactItems = [
     iconBg: "bg-pink-50",
     title: "Follow Us",
     subtitle: "Stay updated on social media",
-    value: "@matana",
+    value: "Matana_official_",
     valueColor: "text-gray-900",
   },
 ];

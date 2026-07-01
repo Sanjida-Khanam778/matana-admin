@@ -23,6 +23,10 @@ export const router = createBrowserRouter([
         element: <AllCategories />,
       },
       {
+        path: "all-stores/:categoryName?",
+        element: <AllCategories />,
+      },
+      {
         path: "all-events",
         element: <AllEvents />,
       },

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { Link, useNavigate, useLocation, ScrollRestoration } from "react-router-dom";
+import { useNavigate, useParams, ScrollRestoration } from "react-router-dom";
 import { IMAGES } from "../../assets";
 
 // ── Data ──
@@ -249,7 +249,8 @@ function GridCard({ name, count, image, onClick }) {
 
 // ── Main Component ──
 export default function BusinessSearch() {
-  const location = useLocation();
+  const navigate = useNavigate();
+  const { categoryName } = useParams();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selCats, setSelCats] = useState(["Custom Baked Goods"]);
   const [selLocs, setSelLocs] = useState(["Brooklyn, NY"]);
@@ -260,12 +261,12 @@ export default function BusinessSearch() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const categoryFromUrl = params.get("category");
-    if (categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
+    if (categoryName) {
+      setSelectedCategory(decodeURIComponent(categoryName));
+    } else {
+      setSelectedCategory(null);
     }
-  }, [location.search]);
+  }, [categoryName]);
 
   function toggle(arr, setArr, val) {
     setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));
@@ -273,14 +274,15 @@ export default function BusinessSearch() {
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
-            <ScrollRestoration />
-      
+      <ScrollRestoration />
+
       {/* Back button and filters toggle on mobile */}
       <div className="px-4 sm:px-8 pt-6 pb-2 flex items-center justify-between">
         <button
           onClick={() => {
             if (selectedCategory) {
               setSelectedCategory(null);
+              navigate("/all-categories");
             } else {
               window.history.back();
             }
@@ -345,7 +347,9 @@ export default function BusinessSearch() {
                   <GridCard
                     key={item.name}
                     {...item}
-                    onClick={() => setSelectedCategory(item.name)}
+                    onClick={() =>
+                      navigate(`/all-stores/${encodeURIComponent(item.name)}`)
+                    }
                   />
                 ))}
               </div>
@@ -363,10 +367,11 @@ export default function BusinessSearch() {
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${page === n
+                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                      page === n
                         ? "bg-[#085027] text-white"
                         : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                      }`}
+                    }`}
                   >
                     {n}
                   </button>
