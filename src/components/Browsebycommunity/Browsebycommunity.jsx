@@ -11,8 +11,7 @@ const communities = [
     rating: 4.8,
     businesses: 342,
     featured: 12,
-    image:
-      IMAGES.browse1,
+    image: IMAGES.browse1,
   },
   {
     id: 2,
@@ -21,8 +20,7 @@ const communities = [
     rating: 4.7,
     businesses: 178,
     featured: 8,
-    image:
-      IMAGES.browse2,
+    image: IMAGES.browse2,
   },
   {
     id: 3,
@@ -31,8 +29,7 @@ const communities = [
     rating: 4.9,
     businesses: 178,
     featured: 8,
-    image:
-      IMAGES.browse3,
+    image: IMAGES.browse3,
   },
   {
     id: 4,
@@ -41,8 +38,7 @@ const communities = [
     rating: 4.8,
     businesses: 250,
     featured: 8,
-    image:
-      IMAGES.browse4,
+    image: IMAGES.browse4,
   },
   {
     id: 5,
@@ -51,8 +47,7 @@ const communities = [
     rating: 4.7,
     businesses: 250,
     featured: 8,
-    image:
-      IMAGES.browse5,
+    image: IMAGES.browse5,
   },
   {
     id: 6,
@@ -61,8 +56,7 @@ const communities = [
     rating: 4.8,
     businesses: 250,
     featured: 8,
-    image:
-      IMAGES.browse6,
+    image: IMAGES.browse6,
   },
   {
     id: 7,
@@ -71,8 +65,7 @@ const communities = [
     rating: 4.6,
     businesses: 250,
     featured: 8,
-    image:
-      IMAGES.browse7,
+    image: IMAGES.browse7,
   },
   {
     id: 8,
@@ -81,8 +74,7 @@ const communities = [
     rating: 4.9,
     businesses: 250,
     featured: 8,
-    image:
-      IMAGES.browse8,
+    image: IMAGES.browse8,
   },
   {
     id: 9,
@@ -91,8 +83,7 @@ const communities = [
     rating: 4.7,
     businesses: 250,
     featured: 8,
-    image:
-      IMAGES.browse9,
+    image: IMAGES.browse9,
   },
 ];
 
@@ -111,18 +102,21 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
   return (
     <div
       className="relative rounded-2xl overflow-hidden cursor-pointer group"
-      style={{ height: "300px" }}
+      // style={{ height: "300px" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleClick}
     >
       {/* Background image */}
-      <img
-        src={image}
-        alt={city}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        draggable={false}
-      />
+      <div className="h-40 md:h-60 overflow-hidden">
+        {" "}
+        <img
+          src={image}
+          alt={city}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          draggable={false}
+        />
+      </div>
 
       {/* Dark overlay — gradient from bottom */}
       <div className="absolute inset-0 bg-[#040404]/40" />
@@ -134,16 +128,16 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       </div> */}
 
       {/* City + State — bottom left */}
-      <div className="absolute bottom-0 left-0 p-4">
-        <p className="text-white text-lg md:text-2xl font-semibold leading-tight drop-shadow mb-2">
+      <div className="absolute bottom-0 left-0 p-2 md:p-4">
+        <p className="text-white text-base sm:text-lg md:text-2xl font-semibold leading-tight drop-shadow mb-0 sm:mb-1 md:mb-2">
           {city}
         </p>
-        <p className="text-white/80 text-xs md:text-sm font-medium mb-4">
+        <p className="text-white/80 text-xs md:text-sm font-medium mb-2 md:mb-4">
           {state}
         </p>
 
         {/* Stats */}
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
           <div>
             <p className="text-white text-xs lg:text-sm font-bold leading-none">
               {businesses}
@@ -160,11 +154,11 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
       </div>
 
       {/* Arrow button — bottom right */}
-      <div className="absolute bottom-4 right-4">
+      <div className="absolute bottom-2 md:bottom-4 right-2 md:right-4">
         <div
-          className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-white/20 flex items-center justify-center shadow transition-transform duration-200 ${hovered ? "scale-110" : ""}`}
+          className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-white/20 flex items-center justify-center shadow transition-transform duration-200 ${hovered ? "scale-110" : ""}`}
         >
-          <FaChevronRight className="text-white" />
+          <FaChevronRight className="text-white text-sm md:text-base lg:text-lg" />
         </div>
       </div>
     </div>
@@ -172,13 +166,12 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 }
 
 export default function BrowseByCommunity() {
-
   return (
     <section
       id="community"
       className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 font-inter"
     >
-      <div className="w-10/12 mx-auto">
+      <div className="w-11/12 md:w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-8 lg:mb-16">
           <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">

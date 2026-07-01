@@ -119,11 +119,11 @@ const categoryRevealDelay = [
 export default function BrowseCategories() {
 
   return (
-    <section id="categories" className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20">
+    <section id="categories" className="w-full bg-[#FAFAFA] py-2 md:py-12 xl:py-20">
       <div className="w-11/12 md:w-10/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 lg:mb-16 reveal-delay-05">
-          <p className="font-semibold text-sm lg:text-base text-primary uppercase mb-2">
+        <div className="text-center mb-4 md:mb-8 lg:mb-16 reveal-delay-05">
+          <p className="font-semibold text-sm lg:text-base text-primary uppercase mb-0 md:mb-2">
             What Are You Looking For?
           </p>
           <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900">
@@ -132,7 +132,7 @@ export default function BrowseCategories() {
         </div>
 
         {/* Grid — 4 cols, 2 rows */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-5 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-5 mb-5 lg:mb-10">
           {categories.map((cat, index) => (
             <CategoryCard
               key={cat.id}
@@ -148,7 +148,7 @@ export default function BrowseCategories() {
         <div className="flex justify-center">
           <Link
             to={"/all-stores"}
-            className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-full transition-colors shadow-sm"
+            className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 md:px-8 py-1.5 md:py-3 rounded-full transition-colors shadow-sm"
           >
             Browse All Stores
           </Link>

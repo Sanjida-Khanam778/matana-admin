@@ -77,7 +77,7 @@ export default function StatsBar() {
 
   return (
     <section className="w-full bg-[#FBF5ED] py-8 md:py-10 xl:py-12 font-inter">
-      <div className="w-11/12 sm:max-w-7xl mx-auto">
+      <div className="w-9/12 sm:max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-5">
           {statsData.map((stat, i) => {
             const isDark = stat.theme === "dark-green";
