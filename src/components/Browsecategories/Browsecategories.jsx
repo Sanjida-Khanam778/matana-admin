@@ -65,7 +65,7 @@ function CategoryCard({ name, count, image, delayClass }) {
 
   return (
     <div
-      className={`cursor-pointer group bg-white p-2 md:p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-none`}
+      className={`cursor-pointer group bg-white p-2 md:p-4 relative overflow-hidden border border-gray-100/50 transition-all duration-300 hover:shadow-xl`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleClick}

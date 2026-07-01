@@ -227,11 +227,11 @@ function GridCard({ name, count, image, onClick }) {
       />
 
       {/* Image */}
-      <div className="rounded-2xl bg-[#EAF2EC] p-4 h-52 overflow-hidden mb-3 relative flex justify-center items-center">
+      <div className="rounded-2xl md:h-52 h-32 bg-[#EAF2EC] p-4 overflow-hidden mb-3 relative flex justify-center items-center">
         <img
           src={image}
           alt={name}
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105"
           draggable={false}
         />
       </div>
@@ -342,7 +342,7 @@ export default function BusinessSearch() {
           ) : (
             <>
               {/* 3-col grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {gridItems.map((item) => (
                   <GridCard
                     key={item.name}

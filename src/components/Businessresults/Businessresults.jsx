@@ -55,7 +55,7 @@ function BusinessCard({ name, category, location, image, onClick }) {
       onClick={onClick}
     >
       {/* Image */}
-      <div className="h-44 overflow-hidden">
+      <div className="h-32 md:h-44 overflow-hidden">
         <img
           src={image}
           alt={name}
@@ -101,7 +101,7 @@ export default function BusinessResults({ categoryName }) {
       </p>
 
       {/* Responsive grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
         {businesses.map((b) => (
           <BusinessCard
             key={b.id}
