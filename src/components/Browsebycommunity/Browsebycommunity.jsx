@@ -191,7 +191,7 @@ export default function BrowseByCommunity() {
         <div className="flex justify-center mt-6 md:mt-10">
           <Link
             to={"/all-stores"}
-            className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 md:px-8 py-1.5 md:py-3 rounded-full transition-colors shadow-sm"
+            className="text-sm sm:text-base border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 md:px-8 py-1.5 md:py-3 rounded-full transition-colors shadow-sm"
           >
             Browse All Communities
           </Link>

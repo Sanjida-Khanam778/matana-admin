@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="w-11/12 lg:w-10/12 mx-auto px-4 md:px-8 lg:px-0">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link to={"/"} className="flex-shrink-0">
+            <Link to={"/"} className="flex-shrink-0 relative z-10 -left-7 md:-left-5">
               <img
                 src={logo}
                 className="h-20 md:h-24 lg:h-32 xl:h-auto object-contain"

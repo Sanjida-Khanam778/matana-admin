@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import stat1 from "../../assets/icons/stat1.png";
 import stat2 from "../../assets/icons/stat2.png";
 import stat3 from "../../assets/icons/stat1.png";
+import { FaArrowLeft } from "react-icons/fa";
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 export default function StatsBar() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -49,26 +51,26 @@ export default function StatsBar() {
       <div className="w-11/12 sm:max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-3 md:mb-4">
           <div />
-          <div className="flex sm:hidden gap-2">
+          <div className="flex justify-center items-center sm:hidden gap-2">
             <button
               type="button"
               onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
               disabled={!showPrev}
-              className={`h-9 w-9 rounded-full border border-[#085027]/20 text-[#085027] flex items-center justify-center transition ${
-                showPrev ? "bg-white hover:bg-[#085027] hover:text-white" : "opacity-40 cursor-not-allowed"
+              className={`h-8 w-8 rounded-full border border-[#085027]/20 text-[#085027] text-center flex items-center justify-center transition ${
+                showPrev ? "hover:bg-[#085027] hover:text-white" : "opacity-40 cursor-not-allowed"
               }`}
             >
-              ←
+              <MdArrowForwardIos className="rotate-180" />
             </button>
             <button
               type="button"
               onClick={() => setActiveIndex((prev) => prev + 1)}
               disabled={!showNext}
-              className={`h-9 w-9 rounded-full border border-[#085027]/20 text-[#085027] flex items-center justify-center transition ${
-                showNext ? "bg-white hover:bg-[#085027] hover:text-white" : "opacity-40 cursor-not-allowed"
+              className={`h-8 w-8 rounded-full border border-[#085027]/20 text-[#085027] flex items-center justify-center transition ${
+                showNext ? "hover:bg-[#085027] hover:text-white" : "opacity-40 cursor-not-allowed"
               }`}
             >
-              →
+             <MdArrowForwardIos />
             </button>
           </div>
         </div>
@@ -88,7 +90,7 @@ export default function StatsBar() {
                 key={`${stat.label}-${i}`}
                 className={`${cardBg} ${
                   isDark ? "shadow-xl" : "shadow-md"
-                } rounded-tl-[24px] rounded-br-[24px] md:rounded-tl-[40px] md:rounded-br-[40px] rounded-tr-lg rounded-bl-lg p-3 sm:p-5 md:p-6 flex flex-col items-start text-left transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl`}
+                } rounded-tl-[24px] w-52 sm:w-auto mx-auto rounded-br-[24px] md:rounded-tl-[40px] md:rounded-br-[40px] rounded-tr-lg rounded-bl-lg p-3 sm:p-5 md:p-6 flex flex-col items-center md:items-start transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl`}
               >
                 <div className="rounded-full flex items-center justify-center relative -left-2 sm:-left-4">
                   <img
@@ -113,7 +115,7 @@ export default function StatsBar() {
                   {stat.label}
                 </p>
                 <p
-                  className={`text-xs sm:text-sm leading-relaxed ${
+                  className={`text-xs sm:text-sm leading-relaxed text-center md:text-left ${
                     isDark ? "text-white/80" : "text-[#085027]/80"
                   }`}
                 >
