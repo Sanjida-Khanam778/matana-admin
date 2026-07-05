@@ -133,7 +133,7 @@ export default function Navbar() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-gray-200/60 pt-4">
+            <div className="md:hidden w-full mx-auto mt-4 pb-4 flex flex-col border-t border-gray-200/60 pt-4">
               <div className="space-y-3 mb-4">
                 {NAV_CONFIG.map ((item) => (
                   <button
@@ -149,15 +149,15 @@ export default function Navbar() {
              
 
               {/* Mobile CTA */}
-              <button
+              <Link
+                to="/pricing"
                 onClick={() => {
-                  setShowModal(true);
                   setMobileMenuOpen(false);
                 }}
-                className="w-full bg-[#085027] text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
+                className="text-center px-10 bg-[#085027] text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
               >
                 List Your Business
-              </button>
+              </Link>
             </div>
           )}
         </div>

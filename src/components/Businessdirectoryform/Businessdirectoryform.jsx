@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Plus, Sparkles, ShieldCheck, Upload, Check } from "lucide-react";
 
 const CATEGORIES = [
@@ -81,6 +81,13 @@ function UploadBox({ label }) {
 export default function Pricing() {
   const [plan, setPlan] = useState("standard");
   const [cats, setCats] = useState(["Bakery & Desserts"]);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [plan]);
 
   const toggleCat = (c) => {
     setCats((prev) =>
@@ -172,7 +179,10 @@ export default function Pricing() {
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5">
+        <div
+          ref={formRef}
+          className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5"
+        >
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
               Business Name <span className="text-red-500">*</span>
