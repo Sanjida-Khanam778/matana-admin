@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaChevronRight, FaStar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IMAGES } from "../../assets";
 
 const communities = [
@@ -169,7 +169,7 @@ export default function BrowseByCommunity() {
   return (
     <section
       id="community"
-      className="w-full bg-[#FAFAFA] py-8 md:py-12 xl:py-20 font-inter"
+      className="w-full bg-[#FAFAFA] pb-8 md:pb-12 xl:pb-20 font-inter"
     >
       <div className="w-11/12 md:w-10/12 mx-auto">
         {/* Header */}
@@ -187,6 +187,14 @@ export default function BrowseByCommunity() {
           {communities.map((c) => (
             <CommunityCard key={c.id} {...c} />
           ))}
+        </div>
+        <div className="flex justify-center mt-6 md:mt-10">
+          <Link
+            to={"/all-stores"}
+            className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 md:px-8 py-1.5 md:py-3 rounded-full transition-colors shadow-sm"
+          >
+            Browse All Communities
+          </Link>
         </div>
       </div>
     </section>

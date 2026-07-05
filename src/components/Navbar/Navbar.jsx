@@ -65,7 +65,7 @@ export default function Navbar() {
       <nav
         className={`w-full relative z-50 py-3 md:py-4 ${location.pathname === "/" ? "bg-transparent" : "bg-[#f8f7f3]"}`}
       >
-        <div className="w-full w-11/12 lg:w-10/12 mx-auto px-4 md:px-8 lg:px-0">
+        <div className="w-11/12 lg:w-10/12 mx-auto px-4 md:px-8 lg:px-0">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to={"/"} className="flex-shrink-0">
@@ -102,12 +102,12 @@ export default function Navbar() {
                 />
               </div>
 
-              <button
-                onClick={() => setShowModal(true)}
+              <Link
+                to="/pricing"
                 className="flex-shrink-0 bg-[#085027] hover:bg-teal-900 text-white text-xs lg:text-sm font-medium px-4 lg:px-5 py-2 lg:py-2.5 rounded-full transition-colors whitespace-nowrap"
               >
                 List Your Business
-              </button>
+              </Link>
             </div>
 
             {/* Mobile: Hamburger Menu */}

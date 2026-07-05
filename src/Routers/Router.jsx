@@ -7,6 +7,7 @@ import AllEvents from "../components/AllEvents/AllEvents";
 import DetailPage from "../Detailpage/Detailpage";
 import CommunityDetails from "../Detailpage/CommunityDetails";
 import AllCommunity from "../components/Browsebycommunity/AllCommunity";
+import Pricing from "../components/Businessdirectoryform/Businessdirectoryform";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
         path: "/about",
         element: <h1>Home</h1>,
       },
+      {
+        path: "/pricing",
+        element: <Pricing />,
+      }
     ],
   },
   {

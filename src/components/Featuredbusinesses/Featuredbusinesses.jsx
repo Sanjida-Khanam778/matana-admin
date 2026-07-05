@@ -126,7 +126,7 @@ function SlideCard({ business, onPlay }) {
 
       {/* Info */}
       <div className="absolute bottom-0 left-2 sm:left-6 md:left-8 lg:left-10 pb-2 sm:p-4 md:p-5 lg:p-7 z-10 right-4 sm:right-6 md:right-8 lg:right-auto">
-        <div className="flex items-center gap-2 sm:gap-3 mb-2 md:mb-4 md:mb-6">
+        <div className="flex items-center gap-2 sm:gap-3 mb-2 md:mb-4 lg:mb-6">
           <div className="w-8 sm:w-9 md:w-11 h-8 sm:h-9 md:h-11 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +153,7 @@ function SlideCard({ business, onPlay }) {
             </p>
           </div>
         </div>
-        <div className="flex gap-1.5 sm:gap-2 mb-2 md:mb-4 md:mb-6 flex-wrap">
+        <div className="flex gap-1.5 sm:gap-2 mb-2 md:mb-4 lg:mb-6 flex-wrap">
           {business.badges.map((b, i) => (
             <span
               key={i}
@@ -300,12 +300,11 @@ export default function FeaturedBusinesses() {
   // base: -activeIdx * 100% - activeIdx * 16px + liveOffset px
   const translateX = `calc(${-activeIdx * 100}% - ${activeIdx * 16}px + ${liveOffset}px)`;
   const isSnapping = !isDragging.current;
-
   const activeDot = dotMap[activeIdx];
 
   return (
     <section id="featured"
-      className="w-full bg-gradient-to-b from-[#FAF5ED] to-[#FAFAFA] py-8 sm:py-12 md:py-8 lg:py16 lg:py-8 md:py-12 xl:py-20">
+      className="w-full bg-gradient-to-b from-[#FAF5ED] to-[#FAFAFA] pt-8 md:pt-12 lg:pt-16 xl:pt-20">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
         <p className="font-bold text-primary mb-1.5 sm:mb-2 text-2xl md:text-3xl xl:text-4xl">

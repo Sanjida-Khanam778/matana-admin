@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import stat1 from "../../assets/icons/stat1.png";
 import stat2 from "../../assets/icons/stat2.png";
 import stat3 from "../../assets/icons/stat1.png";
+
 export default function StatsBar() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const statsData = [
     {
       value: "10,000+",
@@ -27,11 +31,50 @@ export default function StatsBar() {
     },
   ];
 
+  useEffect(() => {
+    const checkViewport = () => setIsMobile(window.innerWidth < 640);
+    checkViewport();
+    window.addEventListener("resize", checkViewport);
+
+    return () => window.removeEventListener("resize", checkViewport);
+  }, []);
+
+  const cardsPerView = isMobile ? 1 : 3;
+  const visibleStats = statsData.slice(activeIndex, activeIndex + cardsPerView);
+  const showPrev = activeIndex > 0;
+  const showNext = activeIndex + cardsPerView < statsData.length;
+
   return (
     <section className="w-full bg-[#FBF5ED] pt-8 md:pt-10 xl:pt-12 font-inter">
-      <div className="w-11/12 sm:max-w-7xl mx-auto">
-        <div className="grid grid-cols-3 gap-3 md:gap-4 lg:gap-5">
-          {statsData.map((stat, i) => {
+      <div className="w-11/12 sm:max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-3 md:mb-4">
+          <div />
+          <div className="flex sm:hidden gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
+              disabled={!showPrev}
+              className={`h-9 w-9 rounded-full border border-[#085027]/20 text-[#085027] flex items-center justify-center transition ${
+                showPrev ? "bg-white hover:bg-[#085027] hover:text-white" : "opacity-40 cursor-not-allowed"
+              }`}
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveIndex((prev) => prev + 1)}
+              disabled={!showNext}
+              className={`h-9 w-9 rounded-full border border-[#085027]/20 text-[#085027] flex items-center justify-center transition ${
+                showNext ? "bg-white hover:bg-[#085027] hover:text-white" : "opacity-40 cursor-not-allowed"
+              }`}
+            >
+              →
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 lg:gap-5 transition-all duration-300">
+          {visibleStats.map((stat, i) => {
             const isDark = stat.theme === "dark-green";
             const cardBg =
               stat.theme === "light-green"
@@ -42,27 +85,19 @@ export default function StatsBar() {
 
             return (
               <div
-                key={i}
+                key={`${stat.label}-${i}`}
                 className={`${cardBg} ${
                   isDark ? "shadow-xl" : "shadow-md"
                 } rounded-tl-[24px] rounded-br-[24px] md:rounded-tl-[40px] md:rounded-br-[40px] rounded-tr-lg rounded-bl-lg p-3 sm:p-5 md:p-6 flex flex-col items-start text-left transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl`}
               >
-                {/* Icon wrapper */}
-                <div
-                  className={`rounded-full flex items-center justify-center relative -left-4`}
-                >
-                  {typeof stat.icon === "string" ? (
-                    <img
-                      src={stat.icon}
-                      alt="icon"
-                      className="w-6 h-6 sm:w-auto sm:h-auto"
-                    />
-                  ) : (
-                    stat.icon
-                  )}
+                <div className="rounded-full flex items-center justify-center relative -left-2 sm:-left-4">
+                  <img
+                    src={stat.icon}
+                    alt="icon"
+                    className="w-12 h-12 sm:w-auto sm:h-auto"
+                  />
                 </div>
 
-                {/* Content */}
                 <h3
                   className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 ${
                     isDark ? "text-white" : "text-[#085027]"
@@ -87,6 +122,20 @@ export default function StatsBar() {
               </div>
             );
           })}
+        </div>
+
+        <div className="mt-4 flex justify-center gap-2 sm:hidden">
+          {statsData.map((stat, index) => (
+            <button
+              key={`${stat.label}-${index}`}
+              type="button"
+              aria-label={`Go to slide ${index + 1}`}
+              onClick={() => setActiveIndex(index)}
+              className={`h-2.5 w-2.5 rounded-full transition ${
+                index === activeIndex ? "bg-[#085027]" : "bg-[#085027]/30"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
