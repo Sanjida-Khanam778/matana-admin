@@ -169,7 +169,7 @@ export default function BrowseByCommunity() {
   return (
     <section
       id="community"
-      className="w-full bg-[#FAFAFA] pb-8 md:pb-12 xl:pb-20 font-inter"
+      className="w-full bg-[#FAF5ED] pb-8 md:pb-12 xl:pb-20 font-inter"
     >
       <div className="w-11/12 md:w-10/12 mx-auto">
         {/* Header */}

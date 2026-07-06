@@ -107,14 +107,13 @@ export default function ContactUs() {
   }
 
   return (
-    <section
-      id="contact"
-      className="w-full bg-gradient-to-br from-[#1E4D2B]/5 to-[#D4AF37]/5 py-8 lg:py16 px-6"
-    >
+    <section id="contact" className="w-full bg-[#FAF5ED] py-8 lg:py16 px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">Get In Touch</p>
+          <p className="font-bold text-sm lg:text-base text-primary uppercase mb-2">
+            Get In Touch
+          </p>
           <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-gray-900 mb-3">
             Contact Us
           </h2>
@@ -207,10 +206,11 @@ export default function ContactUs() {
               <button
                 onClick={handleSend}
                 disabled={!name.trim() || !email.trim() || !message.trim()}
-                className={`w-full py-3.5 rounded-full text-sm font-semibold transition-colors ${name.trim() && email.trim() && message.trim()
+                className={`w-full py-3.5 rounded-full text-sm font-semibold transition-colors ${
+                  name.trim() && email.trim() && message.trim()
                     ? "bg-primary text-white"
                     : "bg-primary/50 text-white cursor-not-allowed"
-                  }`}
+                }`}
               >
                 {sent ? "✓ Message Sent!" : "Send Message"}
               </button>

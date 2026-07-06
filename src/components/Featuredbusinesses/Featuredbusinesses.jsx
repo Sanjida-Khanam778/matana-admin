@@ -303,8 +303,10 @@ export default function FeaturedBusinesses() {
   const activeDot = dotMap[activeIdx];
 
   return (
-    <section id="featured"
-      className="w-full bg-gradient-to-b from-[#FAF5ED] to-[#FAFAFA] pt-8 md:pt-12 lg:pt-16 xl:pt-20">
+    <section
+      id="featured"
+      className="w-full bg-[#FAF5ED] pt-8 md:pt-12 lg:pt-16 xl:pt-20"
+    >
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
         <p className="font-bold text-primary mb-1.5 sm:mb-2 text-2xl md:text-3xl xl:text-4xl">
@@ -358,10 +360,11 @@ export default function FeaturedBusinesses() {
           <button
             key={i}
             onClick={() => snapTo(dotMap.indexOf(i))}
-            className={`transition-all duration-300 rounded-full ${activeDot === i
+            className={`transition-all duration-300 rounded-full ${
+              activeDot === i
                 ? "w-8 h-2.5 bg-[#1a5c3a]"
                 : "w-2.5 h-2.5 bg-gray-300 hover:bg-gray-400"
-              }`}
+            }`}
           />
         ))}
       </div>

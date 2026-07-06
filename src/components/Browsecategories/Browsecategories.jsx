@@ -52,7 +52,6 @@ const categories = [
     count: 120,
     image: IMAGES.categoryImage11,
   },
-
 ];
 
 function CategoryCard({ name, count, image, delayClass }) {
@@ -117,9 +116,11 @@ const categoryRevealDelay = [
 ];
 
 export default function BrowseCategories() {
-
   return (
-    <section id="categories" className="w-full bg-[#FAFAFA] py-10 md:py-12 xl:py-20">
+    <section
+      id="categories"
+      className="w-full bg-[#FAF5ED] py-10 md:py-12 xl:py-20"
+    >
       <div className="w-11/12 md:w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-4 md:mb-8 lg:mb-16 reveal-delay-05">

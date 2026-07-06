@@ -10,8 +10,8 @@ export default function Home() {
   return (
     <div>
         <HeroSection />
-        <StatsBar />
         <FeaturedBusinesses />
+        <StatsBar />
         <BrowseCategories />
         <BrowseByCommunity />
         <AboutMatana />
