@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Plus, Sparkles, ShieldCheck, Upload, Check } from "lucide-react";
+import price1 from"../../assets/icons/price1.png";
+import price2 from"../../assets/icons/price2.png";
+import price3 from"../../assets/icons/price3.png";
 
 const CATEGORIES = [
   "Bakery & Desserts",
@@ -25,7 +28,7 @@ const PLANS = [
     id: "standard",
     name: "Standard Partner",
     price: "$0",
-    icon: Plus,
+    icon: price1,
     bg: "bg-white",
     badge: null,
     sub: "Get more visibility and stand out from the competition.",
@@ -39,7 +42,7 @@ const PLANS = [
     id: "featured",
     name: "Featured Partner",
     price: "$29",
-    icon: Sparkles,
+    icon: price2,
     bg: "bg-white",
     badge: "Featured",
     sub: "Get more visibility and stand out from the competition.",
@@ -54,7 +57,7 @@ const PLANS = [
     id: "premium",
     name: "Premium Partner",
     price: "$49",
-    icon: ShieldCheck,
+    icon: price3,
     badge: "Premium",
     bg: "bg-[#EEFFF4]",
     sub: "Maximum visibility, maximum growth. Everything you need to succeed.",
@@ -98,13 +101,13 @@ export default function Pricing() {
   const amount = plan === "premium" ? "$49" : "$29";
 
   return (
-    <div className="bg-[#f8f7f3] min-h-screen font-sans text-gray-900">
+    <div className="bg-[#f8f7f3] font-inter text-gray-900">
       {/* Hero */}
-      <div className="px-6 pt-14 pb-16 text-center">
-        <div className="text-[11px] tracking-widest uppercase text-gray-500 font-semibold mb-4">
+      <div className="px-6 pt-6 pb-16 text-center">
+        <div className="text-xs sm:text-sm tracking-widest uppercase text-primary font-semibold mb-4">
           MATANA &middot; BUSINESS DIRECTORY
         </div>
-        <h1 className="font-serif font-semibold text-3xl md:text-4xl leading-snug max-w-xl mx-auto mb-4">
+        <h1 className="font-playfair font-bold text-3xl md:text-4xl max-w-xl mx-auto mb-4">
           Give your business a home in the community.
         </h1>
         <p className="max-w-md mx-auto text-gray-500 text-[15px] leading-relaxed">
@@ -117,7 +120,7 @@ export default function Pricing() {
         {/* Plans */}
         <div className="grid md:grid-cols-3 gap-5 -mt-7 relative z-10">
           {PLANS.map((p) => {
-            const Icon = p.icon;
+            // const Icon = p.icon;
             const selected = plan === p.id;
             return (
               <div
@@ -136,9 +139,8 @@ export default function Pricing() {
                 )}
 
                 <div className="w-9 h-9 rounded-full bg-green-900 text-white flex items-center justify-center mb-4">
-                  <Icon className="w-4 h-4" />
-                </div>
-
+                 <img src={p.icon} alt={p.name} />
+</div>
                 <div className="font-bold text-[15px] mb-1">{p.name}</div>
                 <div className="text-2xl font-bold mb-1">
                   {p.price}{" "}
