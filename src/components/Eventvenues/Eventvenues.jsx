@@ -178,7 +178,7 @@ function VenueCard({ venue, animationClass }) {
   );
 }
 
-// ── Main Component ─────────────────────────────────
+// ── Main Component ──
 export default function EventVenues() {
   useScrollRevealGentle();
   return (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSendContactMessageMutation } from "../../Api/contactApi";
 
 // ── Icons ──────────────────────────────────────────
 function EmailIcon() {
@@ -95,15 +96,23 @@ export default function ContactUs() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
+  const [sendContactMessage, { isLoading }] = useSendContactMessageMutation();
 
   async function handleSend() {
     if (!name.trim() || !email.trim() || !message.trim()) return;
-    await new Promise((r) => setTimeout(r, 600));
-    setSent(true);
-    setName("");
-    setEmail("");
-    setMessage("");
-    setTimeout(() => setSent(false), 3000);
+    setError("");
+    try {
+      await sendContactMessage({ name, email, message }).unwrap();
+      setSent(true);
+      setName("");
+      setEmail("");
+      setMessage("");
+      setTimeout(() => setSent(false), 3000);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    }
   }
 
   return (
@@ -202,17 +211,22 @@ export default function ContactUs() {
                 />
               </div>
 
+              {/* Error message */}
+              {error && (
+                <p className="text-xs text-red-500 text-center">{error}</p>
+              )}
+
               {/* Submit */}
               <button
                 onClick={handleSend}
-                disabled={!name.trim() || !email.trim() || !message.trim()}
+                disabled={isLoading || !name.trim() || !email.trim() || !message.trim()}
                 className={`w-full py-3.5 rounded-full text-sm font-semibold transition-colors ${
-                  name.trim() && email.trim() && message.trim()
+                  !isLoading && name.trim() && email.trim() && message.trim()
                     ? "bg-primary text-white"
                     : "bg-primary/50 text-white cursor-not-allowed"
                 }`}
               >
-                {sent ? "✓ Message Sent!" : "Send Message"}
+                {isLoading ? "Sending…" : sent ? "✓ Message Sent!" : "Send Message"}
               </button>
             </div>
           </div>
