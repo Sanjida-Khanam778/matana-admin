@@ -3,145 +3,34 @@ import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 import { useNavigate, useParams, ScrollRestoration } from "react-router-dom";
 import { IMAGES } from "../../assets";
+import { useGetCategoriesQuery } from "../../Api/businessDirectoryApi";
 
-// ── Data ──
-const gridItems = [
-  {
-    id: 1,
-    name: "Upsherin",
-    count: 156,
-    image: IMAGES.categoryImage1,
-  },
-  {
-    id: 2,
-    name: "Tu Bshvat",
-    count: 120,
-    image: IMAGES.categoryImage2,
-  },
-  {
-    id: 3,
-    name: "Thank You",
-    count: 100,
-    image: IMAGES.categoryImage3,
-  },
-  {
-    id: 4,
-    name: "Sukkos",
-    count: 120,
-    image: IMAGES.categoryImage4,
-  },
-  {
-    id: 5,
-    name: "Shiva and Condolences",
-    count: 126,
-    image: IMAGES.categoryImage5,
-  },
-  {
-    id: 6,
-    name: "Shavuous",
-    count: 100,
-    image: IMAGES.categoryImage6,
-  },
-  {
-    id: 7,
-    name: "Shabbos",
-    count: 120,
-    image: IMAGES.categoryImage7,
-  },
-  {
-    id: 8,
-    name: "Rosh Hashana8",
-    count: 120,
-    image: IMAGES.categoryImage8,
-  },
-  {
-    id: 9,
-    name: "Purim",
-    count: 120,
-    image: IMAGES.categoryImage9,
-  },
-  {
-    id: 10,
-    name: "Pesach",
-    count: 120,
-    image: IMAGES.categoryImage10,
-  },
-  {
-    id: 11,
-    name: "Party",
-    count: 120,
-    image: IMAGES.categoryImage11,
-  },
-  {
-    id: 12,
-    name: "Kiddush",
-    count: 120,
-    image: IMAGES.categoryImage12,
-  },
-  {
-    id: 13,
-    name: "Just Because",
-    count: 120,
-    image: IMAGES.categoryImage13,
-  },
-  {
-    id: 14,
-    name: "Graduation",
-    count: 120,
-    image: IMAGES.categoryImage14,
-  },
-  {
-    id: 15,
-    name: "Engagements, vorts and weddings",
-    count: 120,
-    image: IMAGES.categoryImage15,
-  },
-  {
-    id: 16,
-    name: "Corporate gifting and catering",
-    count: 120,
-    image: IMAGES.categoryImage16,
-  },
-  {
-    id: 17,
-    name: "Chanuka",
-    count: 120,
-    image: IMAGES.categoryImage17,
-  },
-  {
-    id: 18,
-    name: "Bris",
-    count: 120,
-    image: IMAGES.categoryImage18,
-  },
-  {
-    id: 19,
-    name: "Birthday",
-    count: 120,
-    image: IMAGES.categoryImage19,
-  },
-  {
-    id: 20,
-    name: "Bar Mitzvah",
-    count: 120,
-    image: IMAGES.categoryImage20,
-  },
-  {
-    id: 21,
-    name: "Baby",
-    count: 120,
-    image: IMAGES.categoryImage21,
-  },
-  {
-    id: 22,
-    name: "Anniversary",
-    count: 120,
-    image: IMAGES.categoryImage22,
-  },
-];
+const LOCAL_CAT_IMAGES = {
+  "Upsherin": IMAGES.categoryImage1,
+  "Tu Bshvat": IMAGES.categoryImage2,
+  "Thank You": IMAGES.categoryImage3,
+  "Sukkos": IMAGES.categoryImage4,
+  "Shiva and Condolences": IMAGES.categoryImage5,
+  "Shavuous": IMAGES.categoryImage6,
+  "Shabbos": IMAGES.categoryImage7,
+  "Rosh Hashana8": IMAGES.categoryImage8,
+  "Purim": IMAGES.categoryImage9,
+  "Pesach": IMAGES.categoryImage10,
+  "Party": IMAGES.categoryImage11,
+  "Kiddush": IMAGES.categoryImage12,
+  "Just Because": IMAGES.categoryImage13,
+  "Graduation": IMAGES.categoryImage14,
+  "Engagements, vorts and weddings": IMAGES.categoryImage15,
+  "Corporate gifting and catering": IMAGES.categoryImage16,
+  "Chanuka": IMAGES.categoryImage17,
+  "Bris": IMAGES.categoryImage18,
+  "Birthday": IMAGES.categoryImage19,
+  "Bar Mitzvah": IMAGES.categoryImage20,
+  "Baby": IMAGES.categoryImage21,
+  "Anniversary": IMAGES.categoryImage22,
+};
 
-const ITEMS_PER_PAGE = 9;
-const TOTAL_PAGES = 3;
+const ITEMS_PER_PAGE = 12;
 
 // ── Icons ──
 function ChevronLeftIcon() {
@@ -255,10 +144,23 @@ export default function BusinessSearch() {
   const [selCats, setSelCats] = useState(["Custom Baked Goods"]);
   const [selLocs, setSelLocs] = useState(["Brooklyn, NY"]);
   const [selLevels, setSelLevels] = useState(["Cholov Yisroel"]);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [selOccasions, setSelOccasions] = useState([]);
   const [selTov, setSelTov] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const { data: categoriesData, isLoading } = useGetCategoriesQuery();
+
+  const categories = (categoriesData ?? []).map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+    count: cat.business_count ?? 0,
+    image: cat.image || LOCAL_CAT_IMAGES[cat.name] || IMAGES.categoryImage7,
+  }));
+
+  const totalPages = Math.ceil(categories.length / ITEMS_PER_PAGE) || 1;
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const paginatedCategories = categories.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   useEffect(() => {
     if (categoryName) {
@@ -343,47 +245,62 @@ export default function BusinessSearch() {
             <>
               {/* 3-col grid */}
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {gridItems.map((item) => (
-                  <GridCard
-                    key={item.name}
-                    {...item}
-                    onClick={() =>
-                      navigate(`/all-stores/${encodeURIComponent(item.name)}`)
-                    }
-                  />
-                ))}
+                {isLoading &&
+                  Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="bg-white border border-gray-200 rounded-2xl p-4 h-64 animate-pulse"
+                    />
+                  ))}
+                {!isLoading &&
+                  paginatedCategories.map((item) => (
+                    <GridCard
+                      key={item.name}
+                      {...item}
+                      onClick={() =>
+                        navigate(`/all-stores/${encodeURIComponent(item.name)}`)
+                      }
+                    />
+                  ))}
               </div>
 
               {/* Pagination */}
-              <div className="flex items-center justify-center gap-2 mt-[60px] md:mt-[100px]">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                >
-                  <ChevronLeftIcon />
-                </button>
-
-                {[1, 2, 3].map((n) => (
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-[60px] md:mt-[100px]">
                   <button
-                    key={n}
-                    onClick={() => setPage(n)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
-                      page === n
-                        ? "bg-[#085027] text-white"
-                        : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                    }`}
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {n}
+                    <ChevronLeftIcon />
                   </button>
-                ))}
 
-                <button
-                  onClick={() => setPage((p) => Math.min(TOTAL_PAGES, p + 1))}
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                >
-                  <ChevronRightSmIcon />
-                </button>
-              </div>
+                  {Array.from({ length: totalPages }).map((_, idx) => {
+                    const n = idx + 1;
+                    return (
+                      <button
+                        key={n}
+                        onClick={() => setPage(n)}
+                        className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                          page === n
+                            ? "bg-[#085027] text-white"
+                            : "border border-gray-300 text-gray-600 hover:bg-gray-100"
+                        }`}
+                      >
+                        {n}
+                      </button>
+                    );
+                  })}
+
+                  <button
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronRightSmIcon />
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>

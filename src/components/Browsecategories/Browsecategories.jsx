@@ -1,58 +1,32 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IMAGES } from "../../assets";
+import { useGetCategoriesQuery } from "../../Api/businessDirectoryApi";
 
-const categories = [
-  {
-    id: 7,
-    name: "Shabbos",
-    count: 120,
-    image: IMAGES.categoryImage7,
-  },
-
-  {
-    id: 2,
-    name: "Tu Bshvat",
-    count: 120,
-    image: IMAGES.categoryImage2,
-  },
-  {
-    id: 12,
-    name: "Kiddush",
-    count: 120,
-    image: IMAGES.categoryImage12,
-  },
-  {
-    id: 3,
-    name: "Thank You",
-    count: 100,
-    image: IMAGES.categoryImage3,
-  },
-  {
-    id: 19,
-    name: "Birthday",
-    count: 120,
-    image: IMAGES.categoryImage19,
-  },
-  {
-    id: 15,
-    name: "Engagements, vorts and weddings",
-    count: 120,
-    image: IMAGES.categoryImage15,
-  },
-  {
-    id: 16,
-    name: "Corporate gifting and catering",
-    count: 120,
-    image: IMAGES.categoryImage16,
-  },
-  {
-    id: 11,
-    name: "Party",
-    count: 120,
-    image: IMAGES.categoryImage11,
-  },
-];
+const LOCAL_CAT_IMAGES = {
+  "Upsherin": IMAGES.categoryImage1,
+  "Tu Bshvat": IMAGES.categoryImage2,
+  "Thank You": IMAGES.categoryImage3,
+  "Sukkos": IMAGES.categoryImage4,
+  "Shiva and Condolences": IMAGES.categoryImage5,
+  "Shavuous": IMAGES.categoryImage6,
+  "Shabbos": IMAGES.categoryImage7,
+  "Rosh Hashana8": IMAGES.categoryImage8,
+  "Purim": IMAGES.categoryImage9,
+  "Pesach": IMAGES.categoryImage10,
+  "Party": IMAGES.categoryImage11,
+  "Kiddush": IMAGES.categoryImage12,
+  "Just Because": IMAGES.categoryImage13,
+  "Graduation": IMAGES.categoryImage14,
+  "Engagements, vorts and weddings": IMAGES.categoryImage15,
+  "Corporate gifting and catering": IMAGES.categoryImage16,
+  "Chanuka": IMAGES.categoryImage17,
+  "Bris": IMAGES.categoryImage18,
+  "Birthday": IMAGES.categoryImage19,
+  "Bar Mitzvah": IMAGES.categoryImage20,
+  "Baby": IMAGES.categoryImage21,
+  "Anniversary": IMAGES.categoryImage22,
+};
 
 function CategoryCard({ name, count, image, delayClass }) {
   const [hovered, setHovered] = useState(false);
@@ -116,6 +90,16 @@ const categoryRevealDelay = [
 ];
 
 export default function BrowseCategories() {
+  const { data: categoriesData, isLoading } = useGetCategoriesQuery();
+
+  // Map API categories to match the component's expected format
+  const categories = (categoriesData ?? []).slice(0, 12).map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+    count: cat.business_count ?? 0,
+    image: cat.image || LOCAL_CAT_IMAGES[cat.name] || IMAGES.categoryImage7, // fallback image
+  }));
+
   return (
     <section
       id="categories"
@@ -134,15 +118,23 @@ export default function BrowseCategories() {
 
         {/* Grid — 4 cols, 2 rows */}
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-5 mb-5 lg:mb-10">
-          {categories.map((cat, index) => (
-            <CategoryCard
-              key={cat.id}
-              {...cat}
-              delayClass={
-                categoryRevealDelay[index % categoryRevealDelay.length]
-              }
-            />
-          ))}
+          {isLoading &&
+            Array.from({ length: 8 }).map((_, index) => (
+              <div
+                key={index}
+                className="bg-white border border-gray-200 rounded-2xl p-4 h-64 animate-pulse"
+              />
+            ))}
+          {!isLoading &&
+            categories.map((cat, index) => (
+              <CategoryCard
+                key={cat.id}
+                {...cat}
+                delayClass={
+                  categoryRevealDelay[index % categoryRevealDelay.length]
+                }
+              />
+            ))}
         </div>
 
         {/* Browse All Button */}
@@ -158,3 +150,4 @@ export default function BrowseCategories() {
     </section>
   );
 }
+
