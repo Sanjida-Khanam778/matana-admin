@@ -106,16 +106,6 @@ const businesses = [
 
 const TOTAL_PAGES = 4;
 
-// ── Components ───
-// function RatingBadge({ rating }) {
-//   return (
-//     <div className="flex items-center gap-1 bg-white/95 text-gray-800 text-[11px] font-bold px-2 py-1 rounded-full shadow-sm">
-//       <FaStar size={9} color="#f59e0b" />
-//       {rating}
-//     </div>
-//   );
-// }
-
 function FeaturedBadge() {
   return (
     <div className="flex items-center gap-1 bg-[#f59e0b] text-white text-xs px-2.5 py-1 rounded-full shadow-sm tracking-wide">

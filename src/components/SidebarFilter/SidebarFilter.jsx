@@ -63,9 +63,9 @@ const locations = [
   { name: "Queens, NY", count: 175 },
 ];
 
-const kosherLevels = [
-  { name: "Cholov Yisroel", count: 358 },
+const Services = [
   { name: "Glatt Kosher", count: 175 },
+  { name: "Cholov Yisroel", count: 358 },
   { name: "Mehadrin", count: 88 },
   { name: "Pareve Only", count: 204 },
   { name: "Pas Yisroel", count: 134 },
@@ -86,17 +86,17 @@ const occasions = [
   { name: "Thank you", count: 86 },
 ];
 
-const tov = [
-  { name: "Anniversary", count: 88 },
-  { name: "Baby", count: 88 },
-  { name: "Bar Mitzvah", count: 88 },
-  { name: "Birthday", count: 134 },
-  { name: "Bris", count: 204 },
-  { name: "Chanukah", count: 1781 },
-  { name: "Corporate Gifting & Catering", count: 358 },
-  { name: "Engagements, Vorts & Weddings", count: 175 },
-  { name: "Home Gift", count: 88 },
-];
+// const tov = [
+//   { name: "Anniversary", count: 88 },
+//   { name: "Baby", count: 88 },
+//   { name: "Bar Mitzvah", count: 88 },
+//   { name: "Birthday", count: 134 },
+//   { name: "Bris", count: 204 },
+//   { name: "Chanukah", count: 1781 },
+//   { name: "Corporate Gifting & Catering", count: 358 },
+//   { name: "Engagements, Vorts & Weddings", count: 175 },
+//   { name: "Home Gift", count: 88 },
+// ];
 // ── Icons ──────────────────────────────────────────
 function ChevronUpIcon() {
   return (
@@ -210,12 +210,12 @@ export default function SidebarFilter({
   onToggleCategory,
   selectedLocations = [],
   onToggleLocation,
-  selectedKosherLevels = [],
-  onToggleKosherLevel,
+  selectedServices = [],
+  onToggleService,
   selectedOccasions = [],
   onToggleOccasion,
-  selectedTov = [],
-  onToggleTov,
+  // selectedTov = [],
+  // onToggleTov,
   isOpen = false,
   onClose,
 }) {
@@ -277,18 +277,18 @@ export default function SidebarFilter({
               selected={selectedCategories}
               onToggle={onToggleCategory}
             />
-            <SidebarSection
+            {/* <SidebarSection
               title="Occasions"
               items={occasions}
               selected={selectedOccasions}
               onToggle={onToggleOccasion}
-            />
-            <SidebarSection
+            /> */}
+            {/* <SidebarSection
               title="toV"
               items={tov}
               selected={selectedTov}
               onToggle={onToggleTov}
-            />
+            /> */}
             <div className="border-t border-gray-100 my-2" />
             <SidebarSection
               title="Locations"
@@ -298,10 +298,10 @@ export default function SidebarFilter({
             />
             <div className="border-t border-gray-100 my-2" />
             <SidebarSection
-              title="Kosher Vetting Levels"
-              items={kosherLevels}
-              selected={selectedKosherLevels}
-              onToggle={onToggleKosherLevel}
+              title="Services & Tags"
+              items={Services}
+              selected={selectedServices}
+              onToggle={onToggleService}
             />
           </div>
         </div>

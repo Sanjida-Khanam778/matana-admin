@@ -2,97 +2,14 @@ import { useState } from "react";
 import { FaChevronRight, FaStar } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { IMAGES } from "../../assets";
-
-const communities = [
-  {
-    id: 1,
-    city: "Brooklyn",
-    state: "NY",
-    rating: 4.8,
-    businesses: 342,
-    featured: 12,
-    image: IMAGES.browse1,
-  },
-  {
-    id: 2,
-    city: "Queens",
-    state: "NY",
-    rating: 4.7,
-    businesses: 178,
-    featured: 8,
-    image: IMAGES.browse2,
-  },
-  {
-    id: 3,
-    city: "Five Towns",
-    state: "NY",
-    rating: 4.9,
-    businesses: 178,
-    featured: 8,
-    image: IMAGES.browse3,
-  },
-  {
-    id: 4,
-    city: "Los Angeles",
-    state: "CA",
-    rating: 4.8,
-    businesses: 250,
-    featured: 8,
-    image: IMAGES.browse4,
-  },
-  {
-    id: 5,
-    city: "Lakewood",
-    state: "NJ",
-    rating: 4.7,
-    businesses: 250,
-    featured: 8,
-    image: IMAGES.browse5,
-  },
-  {
-    id: 6,
-    city: "Baltimore",
-    state: "MD",
-    rating: 4.8,
-    businesses: 250,
-    featured: 8,
-    image: IMAGES.browse6,
-  },
-  {
-    id: 7,
-    city: "Cleveland",
-    state: "OH",
-    rating: 4.6,
-    businesses: 250,
-    featured: 8,
-    image: IMAGES.browse7,
-  },
-  {
-    id: 8,
-    city: "Miami",
-    state: "FL",
-    rating: 4.9,
-    businesses: 250,
-    featured: 8,
-    image: IMAGES.browse8,
-  },
-  {
-    id: 9,
-    city: "Monsey",
-    state: "NY",
-    rating: 4.7,
-    businesses: 250,
-    featured: 8,
-    image: IMAGES.browse9,
-  },
-];
+import { useGetCommunitiesQuery } from "../../Api/businessDirectoryApi";
 
 function CommunityCard({ city, state, rating, businesses, featured, image }) {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/all-community", {
+    navigate("/all-community-stores", {
       state: {
         community: { city, state, rating, businesses, featured, image },
       },
@@ -120,12 +37,6 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 
       {/* Dark overlay — gradient from bottom */}
       <div className="absolute inset-0 bg-[#040404]/40" />
-
-      {/* Rating badge — top right
-      <div className="absolute md:top-6 md:right-6 top-3 right-3 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-semibold px-2 py-1 rounded-full border border-white/30">
-        <FaStar className="text-yellow-500" />
-        {rating}
-      </div> */}
 
       {/* City + State — bottom left */}
       <div className="absolute bottom-0 left-0 p-2 md:p-4">
@@ -166,6 +77,18 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 }
 
 export default function BrowseByCommunity() {
+  const { data: communitiesData, isLoading } = useGetCommunitiesQuery();
+
+  const communities = (communitiesData ?? []).slice(0,6).map((c) => ({
+    id: c.id,
+    city: c.name,
+    state: c.state,
+    rating: c.rating ?? 4.8,
+    businesses: c.business_count ?? 0,
+    featured: c.featured_count ?? 0,
+    image: c.image || IMAGES.browse1,
+  }));
+
   return (
     <section
       id="community"
@@ -184,13 +107,19 @@ export default function BrowseByCommunity() {
 
         {/* 3×3 Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {communities.map((c) => (
-            <CommunityCard key={c.id} {...c} />
-          ))}
+          {isLoading &&
+            Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="bg-white/60 border border-gray-200 rounded-2xl h-40 md:h-60 animate-pulse"
+              />
+            ))}
+          {!isLoading &&
+            communities.map((c) => <CommunityCard key={c.id} {...c} />)}
         </div>
         <div className="flex justify-center mt-6 md:mt-10">
           <Link
-            to={"/all-stores"}
+            to={"/all-community"}
             className="text-sm sm:text-base border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 md:px-8 py-1.5 md:py-3 rounded-full transition-colors shadow-sm"
           >
             Browse All Communities

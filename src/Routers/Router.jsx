@@ -6,8 +6,9 @@ import MainLayout from "../Layouts/MainLayout";
 import AllEvents from "../components/AllEvents/AllEvents";
 import DetailPage from "../Detailpage/Detailpage";
 import CommunityDetails from "../Detailpage/CommunityDetails";
-import AllCommunity from "../components/Browsebycommunity/AllCommunity";
+import AllCommunity from "../components/Browsebycommunity/AllCommunityStores";
 import Pricing from "../components/Businessdirectoryform/Businessdirectoryform";
+import AllCommunities from "../components/Browsebycommunity/AllCommunities";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-community",
+        element: <AllCommunities />,
+      },
+      {
+        path: "all-community-stores",
         element: <AllCommunity />,
       },
       {
