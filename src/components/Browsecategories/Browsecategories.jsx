@@ -28,7 +28,7 @@ const LOCAL_CAT_IMAGES = {
   "Anniversary": IMAGES.categoryImage22,
 };
 
-function CategoryCard({ name, count, image, delayClass }) {
+function CategoryCard({ name, count, image }) {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
 
@@ -82,18 +82,11 @@ function CategoryCard({ name, count, image, delayClass }) {
   );
 }
 
-const categoryRevealDelay = [
-  "reveal-delay-05",
-  "reveal-delay-1",
-  "reveal-delay-2",
-  "reveal-delay-3",
-];
-
 export default function BrowseCategories() {
   const { data: categoriesData, isLoading } = useGetCategoriesQuery();
 
   // Map API categories to match the component's expected format
-  const categories = (categoriesData ?? []).slice(0, 12).map((cat) => ({
+  const categories = (categoriesData ?? []).slice(0, 8).map((cat) => ({
     id: cat.id,
     name: cat.name,
     count: cat.business_count ?? 0,
@@ -130,9 +123,7 @@ export default function BrowseCategories() {
               <CategoryCard
                 key={cat.id}
                 {...cat}
-                delayClass={
-                  categoryRevealDelay[index % categoryRevealDelay.length]
-                }
+              
               />
             ))}
         </div>

@@ -8,6 +8,7 @@ import {
   useGetCategoriesQuery,
   useUploadMediaMutation,
   useRegisterBusinessMutation,
+  useGetCommunitiesQuery,
 } from "../../Api/businessDirectoryApi";
 
 // ── Plan UI metadata (icons, features, limits) ────────────────────────────
@@ -133,7 +134,7 @@ function UploadBox({ label, multiple = false, files = [], onAdd, onRemove, warni
 
 // ── Shared input class ────────────────────────────────────────────────────
 const inputCls =
-  "w-full px-3.5 py-3 rounded-xl border-[1.5px] border-gray-200 bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800";
+  "w-full px-3.5 py-3 rounded-xl border-[1.5px] border-gray bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800";
 
 // ── Main Component ────────────────────────────────────────────────────────
 export default function Pricing() {
@@ -142,6 +143,7 @@ export default function Pricing() {
   // ── API hooks ─────────────────────────────────────────────────────────
   const { data: plansData, isLoading: plansLoading } = useGetPlansQuery();
   const { data: categoriesData, isLoading: catsLoading } = useGetCategoriesQuery();
+  const { data: communities, isLoading: communitiesLoading } = useGetCommunitiesQuery();
   const [uploadMedia] = useUploadMediaMutation();
   const [registerBusiness, { isLoading: submitting }] = useRegisterBusinessMutation();
 
@@ -159,7 +161,6 @@ export default function Pricing() {
   // ── Payment options ───────────────────────────────────────────────────
   const [paymentType, setPaymentType] = useState("recurring");
   const [durationMonths, setDurationMonths] = useState(3);
-  const [paymentMethodId, setPaymentMethodId] = useState("");
 
   // ── Categories (store full {id, name} objects) ────────────────────────
   const [cats, setCats] = useState([]);
@@ -288,14 +289,17 @@ export default function Pricing() {
         const fd = new FormData();
         fd.append("image", file);
         const res = await uploadMedia(fd).unwrap();
-        if (res?.id) photoIds.push(res.id);
+        console.log("gallery upload res::", res);
+        if (res[0]?.id) photoIds.push(res[0].id);
       }
 
+      let flyerImageId = null;
       for (const file of flyerFiles) {
         const fd = new FormData();
         fd.append("image", file);
         const res = await uploadMedia(fd).unwrap();
-        if (res?.id) photoIds.push(res.id);
+        console.log("flyer upload res::", res);
+        if (res[0]?.id) flyerImageId = res[0].id;
       }
 
       setUploadingImages(false);
@@ -308,7 +312,7 @@ export default function Pricing() {
         contact_email: contactEmail,
         contact_name: contactName,
         contact_phone: contactPhone,
-        city,
+        community_id: city ? parseInt(city, 10) : null,
         business_address: businessAddress,
         business_phone: businessPhone,
         business_hours: businessHours,
@@ -323,6 +327,7 @@ export default function Pricing() {
         duration_months: durationMonths,
         payment_method_id: "pm_card_visa",
         photo_ids: photoIds,
+        flyer_image: flyerImageId,
         ...(plan === "premium" && promoVideoLink
           ? { promo_video_link: promoVideoLink }
           : {}),
@@ -597,13 +602,18 @@ export default function Pricing() {
               <label className="block text-[13px] font-semibold mb-1.5">
                 City <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                placeholder="e.g. Jerusalem"
+              <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className={inputCls}
-              />
+                className={`${inputCls} appearance-none cursor-pointer pr-10`}
+              >
+                <option value="">Select a city</option>
+                {(communities ?? []).map((com) => (
+                  <option key={com.id} value={com.id}>
+                    {com.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

@@ -2,28 +2,29 @@ import { useEffect, useState } from "react";
 import stat1 from "../../assets/icons/stat1.png";
 import stat2 from "../../assets/icons/stat2.png";
 import stat3 from "../../assets/icons/stat1.png";
-import { FaArrowLeft } from "react-icons/fa";
-import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { useGetStatsQuery } from "../../Api/businessDirectoryApi";
 
 export default function StatsBar() {
   const [isMobile, setIsMobile] = useState(false);
+  const { data: stats } = useGetStatsQuery();
+
   const statsData = [
     {
-      value: "10,000+",
+      value: stats?.total_users !== undefined ? `${stats?.total_users}+` : "100+",
       label: "HAPPY USERS",
       description: "A trusted network of local businesses & services.",
       theme: "light-green",
       icon: stat1,
     },
     {
-      value: "500+",
+      value: stats?.total_businesses !== undefined ? `${stats?.total_businesses}+` : "50+",
       label: "Businesses",
       description: "Featuring your Favorite local shops and services.",
       theme: "cream-green",
       icon: stat2,
     },
     {
-      value: "20+",
+      value: stats?.total_locations !== undefined ? `${stats?.total_locations}+` : "20+",
       label: "Locations",
       description:
         "Serving all Jewish Communities throughout the U.S. and Canada",
@@ -40,43 +41,11 @@ export default function StatsBar() {
     return () => window.removeEventListener("resize", checkViewport);
   }, []);
 
-    // const cardsPerView = isMobile ? 1 : 3;
-  // const visibleStats = statsData.slice(activeIndex, activeIndex + cardsPerView);
-  // const showPrev = activeIndex > 0;
-  // const showNext = activeIndex + cardsPerView < statsData.length;
 
   return (
     <section className="w-full bg-[#FAF5ED] pt-8 md:pt-10 xl:pt-12 font-inter">
       <div className="w-11/12 sm:max-w-4xl mx-auto">
-        {/* <div className="flex items-center justify-between mb-3 md:mb-4">
-          <div />
-          {/* <div className="flex justify-center items-center sm:hidden gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
-              disabled={!showPrev}
-              className={`h-8 w-8 rounded-full border border-[#085027]/20 text-[#085027] text-center flex items-center justify-center transition ${
-                showPrev
-                  ? "hover:bg-[#085027] hover:text-white"
-                  : "opacity-40 cursor-not-allowed"
-              }`}
-            >
-              <MdArrowForwardIos className="rotate-180" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveIndex((prev) => prev + 1)}
-              disabled={!showNext}
-              className={`h-8 w-8 rounded-full border border-[#085027]/20 text-[#085027] flex items-center justify-center transition ${
-                showNext
-                  ? "hover:bg-[#085027] hover:text-white"
-                  : "opacity-40 cursor-not-allowed"
-              }`}
-            >
-              <MdArrowForwardIos />
-            </button>
-          </div> */}
-        {/* </div> */} 
+ 
 
         <div className="grid grid-cols-3 gap-3 md:gap-4 lg:gap-5 transition-all duration-300">
           {statsData.map((stat, i) => {
@@ -104,7 +73,7 @@ export default function StatsBar() {
                 </div>
 
                 <h3
-                  className={`text-base sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 ${
+                  className={`text-base sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-1 ${
                     isDark ? "text-white" : "text-[#085027]"
                   }`}
                 >

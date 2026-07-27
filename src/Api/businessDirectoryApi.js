@@ -8,6 +8,12 @@ export const businessDirectoryApi = api.injectEndpoints({
     getCategories: builder.query({
       query: () => "/categories/",
     }),
+    getCommunities: builder.query({
+      query: () => "/communities/",
+    }),
+    getStats: builder.query({
+      query: () => "/stats/",
+    }),
     uploadMedia: builder.mutation({
       query: (formData) => ({
         url: "/media/",
@@ -28,6 +34,8 @@ export const businessDirectoryApi = api.injectEndpoints({
 export const {
   useGetPlansQuery,
   useGetCategoriesQuery,
+  useGetCommunitiesQuery,
+  useGetStatsQuery,
   useUploadMediaMutation,
   useRegisterBusinessMutation,
 } = businessDirectoryApi;
