@@ -8,7 +8,6 @@ import { ScrollRestoration, useNavigate } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa";
 import { IMAGES } from "../../assets";
 import { useGetCommunitiesQuery } from "../../Api/businessDirectoryApi";
-
 // ── Data ───
 const community = {
     district: "New York City District",
@@ -27,7 +26,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate("/all-community", {
+        navigate("/all-community-stores", {
             state: {
                 community: { city, state, rating, businesses, featured, image },
             },

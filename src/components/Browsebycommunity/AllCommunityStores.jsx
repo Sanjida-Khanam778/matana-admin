@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   IoSearchOutline,
   IoLocationOutline,
@@ -8,22 +8,17 @@ import {
   IoArrowForwardOutline,
 } from "react-icons/io5";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { ScrollRestoration, useNavigate } from "react-router-dom";
+import { ScrollRestoration, useNavigate, useLocation } from "react-router-dom";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
+import {
+  useGetCommunityStoresByCityQuery,
+  useGetCategoriesQuery,
+} from "../../Api/businessDirectoryApi";
 
-// ── Data ───
-const community = {
-  district: "New York City District",
-  name: "Brooklyn, NY",
-  businesses: 342,
-  featured: 12,
-  rating: 4.8,
-  coverImage:
-    "https://images.unsplash.com/photo-1546436836-07a91091f160?w=900&q=80",
-};
+const ITEMS_PER_PAGE = 6;
 
-const categories = [
+const DEFAULT_CATEGORIES = [
   "All Categories",
   "Cafe & Roastery",
   "Modern Kitchen",
@@ -34,77 +29,6 @@ const categories = [
   "Judaica",
   "Gift Shops",
 ];
-
-const businesses = [
-  {
-    id: 1,
-    tag: "CAFE & ROASTERY",
-    name: "Brooklyn Brew Lab",
-    desc: "Artisanal coffee sourced from sustainable farms, roasted daily in the heart of...",
-    address: "142 Berry St, Brooklyn",
-    rating: null,
-    badge: "FEATURED",
-    image:
-      "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&q=80",
-  },
-  {
-    id: 2,
-    tag: "MODERN KITCHEN",
-    name: "The Slate Table",
-    desc: "Elevated seasonal cuisine focusing on local farm-to-table ingredients with a modern...",
-    address: "89 Atlantic Ave, Brooklyn",
-    rating: 4.7,
-    badge: null,
-    image:
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&q=80",
-  },
-  {
-    id: 3,
-    tag: "LUXURY RETAIL",
-    name: "Indigo & Iron",
-    desc: "A curated collection of sustainable fashion and unique home goods from local...",
-    address: "312 Wythe Ave, Brooklyn",
-    rating: 4.8,
-    badge: null,
-    image:
-      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80",
-  },
-  {
-    id: 4,
-    tag: "WELLNESS CENTER",
-    name: "Zenith Space",
-    desc: "Holistic wellness studio offering yoga, meditation, and community health...",
-    address: "250 Flatbush Ave, Brooklyn",
-    rating: 4.6,
-    badge: null,
-    image:
-      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500&q=80",
-  },
-  {
-    id: 5,
-    tag: "ARTISAN BAKERY",
-    name: "Crust & Crumb",
-    desc: "Specializing in ancient grains and slow-fermented sourdoughs, baked fresh every...",
-    address: "15 Prospect Park W, Brooklyn",
-    rating: null,
-    badge: "FEATURED",
-    image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&q=80",
-  },
-  {
-    id: 6,
-    tag: "CREATIVE AGENCY",
-    name: "Form & Flow Studios",
-    desc: "Full-service design and architectural firm focused on sustainable urban development...",
-    address: "55 Water St, Brooklyn",
-    rating: 4.8,
-    badge: null,
-    image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&q=80",
-  },
-];
-
-const TOTAL_PAGES = 4;
 
 function FeaturedBadge() {
   return (
@@ -133,11 +57,6 @@ function BusinessCard({ business, onClick }) {
         <div className="absolute top-3 left-3">
           {business.badge === "FEATURED" && <FeaturedBadge />}
         </div>
-        {/* {business.rating && (
-          <div className="absolute top-3 right-3">
-            <RatingBadge rating={business.rating} />
-          </div>
-        )} */}
       </div>
 
       {/* Body */}
@@ -174,29 +93,125 @@ function BusinessCard({ business, onClick }) {
 export default function AllCommunity() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get selected city from router state
+  const communityState = location.state?.community;
+  const selectedCity =
+    communityState?.city || location.state?.cityName || location.state?.city || "Brooklyn";
+
+  // Fetch dynamic stores data for the city
+  const { data: cityData, isLoading } = useGetCommunityStoresByCityQuery(selectedCity, {
+    skip: !selectedCity,
+  });
+
+  // Fetch categories for dropdown filter
+  const { data: categoriesApiData } = useGetCategoriesQuery();
+  const categoriesList = useMemo(() => {
+    if (categoriesApiData && categoriesApiData.length > 0) {
+      return ["All Categories", ...categoriesApiData.map((c) => c.name)];
+    }
+    return DEFAULT_CATEGORIES;
+  }, [categoriesApiData]);
+
   const [category, setCategory] = useState("All Categories");
   const [catOpen, setCatOpen] = useState(false);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
+
+  // Community details from response or fallback state
+  const cityInfo = cityData?.city;
+  const communityName = cityInfo
+    ? `${cityInfo.name}${cityInfo.state ? `, ${cityInfo.state}` : ""}`
+    : communityState?.city
+    ? `${communityState.city}${communityState.state ? `, ${communityState.state}` : ""}`
+    : `${selectedCity}, NY`;
+
+  const coverImage =
+    cityInfo?.image ||
+    communityState?.image ||
+    "https://images.unsplash.com/photo-1546436836-07a91091f160?w=900&q=80";
+
+  const businessCount = cityInfo?.business_count ?? communityState?.businesses ?? 0;
+  const featuredCount = cityInfo?.featured_count ?? communityState?.featured ?? 0;
+
+  // Map API businesses to UI representation
+  const allBusinesses = useMemo(() => {
+    const rawList = cityData?.businesses || [];
+    return rawList.map((b) => ({
+      id: b.id,
+      tag: b.services_tags
+        ? b.services_tags
+        : b.categories && b.categories.length > 0
+        ? `CATEGORY ${b.categories[0]}`
+        : "STORE",
+      name: b.name,
+      desc: b.description || "",
+      address:
+        b.business_address ||
+        (b.community ? `${b.community.name}, ${b.community.state}` : ""),
+      rating: null,
+      badge: b.is_featured ? "FEATURED" : null,
+      image:
+        b.flyer_image ||
+        (b.photos && b.photos.length > 0 && typeof b.photos[0] === "string"
+          ? b.photos[0]
+          : "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&q=80"),
+      raw: b,
+    }));
+  }, [cityData]);
+
+  // Sidebar filters state
   const [selCats, setSelCats] = useState(["All Categories"]);
-  const [selLocs, setSelLocs] = useState([community.name]);
+  const [selLocs, setSelLocs] = useState([communityName]);
   const [selLevels, setSelLevels] = useState([]);
   const [selOccasions, setSelOccasions] = useState([]);
   const [selTov, setSelTov] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  // Filter businesses by search input & dropdown category
+  const filteredBusinesses = useMemo(() => {
+    return allBusinesses.filter((b) => {
+      const matchSearch =
+        !search.trim() ||
+        b.name.toLowerCase().includes(search.toLowerCase()) ||
+        b.desc.toLowerCase().includes(search.toLowerCase()) ||
+        b.tag.toLowerCase().includes(search.toLowerCase()) ||
+        b.address.toLowerCase().includes(search.toLowerCase());
+
+      const matchCategory =
+        category === "All Categories" ||
+        b.tag.toLowerCase().includes(category.toLowerCase()) ||
+        b.name.toLowerCase().includes(category.toLowerCase());
+
+      return matchSearch && matchCategory;
+    });
+  }, [allBusinesses, search, category]);
+
+  const totalPages = Math.ceil(filteredBusinesses.length / ITEMS_PER_PAGE) || 1;
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, category, selectedCity]);
+
+  const currentPageBusinesses = useMemo(() => {
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    return filteredBusinesses.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredBusinesses, page]);
+
   const openBusinessDetails = (business) => {
     navigate(`/community-details/${business.id}`, {
-      state: { business },
+      state: { business: business.raw || business },
     });
   };
+
   function toggle(arr, setArr, val) {
     setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));
   }
 
   return (
     <div className="font-inter min-h-screen bg-[#f8f7f3] flex w-full justify-center">
-            <ScrollRestoration />
-      
+      <ScrollRestoration />
+
       <div className="flex flex-col lg:flex-row w-full lg:w-11/12 xl:w-10/12 mx-auto my-4 lg:my-10 px-4 lg:px-0">
         {/* ── Sidebar ── */}
         <SidebarFilter
@@ -217,8 +232,8 @@ export default function AllCommunity() {
           {/* ── Cover ── */}
           <div className="relative w-full rounded-2xl overflow-hidden h-[380px] sm:h-[320px] shadow-sm">
             <img
-              src={community.coverImage}
-              alt={community.name}
+              src={coverImage}
+              alt={communityName}
               className="w-full h-full object-cover"
               draggable={false}
             />
@@ -229,15 +244,15 @@ export default function AllCommunity() {
             <div className="absolute bottom-0 left-0 w-full">
               <div className="flex items-center px-4 sm:px-6 gap-1.5 text-white/70 text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest mb-1">
                 <IoLocationOutline size={18} color="#f59e0b" />
-                {community.district}
+                New York City District
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 px-4 sm:px-6">
-                {community.name}
+                {communityName}
               </h1>
               <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 mb-4">
                 <div>
                   <p className="text-white text-base sm:text-lg font-bold leading-none">
-                    {community.businesses}
+                    {businessCount}
                   </p>
                   <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider mt-0.5">
                     Businesses
@@ -246,24 +261,13 @@ export default function AllCommunity() {
                 <div className="w-px h-8 bg-white/20" />
                 <div>
                   <p className="text-white text-base sm:text-lg font-bold leading-none">
-                    {community.featured}
+                    {featuredCount}
                   </p>
                   <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider mt-0.5">
                     Featured
                   </p>
                 </div>
                 <div className="w-px h-8 bg-white/20" />
-                {/* <div className="">
-                <div className="flex items-center gap-1.5">
-                    <p className="text-white text-base sm:text-lg font-bold leading-none">
-                    {community.rating}
-                  </p>
-                  <FaStar size={13} color="#f59e0b" />
-                </div>
-                  <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider">
-                   average Rating
-                  </p>
-                </div> */}
               </div>
               {/* ── Search bar ── */}
               <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
@@ -273,7 +277,7 @@ export default function AllCommunity() {
                     <IoSearchOutline size={16} color="#9ca3af" />
                     <input
                       type="text"
-                      placeholder={`What are you looking for in ${community.name.split(",")[0]}?`}
+                      placeholder={`What are you looking for in ${communityName.split(",")[0]}?`}
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       className="flex-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none"
@@ -316,15 +320,17 @@ export default function AllCommunity() {
                         />
                       </button>
                       {catOpen && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl z-30 overflow-hidden">
-                          {categories.map((c) => (
+                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl z-30 overflow-hidden max-h-60 overflow-y-auto">
+                          {categoriesList.map((c) => (
                             <button
                               key={c}
                               onClick={() => {
                                 setCategory(c);
                                 setCatOpen(false);
                               }}
-                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50 ${category === c ? "text-[#085027] font-semibold" : "text-gray-600"}`}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50 ${
+                                category === c ? "text-[#085027] font-semibold" : "text-gray-600"
+                              }`}
                             >
                               {c}
                             </button>
@@ -348,44 +354,64 @@ export default function AllCommunity() {
             {/* ── Main Content ── */}
             <div className="w-full">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                {businesses.map((b) => (
-                  <BusinessCard
-                    key={b.id}
-                    business={b}
-                    onClick={() => openBusinessDetails(b)}
-                  />
-                ))}
+                {isLoading &&
+                  Array.from({ length: 6 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="bg-white border border-gray-200 rounded-2xl h-64 animate-pulse"
+                    />
+                  ))}
+
+                {!isLoading && currentPageBusinesses.length === 0 && (
+                  <div className="col-span-full py-12 text-center text-gray-500">
+                    No businesses found in {communityName.split(",")[0]}.
+                  </div>
+                )}
+
+                {!isLoading &&
+                  currentPageBusinesses.map((b) => (
+                    <BusinessCard
+                      key={b.id}
+                      business={b}
+                      onClick={() => openBusinessDetails(b)}
+                    />
+                  ))}
               </div>
 
               {/* Pagination */}
-              <div className="flex items-center justify-center gap-2">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                >
-                  <IoChevronBack size={14} color="#374151" />
-                </button>
-
-                {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2">
                   <button
-                    key={i}
-                    onClick={() => setPage(i + 1)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${page === i + 1
-                        ? "bg-[#085027] text-white"
-                        : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                      }`}
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {i + 1}
+                    <IoChevronBack size={14} color="#374151" />
                   </button>
-                ))}
 
-                <button
-                  onClick={() => setPage((p) => Math.min(TOTAL_PAGES, p + 1))}
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                >
-                  <IoChevronForward size={14} color="#374151" />
-                </button>
-              </div>
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPage(i + 1)}
+                      className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                        page === i + 1
+                          ? "bg-[#085027] text-white"
+                          : "border border-gray-300 text-gray-600 hover:bg-gray-100"
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <IoChevronForward size={14} color="#374151" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

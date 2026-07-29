@@ -14,6 +14,12 @@ export const businessDirectoryApi = api.injectEndpoints({
     getStats: builder.query({
       query: () => "/stats/",
     }),
+    getOrderSummary: builder.query({
+      query: ({ plan_id, duration_months, payment_type }) => ({
+        url: "/business/order-summary/",
+        params: { plan_id, duration_months, payment_type },
+      }),
+    }),
     uploadMedia: builder.mutation({
       query: (formData) => ({
         url: "/media/",
@@ -28,6 +34,12 @@ export const businessDirectoryApi = api.injectEndpoints({
         body,
       }),
     }),
+    getCommunityStoresByCity: builder.query({
+      query: (cityName) => `/communities/${cityName}/`,
+    }),
+    getBusinessDetails: builder.query({
+      query: (id) => `/businesses/${id}/`,
+    }),
   }),
 });
 
@@ -35,7 +47,10 @@ export const {
   useGetPlansQuery,
   useGetCategoriesQuery,
   useGetCommunitiesQuery,
+  useGetCommunityStoresByCityQuery,
+  useGetBusinessDetailsQuery,
   useGetStatsQuery,
+  useGetOrderSummaryQuery,
   useUploadMediaMutation,
   useRegisterBusinessMutation,
 } = businessDirectoryApi;

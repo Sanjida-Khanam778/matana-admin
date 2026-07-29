@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { ScrollRestoration, useLocation } from "react-router-dom";
+import { ScrollRestoration, useLocation, useParams } from "react-router-dom";
 import {
   FiPhone,
   FiMail,
@@ -11,23 +11,18 @@ import {
   FiHeart,
   FiSend,
   FiNavigation,
-  FiShield,
   FiTag,
-  FiChevronRight,
   FiPlay,
 } from "react-icons/fi";
-import { FaStar, FaRegStar } from "react-icons/fa";
 import { BsShop } from "react-icons/bs";
-import detailsImage from "../assets/images/detailsHeader.png";
-import decor1 from "../assets/images/decor1.png";
-import decor2 from "../assets/images/decor2.png";
-import decor3 from "../assets/images/decor3.png";
 import related1 from "../assets/images/related1.png";
 import related2 from "../assets/images/related2.png";
 import logo from "../assets/icons/details_logo.png";
-import { LocateIcon, PlayCircle, PlayIcon } from "lucide-react";
+import { PlayIcon } from "lucide-react";
 import { GrLocation } from "react-icons/gr";
-
+import { useGetBusinessDetailsQuery } from "../Api/businessDirectoryApi";
+import ubereats from "../assets/images/ubereats.png"
+import whatsapp from "../assets/images/whatsapp.png"
 export const SAMPLE_CAFE = {
   type: "cafe",
   badge: "Featured Business",
@@ -42,6 +37,7 @@ export const SAMPLE_CAFE = {
     call: "+1 (718) 555-3456",
     website: "brooklynbrewcafe.com",
     instagram: "@brooklynbrewcafe",
+    other_social_link: "",
     visitLabel: "Visit Website",
   },
 
@@ -57,13 +53,7 @@ export const SAMPLE_CAFE = {
 
   video: null,
 
-  tags: [
-    "Coffee",
-    "Cafe",
-    "Bakery",
-    "Breakfast",
-    "Free WiFi",
-  ],
+  tags: ["Coffee", "Cafe", "Bakery", "Breakfast", "Free WiFi"],
 
   related: [
     {
@@ -75,30 +65,6 @@ export const SAMPLE_CAFE = {
       name: "Crust & Crumb",
       businesses: 14,
       image: related2,
-    },
-  ],
-
-  reviews: [
-    {
-      name: "Sarah Cohen",
-      badge: "Verified",
-      rating: 5,
-      text: "Absolutely wonderful experience! The coffee is outstanding and the service is exceptional. Highly recommend everyone to visit.",
-      date: "May 15, 2025",
-    },
-    {
-      name: "David Levy",
-      badge: "Verified",
-      rating: 5,
-      text: "Best cafe in the area. Great selection and very helpful staff. We'll definitely be coming back.",
-      date: "April 23, 2025",
-    },
-    {
-      name: "Rachel Goldstein",
-      badge: "Verified",
-      rating: 4,
-      text: "Good quality pastries and friendly service. Prices are fair and the atmosphere is welcoming.",
-      date: "April 5, 2025",
     },
   ],
 
@@ -118,7 +84,6 @@ export const SAMPLE_CAFE = {
     Saturday: "8:00 AM – 6:00 PM",
   },
 
-  certifications: ["OK", "Health"],
 
   inquiry: {
     fields: ["name", "email", "phone", "message"],
@@ -190,28 +155,24 @@ function InquiryForm({ fields = [] }) {
     <div className="space-y-2.5">
       {allFields.map((f) =>
         f === "message" ? (
-          <>
-            <textarea
-              key={f}
-              rows={3}
-              placeholder={placeholders[f]}
-              className={`${inputCls} resize-none`}
-              value={form[f] || ""}
-              onChange={(e) => set(f, e.target.value)}
-            />
-          </>
+          <textarea
+            key={f}
+            rows={3}
+            placeholder={placeholders[f]}
+            className={`${inputCls} resize-none`}
+            value={form[f] || ""}
+            onChange={(e) => set(f, e.target.value)}
+          />
         ) : (
-          <>
-            <input
-              key={f}
-              type="text"
-              placeholder={placeholders[f]}
-              className={inputCls}
-              value={form[f] || ""}
-              onChange={(e) => set(f, e.target.value)}
-            />
-          </>
-        ),
+          <input
+            key={f}
+            type="text"
+            placeholder={placeholders[f]}
+            className={inputCls}
+            value={form[f] || ""}
+            onChange={(e) => set(f, e.target.value)}
+          />
+        )
       )}
       <button
         onClick={async () => {
@@ -232,9 +193,70 @@ function InquiryForm({ fields = [] }) {
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
 export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
+  const { id: paramId } = useParams();
   const location = useLocation();
   const stateBusiness = location.state?.business;
-  const d = data;
+  const targetId = paramId || stateBusiness?.id;
+
+  // Fetch business details from API if ID is available
+  const { data: apiBusiness, isLoading } = useGetBusinessDetailsQuery(targetId, {
+    skip: !targetId,
+  });
+
+  const b = apiBusiness || stateBusiness;
+
+  // Construct dynamic data object `d`
+  const d = {
+    badge: b ? (b.is_featured ? "Featured Business" : null) : data.badge,
+    name: b?.name || data.name,
+    subtitle: b
+      ? b.services_tags || (b.community ? `${b.community.name}, ${b.community.state}` : "")
+      : data.subtitle,
+    coverImage:
+      b?.flyer_image ||
+      (b?.community?.image) ||
+      data.coverImage,
+    logoImage: b?.flyer_image || data.logoImage,
+
+    actions: {
+      call: b?.business_phone || b?.contact_phone || data.actions?.call,
+      website: b?.website || data.actions?.website,
+      instagram: b?.instagram || data.actions?.instagram,
+      facebook: b?.facebook || data.actions?.facebook,
+      business_phone: b?.business_phone || data.actions?.business_phone,
+      other_social_link: b?.other_social_link || data.actions?.other_social_link,
+    },
+
+    about: b?.description || data.about,
+
+    gallery:
+      b?.photos && Array.isArray(b.photos) && b.photos.length > 0 && typeof b.photos[0] === "string"
+        ? b.photos
+        : b?.flyer_image
+          ? [b.flyer_image]
+          : data.gallery,
+
+    video: b?.promo_video_link ? { src: b.promo_video_link } : data.video,
+
+    tags: b?.services_tags
+      ? b.services_tags.split(",").map((t) => t.trim()).filter(Boolean)
+      : data.tags,
+
+    related: data.related,
+
+    contact: {
+      phone: b?.business_phone || b?.contact_phone || data.contact?.phone,
+      email: b?.contact_email || data.contact?.email,
+      address:
+        b?.business_address ||
+        (b?.community ? `${b.community.name}, ${b.community.state}` : data.contact?.address),
+      website: b?.website || data.contact?.website,
+    },
+
+    hours: b?.business_hours || data.hours,
+    inquiry: data.inquiry,
+  };
+
   const days = [
     "Sunday",
     "Monday",
@@ -245,6 +267,17 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
     "Saturday",
   ];
   const today = days[new Date().getDay()];
+
+  if (isLoading && !stateBusiness) {
+    return (
+      <div className="min-h-screen bg-[#f8f7f3] font-sans flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="w-16 h-16 bg-gray-300 rounded-full mb-4"></div>
+          <div className="h-6 w-48 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
@@ -263,7 +296,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
 
         <button
           onClick={onBack || (() => window.history.back())}
-          className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-sm text-black bg-white/40 backdrop-blur-sm px-3 py-1.5 rounded-full transition-colors"
+          className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-sm text-black bg-white/40 backdrop-blur-sm px-3 py-1.5 rounded-full transition-colors cursor-pointer"
         >
           <FiArrowLeft size={15} /> Back
         </button>
@@ -291,23 +324,29 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
           <h1 className="text-lg md:text-2xl xl:text-4xl font-bold text-gray-900 leading-tight">
             {d.name}
           </h1>
-          <p className="text-xs lg:text-base text-gray-500 mt-0.5">
-            {d.subtitle}
-          </p>
+          {d.subtitle && (
+            <p className="text-xs lg:text-base text-gray-500 mt-0.5">
+              {d.subtitle}
+            </p>
+          )}
 
           {/* Action buttons */}
-          <div className="flex flex-wrap gap-2 mt-2.5">
+          <div className="flex flex-wrap items-center gap-2 mt-2.5">
             {d.actions?.call && (
               <a
                 href={`tel:${d.actions.call}`}
-                className="flex items-center gap-1.5 bg-primary text-white font-medium px-3 py-1.5 rounded-full transition-colors"
+                className="flex items-center gap-1.5 bg-[#085027] text-white font-medium px-3 py-1.5 rounded-full transition-colors"
               >
                 <FiPhone size={18} /> Call
               </a>
             )}
             {d.actions?.website && (
               <a
-                href={`https://${d.actions.website}`}
+                href={
+                  d.actions.website.startsWith("http")
+                    ? d.actions.website
+                    : `https://${d.actions.website}`
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1.5 text-black border-2 font-medium px-3 py-1.5 rounded-full transition-colors"
@@ -317,16 +356,27 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
             )}
             {d.actions?.instagram && (
               <a
-                href="#"
+                href={
+                  d.actions.instagram.startsWith("http")
+                    ? d.actions.instagram
+                    : `https://instagram.com/${d.actions.instagram.replace("@", "")}`
+                }
+                target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-1.5 text-black border-2 font-medium px-3 py-1.5 rounded-full transition-colors"
               >
                 <FiInstagram size={18} /> Instagram
               </a>
             )}
-            {d.actions?.visitLabel && (
-              <button className="flex items-center gap-1.5 bg-[#D4AF37] font-medium px-4 py-1.5 rounded-full transition-colors">
-                <PlayIcon size={18} /> {d.actions.visitLabel}
-              </button>
+            {d.actions?.business_phone && (
+              <a href={`https://wa.me/${d.actions.business_phone}`} target="_blank" rel="noopener noreferrer">
+                <img src={whatsapp} alt="whatsapp" className="w-12" />
+              </a>
+            )}
+            {d.actions?.other_social_link && (
+              <a href={`https://wa.me/${d.actions.other_social_link}`} target="_blank" rel="noopener noreferrer">
+                <img src={ubereats} alt="ubereats" className="w-11" />
+              </a>
             )}
           </div>
         </div>
@@ -352,18 +402,18 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
           {d.gallery?.length > 0 && (
             <section>
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2 lg:mb-4">
-                Inside The Caffe
+                Gallery
               </h2>
               <div className="grid grid-cols-3 gap-2">
                 {d.gallery.map((img, i) => (
                   <div
                     key={i}
-                    className="overflow-hidden"
+                    className="overflow-hidden rounded-xl"
                     style={{ height: 250 }}
                   >
                     <img
                       src={img}
-                      alt=""
+                      alt={`Gallery ${i}`}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>
@@ -375,7 +425,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
           {/* Video */}
           {d.video && (
             <section>
-              <h2 className="text-sm md:text-lg xl:text-2xl  font-bold text-gray-900 mb-2">
+              <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2">
                 Video
               </h2>
               <VideoPlayer video={d.video} />
@@ -385,7 +435,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
           {/* Tags */}
           {d.tags?.length > 0 && (
             <section>
-              <h2 className="text-sm md:text-lg xl:text-2xl  font-bold text-gray-900 mb-2">
+              <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2">
                 Tags
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -434,62 +484,6 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
               </div>
             </section>
           )}
-
-          {/* Reviews */}
-          {/* {d.reviews?.length > 0 && (
-            <section>
-              <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3">
-                Customer Reviews
-              </h2>
-              <div className="space-y-3">
-                {d.reviews.map((r, i) => (
-                  <div
-                    key={i}
-                    className="bg-[#F5F5F5] rounded-2xl border border-gray-100 shadow-sm px-4 py-3.5"
-                  >
-                    <div className="">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start gap-3">
-                          <div className="w-12 h-12 text-lg flex items-center justify-center rounded-full font-bold text-primary bg-green-50">
-                            S
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-1">
-                              {" "}
-                              <span className="text-xs md:text-sm lg:text-base xl:text-lg font-bold text-gray-900">
-                                {r.name}
-                              </span>
-                              {r.badge && (
-                                <span className="text-xs bg-green-50 text-green-700 border border-green-200 px-1.5 py-0.5 rounded-full font-medium">
-                                  {r.badge}
-                                </span>
-                              )}
-                              <div className="flex items-center gap-1" />
-                            </div>
-                            <div className="text-sm text-gray-400">
-                              May 15, 2026
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex gap-1">
-                          {" "}
-                          <FaStar className="text-yellow-500" />
-                          <FaStar className="text-yellow-500" />
-                          <FaStar className="text-yellow-500" />
-                          <FaStar className="text-yellow-500" />
-                          <FaStar className="text-yellow-500" />
-                        </div>
-                      </div>
-                    </div>
-                    <p className=" text-gray-500 mt-4 leading-relaxed">
-                      {r.text}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )} */}
         </div>
 
         {/* ── RIGHT ── */}
@@ -594,36 +588,24 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
               <h3 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3">
                 Business Hours
               </h3>
-              <div className="space-y-1.5">
-                {Object.entries(d.hours).map(([day, hours]) => (
-                  <div
-                    key={day}
-                    className={`flex justify-between text-xs lg:text-base ${day === today ? "font-semibold text-[#085027]" : "text-gray-500"}`}
-                  >
-                    <span>{day}</span>
-                    <span>{hours}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Certifications */}
-          {d.certifications?.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-              <h3 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3 lg:mb-6">
-                Certifications
-              </h3>
-              <div className="flex flex-wrap gap-1.5">
-                {d.certifications.map((c) => (
-                  <span
-                    key={c}
-                    className="border border-gray-300 bg-primary/10 text-primary text-xs lg:text-base px-2.5 py-1 rounded font-medium"
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
+              {typeof d.hours === "object" ? (
+                <div className="space-y-1.5">
+                  {Object.entries(d.hours).map(([day, hours]) => (
+                    <div
+                      key={day}
+                      className={`flex justify-between text-xs lg:text-base ${day === today ? "font-semibold text-[#085027]" : "text-gray-500"
+                        }`}
+                    >
+                      <span>{day}</span>
+                      <span>{hours}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-xs lg:text-base text-gray-600 font-medium">
+                  {d.hours}
+                </div>
+              )}
             </div>
           )}
 

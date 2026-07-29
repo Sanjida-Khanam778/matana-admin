@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Upload, Check, AlertTriangle, X } from "lucide-react";
+import { Upload, Check, AlertTriangle, X, CreditCard, Shield, Loader } from "lucide-react";
 import price1 from "../../assets/icons/price1.png";
 import price2 from "../../assets/icons/price2.png";
 import price3 from "../../assets/icons/price3.png";
@@ -9,6 +9,7 @@ import {
   useUploadMediaMutation,
   useRegisterBusinessMutation,
   useGetCommunitiesQuery,
+  useGetOrderSummaryQuery,
 } from "../../Api/businessDirectoryApi";
 
 // ── Plan UI metadata (icons, features, limits) ────────────────────────────
@@ -24,8 +25,8 @@ const PLAN_META = {
       "Contact Information and Social Media Platforms",
       "Business Directory (up to 5 lines)",
     ],
-    maxPhotos: 0,       // no gallery
-    maxDescChars: 250,  // ~5 lines
+    maxPhotos: 0,
+    maxDescChars: 250,
   },
   featured: {
     name: "Featured Partner",
@@ -40,7 +41,7 @@ const PLAN_META = {
       "Business Description (up to 7 lines)",
     ],
     maxPhotos: 5,
-    maxDescChars: 350,  // ~7 lines
+    maxDescChars: 350,
   },
   premium: {
     name: "Premium Partner",
@@ -57,7 +58,7 @@ const PLAN_META = {
       "Business Description (up to 10 lines)",
     ],
     maxPhotos: 10,
-    maxDescChars: 500,  // ~10 lines
+    maxDescChars: 500,
   },
 };
 
@@ -79,7 +80,7 @@ function UploadBox({ label, multiple = false, files = [], onAdd, onRemove, warni
   const handleChange = (e) => {
     const newFiles = Array.from(e.target.files || []);
     if (newFiles.length > 0) onAdd(newFiles);
-    e.target.value = ""; // reset so same file can be re-selected
+    e.target.value = "";
   };
 
   return (
@@ -100,7 +101,6 @@ function UploadBox({ label, multiple = false, files = [], onAdd, onRemove, warni
         />
       </div>
 
-      {/* Warning */}
       {warning && (
         <div className="flex items-start gap-1.5 mt-1.5 text-amber-600 text-[11.5px]">
           <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-px" />
@@ -108,7 +108,6 @@ function UploadBox({ label, multiple = false, files = [], onAdd, onRemove, warni
         </div>
       )}
 
-      {/* File chips */}
       {files.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-2">
           {files.map((f, i) => (
@@ -132,22 +131,22 @@ function UploadBox({ label, multiple = false, files = [], onAdd, onRemove, warni
   );
 }
 
-// ── Shared input class ────────────────────────────────────────────────────
 const inputCls =
   "w-full px-3.5 py-3 rounded-xl border-[1.5px] border-gray bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800";
 
-// ── Main Component ────────────────────────────────────────────────────────
+// iFields PUBLIC key — safe for frontend. This key can ONLY be used with
+// the iFields tokenization flow (getTokens), never with direct gateway calls.
+const SOLA_IFIELDS_KEY = "matanashop3799067ff16b498c9b0b31b1e3aadfad";
+
 export default function Pricing() {
   const formRef = useRef(null);
 
-  // ── API hooks ─────────────────────────────────────────────────────────
   const { data: plansData, isLoading: plansLoading } = useGetPlansQuery();
   const { data: categoriesData, isLoading: catsLoading } = useGetCategoriesQuery();
   const { data: communities, isLoading: communitiesLoading } = useGetCommunitiesQuery();
   const [uploadMedia] = useUploadMediaMutation();
   const [registerBusiness, { isLoading: submitting }] = useRegisterBusinessMutation();
 
-  // ── Plan selection ────────────────────────────────────────────────────
   const [plan, setPlan] = useState("standard");
   const planMeta = PLAN_META[plan] ?? PLAN_META.standard;
 
@@ -158,11 +157,9 @@ export default function Pricing() {
     ...PLAN_META[p.tier],
   }));
 
-  // ── Payment options ───────────────────────────────────────────────────
   const [paymentType, setPaymentType] = useState("recurring");
   const [durationMonths, setDurationMonths] = useState(3);
 
-  // ── Categories (store full {id, name} objects) ────────────────────────
   const [cats, setCats] = useState([]);
   const toggleCat = (cat) =>
     setCats((prev) =>
@@ -171,7 +168,6 @@ export default function Pricing() {
         : [...prev, cat]
     );
 
-  // ── Form fields ───────────────────────────────────────────────────────
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [contactName, setContactName] = useState("");
@@ -187,28 +183,87 @@ export default function Pricing() {
   const [otherSocialLink, setOtherSocialLink] = useState("");
   const [servicesTags, setServicesTags] = useState("");
   const [website, setWebsite] = useState("");
-  const [promoVideoLink, setPromoVideoLink] = useState("");
 
-  // ── Image state ───────────────────────────────────────────────────────
+  // ── Card fields ──
+  // Card number & CVV live entirely inside Cardknox's iframes below
+  // (#card-number / #cvv). React never sees the raw digits — it only
+  // reads the single-use tokens (SUTs) that Cardknox writes into the
+  // hidden inputs after getTokens() succeeds. Only expiry is plain state.
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [iFieldsReady, setIFieldsReady] = useState(false);
+
+  // Refs to the hidden inputs Cardknox's script populates with SUTs
+  const cardNumTokenRef = useRef(null);
+  const cvvTokenRef = useRef(null);
+
+  const handleExpiryChange = (e) => {
+    let raw = e.target.value.replace(/\D/g, "").slice(0, 4);
+    if (raw.length >= 3) raw = raw.slice(0, 2) + "/" + raw.slice(2);
+    setCardExpiry(raw);
+  };
+
+  const [promoVideoLink, setPromoVideoLink] = useState("");
   const [galleryFiles, setGalleryFiles] = useState([]);
   const [galleryWarning, setGalleryWarning] = useState("");
   const [flyerFiles, setFlyerFiles] = useState([]);
+  const [cardTokenReady, setCardTokenReady] = useState(false);
+  const [tokenizing, setTokenizing] = useState(false);
 
-  // ── Submit feedback ───────────────────────────────────────────────────
+  // Initialise Cardknox / Sola iFields once the CDN script has loaded.
+  // The script is expected to be added in index.html:
+  //   <script src="https://cdn.cardknox.com/ifields/latest/ifields.min.js"></script>
+  useEffect(() => {
+    let interval;
+    let stopTimeout;
+
+    const init = () => {
+      if (typeof window.setAccount === "function") {
+        window.setAccount(SOLA_IFIELDS_KEY, "Matana", "1.0.0");
+        if (typeof window.enableAutoFormatting === "function") {
+          window.enableAutoFormatting();
+        }
+        setIFieldsReady(true);
+      }
+    };
+
+    if (typeof window.setAccount === "function") {
+      init();
+    } else {
+      // iFields script loads async — poll briefly until it's available
+      interval = setInterval(() => {
+        if (typeof window.setAccount === "function") {
+          clearInterval(interval);
+          init();
+        }
+      }, 300);
+      // Give up after 10s so the UI doesn't spin forever if the script
+      // never loads (missing script tag, blocked domain, etc.)
+      stopTimeout = setTimeout(() => clearInterval(interval), 10000);
+    }
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(stopTimeout);
+    };
+  }, []);
+
   const [uploadingImages, setUploadingImages] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  // ── Derived values ────────────────────────────────────────────────────
   const selectedPlanApi = (plansData ?? []).find((p) => p.tier === plan);
   const basePrice = selectedPlanApi ? parseFloat(selectedPlanApi.base_price) : 0;
-  const displayAmount =
-    paymentType === "one_time"
-      ? `$${(basePrice * durationMonths).toFixed(0)} total`
-      : `$${basePrice.toFixed(0)}/month`;
   const descOverLimit = description.length > planMeta.maxDescChars;
 
-  // Reset gallery if plan downgrades below current photo count
+  const orderSummaryArgs = selectedPlanApi?.id
+    ? { plan_id: selectedPlanApi.id, duration_months: durationMonths, payment_type: paymentType }
+    : null;
+  const {
+    data: orderSummary,
+    isLoading: summaryLoading,
+    isError: summaryError,
+  } = useGetOrderSummaryQuery(orderSummaryArgs, { skip: !orderSummaryArgs });
+
   useEffect(() => {
     if (galleryFiles.length > planMeta.maxPhotos) {
       setGalleryFiles((prev) => prev.slice(0, planMeta.maxPhotos));
@@ -222,13 +277,11 @@ export default function Pricing() {
     }
   }, [plan]);
 
-  // Scroll form into view on plan change
   useEffect(() => {
     if (formRef.current)
       formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [plan]);
 
-  // ── Gallery handlers ──────────────────────────────────────────────────
   const handleAddGallery = (newFiles) => {
     setGalleryWarning("");
     if (planMeta.maxPhotos === 0) {
@@ -262,7 +315,6 @@ export default function Pricing() {
   const handleSubmit = async () => {
     setSubmitError("");
 
-    // Basic validation
     if (
       !name.trim() ||
       !contactName.trim() ||
@@ -279,9 +331,53 @@ export default function Pricing() {
       );
       return;
     }
+    if (!iFieldsReady) {
+      setSubmitError("Payment form is still loading. Please wait a moment and try again.");
+      return;
+    }
+    if (!cardExpiry || cardExpiry.length < 5) {
+      setSubmitError("Please enter a valid expiry date (MM/YY).");
+      return;
+    }
 
+    // Step 0 — Ask Cardknox to tokenize whatever the user typed into the
+    // card-number / CVV iframes. Card data never leaves those iframes;
+    // Cardknox's own script writes the resulting SUTs into our hidden
+    // inputs (data-ifields-id="card-number-token" / "cvv-token").
+    setTokenizing(true);
     try {
-      // Step 1 — Upload gallery + flyer images sequentially
+      await new Promise((resolve, reject) => {
+        window.getTokens(
+          () => resolve(),
+          (err) => reject(err),
+          8000
+        );
+      });
+    } catch (err) {
+      setTokenizing(false);
+      setSubmitError("Card could not be verified. Please check your card details.");
+      return;
+    }
+    setTokenizing(false);
+
+    const cardSut = cardNumTokenRef.current?.value;
+    const cvvSut = cvvTokenRef.current?.value;
+
+    if (!cardSut || !cvvSut) {
+      setSubmitError("Card could not be verified. Please check your card details.");
+      return;
+    }
+    setCardTokenReady(true);
+
+    // Step 1+ — Upload images and register business.
+    // Sends the SUTs (not raw card data) + expiry to our backend.
+    // Backend must exchange the SUTs for a real charge/save using the
+    // PRIVATE Cardknox key — see backend notes.
+    await submitRegistration(cardSut, cvvSut, cardExpiry.replace("/", ""));
+  };
+
+  const submitRegistration = async (cardSut, cvvSut, expiry) => {
+    try {
       setUploadingImages(true);
       const photoIds = [];
 
@@ -289,7 +385,6 @@ export default function Pricing() {
         const fd = new FormData();
         fd.append("image", file);
         const res = await uploadMedia(fd).unwrap();
-        console.log("gallery upload res::", res);
         if (res[0]?.id) photoIds.push(res[0].id);
       }
 
@@ -298,13 +393,11 @@ export default function Pricing() {
         const fd = new FormData();
         fd.append("image", file);
         const res = await uploadMedia(fd).unwrap();
-        console.log("flyer upload res::", res);
         if (res[0]?.id) flyerImageId = res[0].id;
       }
 
       setUploadingImages(false);
 
-      // Step 2 — Register business
       const body = {
         name,
         description,
@@ -325,7 +418,10 @@ export default function Pricing() {
         plan_id: selectedPlanApi?.id,
         payment_type: paymentType,
         duration_months: durationMonths,
-        payment_method_id: "pm_card_visa",
+        // These replace the old payment_method_id / raw card fields.
+        card_sut: cardSut,
+        card_cvv_sut: cvvSut,
+        card_expiry: expiry, // MMYY
         photo_ids: photoIds,
         flyer_image: flyerImageId,
         ...(plan === "premium" && promoVideoLink
@@ -349,7 +445,6 @@ export default function Pricing() {
     }
   };
 
-  // ── Success screen ────────────────────────────────────────────────────
   if (submitSuccess) {
     return (
       <div className="bg-[#f8f7f3] min-h-[60vh] flex items-center justify-center p-8">
@@ -367,10 +462,8 @@ export default function Pricing() {
     );
   }
 
-  // ── Render ────────────────────────────────────────────────────────────
   return (
     <div className="bg-[#f8f7f3] font-inter text-gray-900">
-      {/* ── Hero ── */}
       <div className="px-6 pt-6 pb-16 text-center">
         <div className="text-xs sm:text-sm tracking-widest uppercase text-primary font-semibold mb-4">
           MATANA &middot; BUSINESS DIRECTORY
@@ -385,7 +478,6 @@ export default function Pricing() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 pb-20">
-        {/* ── Step 1: Plan Cards ── */}
         <div className="grid md:grid-cols-3 gap-5 -mt-7 relative z-10">
           {plansLoading &&
             [1, 2, 3].map((i) => (
@@ -449,20 +541,11 @@ export default function Pricing() {
           })}
         </div>
 
-        {/* ── Form ── */}
         <div ref={formRef} className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5">
-
-          {/* ── Step 2: Payment Type & Duration ── */}
           <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 space-y-4">
-            <p className="text-[13px] font-bold text-gray-800 mb-1">
-              Payment Options
-            </p>
-
-            {/* Payment type */}
+            <p className="text-[13px] font-bold text-gray-800 mb-1">Payment Options</p>
             <div>
-              <p className="text-[12.5px] font-semibold text-gray-600 mb-2">
-                Payment Type
-              </p>
+              <p className="text-[12.5px] font-semibold text-gray-600 mb-2">Payment Type</p>
               <div className="flex gap-3">
                 {PAYMENT_TYPES.map((pt) => (
                   <button
@@ -481,11 +564,8 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Duration */}
             <div>
-              <p className="text-[12.5px] font-semibold text-gray-600 mb-2">
-                Duration
-              </p>
+              <p className="text-[12.5px] font-semibold text-gray-600 mb-2">Duration</p>
               <div className="flex gap-3">
                 {DURATION_OPTIONS.map((d) => (
                   <button
@@ -504,15 +584,135 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Summary pill */}
-            <div className="text-[12px] text-green-800 font-semibold bg-green-50 border border-green-100 rounded-xl px-4 py-2.5">
-              {planMeta.name} &middot;{" "}
-              {paymentType === "recurring" ? "Monthly Recurring" : "One-Time Payment"} &middot;{" "}
-              {durationMonths} months &middot; {displayAmount}
+            <div className="rounded-xl border border-green-200 bg-white overflow-hidden">
+              <div className="bg-green-900 px-4 py-2.5 flex items-center justify-between">
+                <span className="text-white text-[12.5px] font-bold tracking-wide">Order Summary</span>
+                {summaryLoading && <Loader className="w-3.5 h-3.5 text-green-200 animate-spin" />}
+              </div>
+              <div className="px-4 py-3 space-y-2">
+                {summaryError && (
+                  <p className="text-[12px] text-red-500">Unable to load pricing. Please try again.</p>
+                )}
+                {!summaryLoading && !summaryError && orderSummary && (
+                  <>
+                    <div className="flex justify-between text-[12.5px] text-gray-600">
+                      <span>Plan</span>
+                      <span className="font-medium text-gray-800">{planMeta.name}</span>
+                    </div>
+                    <div className="flex justify-between text-[12.5px] text-gray-600">
+                      <span>Billing</span>
+                      <span className="font-medium text-gray-800">
+                        {orderSummary.payment_type === "recurring" ? "Monthly Recurring" : "One-Time Payment"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-[12.5px] text-gray-600">
+                      <span>Duration</span>
+                      <span className="font-medium text-gray-800">{orderSummary.duration_months} months</span>
+                    </div>
+                    <div className="flex justify-between text-[12.5px] text-gray-600">
+                      <span>Base monthly price</span>
+                      <span className="font-medium text-gray-800">${parseFloat(orderSummary.base_monthly_price).toFixed(2)}/mo</span>
+                    </div>
+                    {orderSummary.discount_amount > 0 && (
+                      <div className="flex justify-between text-[12.5px] text-green-700">
+                        <span>Discount ({orderSummary.discount_percent}% off)</span>
+                        <span className="font-semibold">-${parseFloat(orderSummary.discount_amount).toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="border-t border-gray-100 pt-2 mt-1 flex justify-between">
+                      <span className="text-[13px] font-bold text-gray-900">Total</span>
+                      <span className="text-[13px] font-bold text-green-800">
+                        ${parseFloat(orderSummary.final_total_price).toFixed(2)}
+                      </span>
+                    </div>
+                  </>
+                )}
+                {!summaryLoading && !summaryError && !orderSummary && (
+                  <p className="text-[12px] text-gray-400">Select a plan to see pricing.</p>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* ── Business Name ── */}
+          {/* ── Card Details (Cardknox iFields — real iframes) ── */}
+          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 space-y-4">
+            <div className="flex items-center gap-2 mb-1">
+              <CreditCard className="w-4 h-4 text-gray-600" />
+              <p className="text-[13px] font-bold text-gray-800">Card Details</p>
+              <span className="ml-auto flex items-center gap-1 text-[11px] text-gray-400">
+                <Shield className="w-3 h-3" /> Secured by Sola
+              </span>
+            </div>
+
+            <div>
+              <label className="block text-[12.5px] font-semibold text-gray-600 mb-1.5">
+                Card Number
+              </label>
+              <div className="rounded-xl border-[1.5px] border-gray bg-white h-[46px] overflow-hidden px-2">
+                <iframe
+                  data-ifields-id="card-number"
+                  data-ifields-placeholder="1234 5678 9012 3456"
+                  src="https://cdn.cardknox.com/ifields/latest/ifield.htm"
+                  title="Card Number"
+                  style={{ width: "100%", height: "100%", border: "none" }}
+                />
+              </div>
+              <input
+                ref={cardNumTokenRef}
+                data-ifields-id="card-number-token"
+                name="xCardNum"
+                type="hidden"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[12.5px] font-semibold text-gray-600 mb-1.5">
+                  CVV
+                </label>
+                <div className="rounded-xl border-[1.5px] border-gray bg-white h-[46px] overflow-hidden px-2">
+                  <iframe
+                    data-ifields-id="cvv"
+                    data-ifields-placeholder="123"
+                    src="https://cdn.cardknox.com/ifields/latest/ifield.htm"
+                    title="CVV"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                  />
+                </div>
+                <input
+                  ref={cvvTokenRef}
+                  data-ifields-id="cvv-token"
+                  name="xCVV"
+                  type="hidden"
+                />
+              </div>
+              <div>
+                <label className="block text-[12.5px] font-semibold text-gray-600 mb-1.5">
+                  Expiry
+                </label>
+                <input
+                  type="text"
+                  placeholder="MM / YY"
+                  maxLength={7}
+                  value={cardExpiry}
+                  onChange={handleExpiryChange}
+                  className={inputCls}
+                />
+              </div>
+            </div>
+
+            {!iFieldsReady && (
+              <div className="flex items-center gap-1.5 text-[11.5px] text-gray-400">
+                <Loader className="w-3.5 h-3.5 animate-spin" /> Loading secure payment form…
+              </div>
+            )}
+            {cardTokenReady && (
+              <div className="flex items-center gap-1.5 text-[11.5px] text-green-700 font-medium">
+                <Check className="w-3.5 h-3.5" /> Card verified securely
+              </div>
+            )}
+          </div>
+
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
               Business Name <span className="text-red-500">*</span>
@@ -526,7 +726,6 @@ export default function Pricing() {
             />
           </div>
 
-          {/* ── Categories ── */}
           <div>
             <label className="block text-[13px] font-semibold mb-2.5">
               Categories <span className="text-red-500">*</span>
@@ -553,7 +752,6 @@ export default function Pricing() {
             <div className="text-[11.5px] text-gray-500">Select all that apply</div>
           </div>
 
-          {/* ── Contact name + phone ── */}
           <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="block text-[13px] font-semibold mb-1.5">
@@ -584,7 +782,6 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* ── Email + City ── */}
           <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="block text-[13px] font-semibold mb-1.5">
@@ -617,7 +814,6 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* ── Business address + phone ── */}
           <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="block text-[13px] font-semibold mb-1.5">
@@ -633,7 +829,7 @@ export default function Pricing() {
             </div>
             <div>
               <label className="block text-[13px] font-semibold mb-1.5">
-                Business phone number <span className="text-red-500">*</span>
+                Business whatsapp number <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
@@ -648,11 +844,8 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* ── Business hours ── */}
           <div>
-            <label className="block text-[13px] font-semibold mb-1.5">
-              Business hours
-            </label>
+            <label className="block text-[13px] font-semibold mb-1.5">Business hours</label>
             <input
               type="text"
               placeholder="e.g. Sun-Thu 9am-6pm, Fri 9am-2pm, Sat closed"
@@ -662,7 +855,6 @@ export default function Pricing() {
             />
           </div>
 
-          {/* ── Serving areas ── */}
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
               Serving areas{" "}
@@ -677,12 +869,9 @@ export default function Pricing() {
             />
           </div>
 
-          {/* ── Instagram + Facebook ── */}
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5">
-                Instagram
-              </label>
+              <label className="block text-[13px] font-semibold mb-1.5">Instagram</label>
               <input
                 type="text"
                 placeholder="@yourbusiness"
@@ -692,9 +881,7 @@ export default function Pricing() {
               />
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5">
-                Facebook
-              </label>
+              <label className="block text-[13px] font-semibold mb-1.5">Facebook</label>
               <input
                 type="text"
                 placeholder="facebook.com/yourbusiness"
@@ -705,13 +892,10 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* ── Other social ── */}
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
-              Other social link{" "}
-              <span className="text-gray-500 font-normal text-[12px]">
-                optional — TikTok, LinkedIn, etc.
-              </span>
+             Uber Eats link{" "}
+            
             </label>
             <input
               type="text"
@@ -721,11 +905,8 @@ export default function Pricing() {
             />
           </div>
 
-          {/* ── Services / tags ── */}
           <div>
-            <label className="block text-[13px] font-semibold mb-1.5">
-              Services / tags
-            </label>
+            <label className="block text-[13px] font-semibold mb-1.5">Services / tags</label>
             <input
               type="text"
               placeholder="comma separated, e.g. Catering, Bar Mitzvah, Kosher"
@@ -738,11 +919,9 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* ── Website ── */}
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
               Website{" "}
-              <span className="text-gray-500 font-normal text-[12px]">optional</span>
             </label>
             <input
               type="text"
@@ -752,7 +931,6 @@ export default function Pricing() {
             />
           </div>
 
-          {/* ── Description with per-plan char limit ── */}
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
               Description <span className="text-red-500">*</span>
@@ -780,7 +958,6 @@ export default function Pricing() {
             )}
           </div>
 
-          {/* ── Featured: photo gallery (up to 5) ── */}
           {plan === "featured" && (
             <div>
               <label className="block text-[13px] font-semibold mb-1.5">
@@ -800,7 +977,6 @@ export default function Pricing() {
             </div>
           )}
 
-          {/* ── Premium: photo gallery (up to 10) + promo video ── */}
           {plan === "premium" && (
             <>
               <div>
@@ -837,32 +1013,6 @@ export default function Pricing() {
             </>
           )}
 
-          {/* ── Payment / billing box ── */}
-          {/* <div className="bg-amber-50 border-[1.5px] border-amber-200 rounded-2xl p-5 text-[12.5px] leading-relaxed text-amber-900">
-            Matana offers a 30-day free trial. Your card will be securely tokenized
-            but will not be charged unless or until your free trial ends. During your
-            free trial, you can upgrade or downgrade at any time. After that, your
-            card will be automatically charged{" "}
-            <strong>{displayAmount}</strong> until you cancel. You can cancel or
-            downgrade at any time from your account settings.
-            <div className="flex gap-2.5 mt-3">
-              <input
-                type="text"
-                placeholder="Payment method ID (e.g. pm_1xyz…)"
-                value={paymentMethodId}
-                onChange={(e) => setPaymentMethodId(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 rounded-lg border-[1.5px] border-amber-200 bg-white text-[13px] placeholder-gray-400 focus:outline-none focus:border-green-800"
-              />
-              <button
-                type="button"
-                className="px-5 rounded-lg bg-green-900 text-white font-semibold text-[13px] hover:bg-green-800"
-              >
-                Save
-              </button>
-            </div>
-          </div> */}
-
-          {/* ── Flyer image ── */}
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
               Flyer image <span className="text-red-500">*</span>
@@ -875,7 +1025,6 @@ export default function Pricing() {
             />
           </div>
 
-          {/* ── Error banner ── */}
           {submitError && (
             <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-[12.5px] text-red-700">
               <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
@@ -883,15 +1032,16 @@ export default function Pricing() {
             </div>
           )}
 
-          {/* ── Submit button ── */}
           <div className="flex justify-end pt-1">
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={submitting || uploadingImages || descOverLimit}
+              disabled={submitting || uploadingImages || tokenizing || descOverLimit}
               className="bg-green-900 text-white px-7 py-3 rounded-full font-bold text-[13.5px] hover:bg-green-800 disabled:opacity-60 disabled:cursor-not-allowed transition-opacity"
             >
-              {uploadingImages
+              {tokenizing
+                ? "Securing card…"
+                : uploadingImages
                 ? "Uploading images…"
                 : submitting
                 ? "Submitting…"
