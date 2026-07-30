@@ -24,7 +24,6 @@ export const router = createBrowserRouter([
         path: "all-categories",
         element: <AllCategories />,
       },
-      
       {
         path: "all-stores/:categoryName?",
         element: <AllCategories />,
@@ -34,8 +33,8 @@ export const router = createBrowserRouter([
         element: <AllEvents />,
       },
       {
-        path: "category-details",
-        element: <DetailPage />,
+        path: "category-details/:id?",
+        element: <CommunityDetails />,
       },
       {
         path: "all-community",

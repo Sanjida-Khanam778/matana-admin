@@ -185,10 +185,6 @@ export default function Pricing() {
   const [website, setWebsite] = useState("");
 
   // ── Card fields ──
-  // Card number & CVV live entirely inside Cardknox's iframes below
-  // (#card-number / #cvv). React never sees the raw digits — it only
-  // reads the single-use tokens (SUTs) that Cardknox writes into the
-  // hidden inputs after getTokens() succeeds. Only expiry is plain state.
   const [cardExpiry, setCardExpiry] = useState("");
   const [iFieldsReady, setIFieldsReady] = useState(false);
 
@@ -209,18 +205,18 @@ export default function Pricing() {
   const [cardTokenReady, setCardTokenReady] = useState(false);
   const [tokenizing, setTokenizing] = useState(false);
 
-  // Initialise Cardknox / Sola iFields once the CDN script has loaded.
-  // The script is expected to be added in index.html:
-  //   <script src="https://cdn.cardknox.com/ifields/latest/ifields.min.js"></script>
   useEffect(() => {
     let interval;
-    let stopTimeout;
 
     const init = () => {
       if (typeof window.setAccount === "function") {
-        window.setAccount(SOLA_IFIELDS_KEY, "Matana", "1.0.0");
-        if (typeof window.enableAutoFormatting === "function") {
-          window.enableAutoFormatting();
+        try {
+          window.setAccount(SOLA_IFIELDS_KEY, "Matana", "1.0");
+          if (typeof window.enableAutoFormatting === "function") {
+            window.enableAutoFormatting();
+          }
+        } catch (e) {
+          console.error("iFields init error:", e);
         }
         setIFieldsReady(true);
       }
@@ -229,21 +225,16 @@ export default function Pricing() {
     if (typeof window.setAccount === "function") {
       init();
     } else {
-      // iFields script loads async — poll briefly until it's available
       interval = setInterval(() => {
         if (typeof window.setAccount === "function") {
           clearInterval(interval);
           init();
         }
-      }, 300);
-      // Give up after 10s so the UI doesn't spin forever if the script
-      // never loads (missing script tag, blocked domain, etc.)
-      stopTimeout = setTimeout(() => clearInterval(interval), 10000);
+      }, 200);
     }
 
     return () => {
       clearInterval(interval);
-      clearTimeout(stopTimeout);
     };
   }, []);
 
@@ -252,7 +243,6 @@ export default function Pricing() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const selectedPlanApi = (plansData ?? []).find((p) => p.tier === plan);
-  const basePrice = selectedPlanApi ? parseFloat(selectedPlanApi.base_price) : 0;
   const descOverLimit = description.length > planMeta.maxDescChars;
 
   const orderSummaryArgs = selectedPlanApi?.id
@@ -332,25 +322,33 @@ export default function Pricing() {
       return;
     }
     if (!iFieldsReady) {
-      setSubmitError("Payment form is still loading. Please wait a moment and try again.");
-      return;
+      if (typeof window.setAccount === "function") {
+        try {
+          window.setAccount(SOLA_IFIELDS_KEY, "Matana", "1.0.0");
+          setIFieldsReady(true);
+        } catch (e) {}
+      } else {
+        setSubmitError("Payment form is still loading. Please wait a moment and try again.");
+        return;
+      }
     }
     if (!cardExpiry || cardExpiry.length < 5) {
       setSubmitError("Please enter a valid expiry date (MM/YY).");
       return;
     }
 
-    // Step 0 — Ask Cardknox to tokenize whatever the user typed into the
-    // card-number / CVV iframes. Card data never leaves those iframes;
-    // Cardknox's own script writes the resulting SUTs into our hidden
-    // inputs (data-ifields-id="card-number-token" / "cvv-token").
+    // Step 0 — Tokenize card data from Cardknox iframes
     setTokenizing(true);
     try {
       await new Promise((resolve, reject) => {
+        if (typeof window.getTokens !== "function") {
+          reject(new Error("Cardknox script not loaded"));
+          return;
+        }
         window.getTokens(
           () => resolve(),
-          (err) => reject(err),
-          8000
+          () => reject(new Error("Cardknox tokenization error")),
+          20000
         );
       });
     } catch (err) {
@@ -360,20 +358,26 @@ export default function Pricing() {
     }
     setTokenizing(false);
 
-    const cardSut = cardNumTokenRef.current?.value;
-    const cvvSut = cvvTokenRef.current?.value;
+    const cardToken =
+      document.querySelector("[data-ifields-id='card-number-token']")?.value ||
+      cardNumTokenRef.current?.value ||
+      "";
+    const cvvToken =
+      document.querySelector("[data-ifields-id='cvv-token']")?.value ||
+      cvvTokenRef.current?.value ||
+      "";
 
-    if (!cardSut || !cvvSut) {
-      setSubmitError("Card could not be verified. Please check your card details.");
+    console.log("Cardknox generated cardToken:", cardToken);
+    console.log("Cardknox generated cvvToken:", cvvToken);
+
+    if (!cardToken || cardToken.includes("error") || cardToken.includes("cc_error")) {
+      setSubmitError("Invalid card details. Please check your card number and try again.");
       return;
     }
     setCardTokenReady(true);
 
-    // Step 1+ — Upload images and register business.
-    // Sends the SUTs (not raw card data) + expiry to our backend.
-    // Backend must exchange the SUTs for a real charge/save using the
-    // PRIVATE Cardknox key — see backend notes.
-    await submitRegistration(cardSut, cvvSut, cardExpiry.replace("/", ""));
+    // Step 1+ — Upload images and register business (passing generated token as payment_method_id)
+    await submitRegistration(cardToken, cvvToken, cardExpiry.replace("/", ""));
   };
 
   const submitRegistration = async (cardSut, cvvSut, expiry) => {
@@ -418,10 +422,7 @@ export default function Pricing() {
         plan_id: selectedPlanApi?.id,
         payment_type: paymentType,
         duration_months: durationMonths,
-        // These replace the old payment_method_id / raw card fields.
-        card_sut: cardSut,
-        card_cvv_sut: cvvSut,
-        card_expiry: expiry, // MMYY
+        payment_method_id: cardSut,
         photo_ids: photoIds,
         flyer_image: flyerImageId,
         ...(plan === "premium" && promoVideoLink
@@ -492,11 +493,10 @@ export default function Pricing() {
               <div
                 key={p.id}
                 onClick={() => setPlan(p.id)}
-                className={`relative border-[1.5px] ${p.bg} rounded-2xl p-6 pt-7 flex flex-col cursor-pointer transition-all ${
-                  selected
+                className={`relative border-[1.5px] ${p.bg} rounded-2xl p-6 pt-7 flex flex-col cursor-pointer transition-all ${selected
                     ? "border-green-800 shadow-lg"
                     : "border-gray-200 shadow-sm"
-                }`}
+                  }`}
               >
                 {p.badge && (
                   <span className="absolute -top-3 right-5 bg-green-900 text-white text-[11px] font-semibold px-3 py-1 rounded-full">
@@ -528,11 +528,10 @@ export default function Pricing() {
                     e.stopPropagation();
                     setPlan(p.id);
                   }}
-                  className={`w-full py-2.5 rounded-full text-[13.5px] font-semibold border-[1.5px] transition-colors ${
-                    selected
+                  className={`w-full py-2.5 rounded-full text-[13.5px] font-semibold border-[1.5px] transition-colors ${selected
                       ? "bg-green-900 border-green-900 text-white hover:bg-green-800"
                       : "bg-transparent border-green-900 text-green-900 hover:bg-green-50"
-                  }`}
+                    }`}
                 >
                   Choose {p.name.split(" ")[0]}
                 </button>
@@ -552,11 +551,10 @@ export default function Pricing() {
                     key={pt.value}
                     type="button"
                     onClick={() => setPaymentType(pt.value)}
-                    className={`flex-1 py-2.5 rounded-xl text-[12.5px] font-semibold border-[1.5px] transition-colors ${
-                      paymentType === pt.value
+                    className={`flex-1 py-2.5 rounded-xl text-[12.5px] font-semibold border-[1.5px] transition-colors ${paymentType === pt.value
                         ? "bg-green-900 border-green-900 text-white"
                         : "bg-white border-gray-200 text-gray-700 hover:border-green-300"
-                    }`}
+                      }`}
                   >
                     {pt.label}
                   </button>
@@ -572,11 +570,10 @@ export default function Pricing() {
                     key={d.value}
                     type="button"
                     onClick={() => setDurationMonths(d.value)}
-                    className={`flex-1 py-2.5 rounded-xl text-[12.5px] font-semibold border-[1.5px] transition-colors ${
-                      durationMonths === d.value
+                    className={`flex-1 py-2.5 rounded-xl text-[12.5px] font-semibold border-[1.5px] transition-colors ${durationMonths === d.value
                         ? "bg-green-900 border-green-900 text-white"
                         : "bg-white border-gray-200 text-gray-700 hover:border-green-300"
-                    }`}
+                      }`}
                   >
                     {d.label}
                   </button>
@@ -652,7 +649,7 @@ export default function Pricing() {
                 <iframe
                   data-ifields-id="card-number"
                   data-ifields-placeholder="1234 5678 9012 3456"
-                  src="https://cdn.cardknox.com/ifields/latest/ifield.htm"
+                  src="https://cdn.cardknox.com/ifields/2.6.2006.0102/ifield.htm"
                   title="Card Number"
                   style={{ width: "100%", height: "100%", border: "none" }}
                 />
@@ -674,7 +671,7 @@ export default function Pricing() {
                   <iframe
                     data-ifields-id="cvv"
                     data-ifields-placeholder="123"
-                    src="https://cdn.cardknox.com/ifields/latest/ifield.htm"
+                    src="https://cdn.cardknox.com/ifields/2.6.2006.0102/ifield.htm"
                     title="CVV"
                     style={{ width: "100%", height: "100%", border: "none" }}
                   />
@@ -700,6 +697,8 @@ export default function Pricing() {
                 />
               </div>
             </div>
+
+            <label data-ifields-id="card-data-error" className="block text-[11.5px] text-red-500 font-medium"></label>
 
             {!iFieldsReady && (
               <div className="flex items-center gap-1.5 text-[11.5px] text-gray-400">
@@ -739,11 +738,10 @@ export default function Pricing() {
                   key={cat.id}
                   type="button"
                   onClick={() => toggleCat(cat)}
-                  className={`px-4 py-2 rounded-full text-[12.5px] border-[1.5px] transition-colors ${
-                    cats.some((c) => c.id === cat.id)
+                  className={`px-4 py-2 rounded-full text-[12.5px] border-[1.5px] transition-colors ${cats.some((c) => c.id === cat.id)
                       ? "bg-green-900 border-green-900 text-white"
                       : "bg-white border-gray-200 text-gray-900 hover:border-green-300"
-                  }`}
+                    }`}
                 >
                   {cat.name}
                 </button>
@@ -894,8 +892,8 @@ export default function Pricing() {
 
           <div>
             <label className="block text-[13px] font-semibold mb-1.5">
-             Uber Eats link{" "}
-            
+              Uber Eats link{" "}
+
             </label>
             <input
               type="text"
@@ -939,14 +937,12 @@ export default function Pricing() {
               placeholder="What do you offer? Who is it for?"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`w-full min-h-[90px] px-3.5 py-3 rounded-xl border-[1.5px] ${
-                descOverLimit ? "border-red-400" : "border-gray-200"
-              } bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800`}
+              className={`w-full min-h-[90px] px-3.5 py-3 rounded-xl border-[1.5px] ${descOverLimit ? "border-red-400" : "border-gray-200"
+                } bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800`}
             />
             <div
-              className={`text-[11.5px] mt-1 text-right font-medium ${
-                descOverLimit ? "text-red-500" : "text-gray-500"
-              }`}
+              className={`text-[11.5px] mt-1 text-right font-medium ${descOverLimit ? "text-red-500" : "text-gray-500"
+                }`}
             >
               {description.length} / {planMeta.maxDescChars}
             </div>
@@ -1042,10 +1038,10 @@ export default function Pricing() {
               {tokenizing
                 ? "Securing card…"
                 : uploadingImages
-                ? "Uploading images…"
-                : submitting
-                ? "Submitting…"
-                : "Submit Business"}
+                  ? "Uploading images…"
+                  : submitting
+                    ? "Submitting…"
+                    : "Submit Business"}
             </button>
           </div>
         </div>

@@ -102,7 +102,8 @@ function VenueCard({ venue, animationClass }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate("/category-details", { state: { venue } });
+    const id = venue?.id || 1;
+    navigate(`/community-details/${id}`, { state: { business: venue } });
   };
 
   return (

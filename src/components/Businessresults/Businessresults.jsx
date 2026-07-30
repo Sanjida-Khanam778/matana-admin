@@ -83,7 +83,8 @@ export default function BusinessResults({ categoryName }) {
   const groupLabel = categoryName || "Home Gift";
 
   const openBusinessDetails = (business) => {
-    navigate("/category-details", {
+    const id = business?.id || 1;
+    navigate(`/community-details/${id}`, {
       state: { business },
     });
   };

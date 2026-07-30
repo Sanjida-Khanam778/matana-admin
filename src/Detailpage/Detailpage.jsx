@@ -211,6 +211,20 @@ function InquiryForm({ fields = [] }) {
 export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
   const location = useLocation();
   const stateBusiness = location.state?.business;
+  const [showCallNumber, setShowCallNumber] = useState(false);
+
+  const handleCallClick = (e) => {
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) || (window.innerWidth <= 768 && "ontouchstart" in window);
+
+    if (!isMobile) {
+      e.preventDefault();
+      setShowCallNumber((prev) => !prev);
+    }
+  };
+
   const d = data;
   const days = [
     "Sunday",
@@ -279,9 +293,11 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
             {d.actions?.call && (
               <a
                 href={`tel:${d.actions.call}`}
-                className="flex items-center gap-1.5 bg-primary text-white font-medium px-3 py-1.5 rounded-full transition-colors"
+                onClick={handleCallClick}
+                className="flex items-center gap-1.5 bg-primary text-white font-medium px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                title={d.actions.call}
               >
-                <FiPhone size={18} /> Call
+                <FiPhone size={18} /> {showCallNumber ? d.actions.call : "Call"}
               </a>
             )}
             {d.actions?.website && (

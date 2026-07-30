@@ -202,8 +202,20 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
   const { data: apiBusiness, isLoading } = useGetBusinessDetailsQuery(targetId, {
     skip: !targetId,
   });
-
+  const [showCallNumber, setShowCallNumber] = useState(false);
   const b = apiBusiness || stateBusiness;
+
+  const handleCallClick = (e) => {
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) || (window.innerWidth <= 768 && "ontouchstart" in window);
+
+    if (!isMobile) {
+      e.preventDefault();
+      setShowCallNumber((prev) => !prev);
+    }
+  };
 
   // Construct dynamic data object `d`
   const d = {
@@ -335,9 +347,11 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
             {d.actions?.call && (
               <a
                 href={`tel:${d.actions.call}`}
-                className="flex items-center gap-1.5 bg-[#085027] text-white font-medium px-3 py-1.5 rounded-full transition-colors"
+                onClick={handleCallClick}
+                className="flex items-center gap-1.5 bg-[#085027] text-white font-medium px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                title={d.actions.call}
               >
-                <FiPhone size={18} /> Call
+                <FiPhone size={18} /> {showCallNumber ? d.actions.call : "Call"}
               </a>
             )}
             {d.actions?.website && (
@@ -368,13 +382,17 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
                 <FiInstagram size={18} /> Instagram
               </a>
             )}
-            {d.actions?.business_phone && (
-              <a href={`https://wa.me/${d.actions.business_phone}`} target="_blank" rel="noopener noreferrer">
+            {(d.actions?.business_phone || d.actions?.call) && (
+              <a
+                href={`https://wa.me/${(d.actions.business_phone || d.actions.call).replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src={whatsapp} alt="whatsapp" className="w-12" />
               </a>
             )}
-            {d.actions?.other_social_link && (
-              <a href={`https://wa.me/${d.actions.other_social_link}`} target="_blank" rel="noopener noreferrer">
+            {(
+              <a href={d.actions.other_social_link} target="_blank" rel="noopener noreferrer">
                 <img src={ubereats} alt="ubereats" className="w-11" />
               </a>
             )}
