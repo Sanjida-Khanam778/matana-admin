@@ -1,31 +1,29 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IMAGES } from "../../assets";
+import { useGetCategoryStoresQuery } from "../../Api/businessDirectoryApi";
 
-const businesses = [
+const defaultBusinesses = [
   {
     id: 1,
     name: "Home Gift",
     category: "Gift Shops",
     location: "Lakewood, N J",
-    image:
-        IMAGES.business1,
-    },
+    image: IMAGES.business1,
+  },
   {
     id: 2,
     name: "Home Gift",
     category: "Gift Shops",
     location: "Lakewood, N J",
-    image:
-      IMAGES.business2,
+    image: IMAGES.business2,
   },
   {
     id: 3,
     name: "Home Gift",
     category: "Gift Shops",
     location: "Lakewood, N J",
-    image:
-      IMAGES.business3,
+    image: IMAGES.business3,
   },
 ];
 
@@ -78,14 +76,56 @@ function BusinessCard({ name, category, location, image, onClick }) {
   );
 }
 
-export default function BusinessResults({ categoryName }) {
+export default function BusinessResults({ categoryId, categoryName }) {
   const navigate = useNavigate();
-  const groupLabel = categoryName || "Home Gift";
+  const locationState = useLocation().state;
+
+  const targetCategoryId =
+    categoryId ||
+    locationState?.categoryId ||
+    (typeof categoryName === "number" || !isNaN(Number(categoryName)) ? categoryName : null);
+
+  const { data: categoryData, isLoading } = useGetCategoryStoresQuery(targetCategoryId, {
+    skip: !targetCategoryId,
+  });
+
+  const groupLabel = categoryData?.name || categoryName || locationState?.categoryName || "Businesses";
+
+  const rawBusinesses = categoryData?.businesses || [];
+  const mappedBusinesses = rawBusinesses.map((b) => {
+    const imgUrl =
+      typeof b.flyer_image === "object" && b.flyer_image?.url
+        ? b.flyer_image.url
+        : typeof b.flyer_image === "string"
+        ? b.flyer_image
+        : b.photos && b.photos.length > 0 && typeof b.photos[0] === "string"
+        ? b.photos[0]
+        : IMAGES.business1;
+
+    const catLabel =
+      b.categories && b.categories.length > 0
+        ? b.categories[0].name
+        : groupLabel;
+
+    return {
+      id: b.id,
+      name: b.name || "Business",
+      category: catLabel,
+      location:
+        b.business_address ||
+        (b.community ? `${b.community.name}, ${b.community.state}` : "Lakewood, N J"),
+      image: imgUrl,
+      raw: b,
+    };
+  });
+
+  const displayBusinesses =
+    mappedBusinesses.length > 0 ? mappedBusinesses : defaultBusinesses;
 
   const openBusinessDetails = (business) => {
     const id = business?.id || 1;
     navigate(`/community-details/${id}`, {
-      state: { business },
+      state: { business: business.raw || business },
     });
   };
 
@@ -93,7 +133,7 @@ export default function BusinessResults({ categoryName }) {
     <div className="py-2">
       {/* Result count */}
       <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-5">
-        {businesses.length} Businesses Found
+        {isLoading ? "Loading..." : `${displayBusinesses.length} Businesses Found`}
       </h1>
 
       {/* Category label */}
@@ -103,7 +143,7 @@ export default function BusinessResults({ categoryName }) {
 
       {/* Responsive grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-        {businesses.map((b) => (
+        {displayBusinesses.map((b) => (
           <BusinessCard
             key={b.id}
             {...b}

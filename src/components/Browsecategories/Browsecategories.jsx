@@ -28,12 +28,17 @@ const LOCAL_CAT_IMAGES = {
   "Anniversary": IMAGES.categoryImage22,
 };
 
-function CategoryCard({ name, count, image }) {
+function CategoryCard({ id, name, count, image }) {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/all-categories?category=${encodeURIComponent(name)}`);
+    const target = id ? id : name ? encodeURIComponent(name) : "";
+    if (target) {
+      navigate(`/all-stores/${target}`, { state: { categoryId: id, categoryName: name } });
+    } else {
+      navigate("/all-stores");
+    }
   };
 
   return (

@@ -240,7 +240,7 @@ export default function BusinessSearch() {
         {/* ── Main content ── */}
         <div className="flex-1 min-w-0">
           {selectedCategory ? (
-            <BusinessResults categoryName={selectedCategory} />
+            <BusinessResults categoryId={categoryName} categoryName={selectedCategory} />
           ) : (
             <>
               {/* 3-col grid */}
@@ -255,10 +255,12 @@ export default function BusinessSearch() {
                 {!isLoading &&
                   paginatedCategories.map((item) => (
                     <GridCard
-                      key={item.name}
+                      key={item.id || item.name}
                       {...item}
                       onClick={() =>
-                        navigate(`/all-stores/${encodeURIComponent(item.name)}`)
+                        navigate(`/all-stores/${item.id || encodeURIComponent(item.name)}`, {
+                          state: { categoryId: item.id, categoryName: item.name },
+                        })
                       }
                     />
                   ))}

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { ScrollRestoration, useLocation } from "react-router-dom";
+import { ScrollRestoration, useLocation, useNavigate } from "react-router-dom";
 import {
   FiPhone,
   FiMail,
@@ -16,7 +16,6 @@ import {
   FiChevronRight,
   FiPlay,
 } from "react-icons/fi";
-import { FaStar, FaRegStar } from "react-icons/fa";
 import { BsShop } from "react-icons/bs";
 import detailsImage from "../assets/images/detailsHeader.png";
 import decor1 from "../assets/images/decor1.png";
@@ -209,9 +208,18 @@ function InquiryForm({ fields = [] }) {
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
 export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
+  const navigate = useNavigate();
   const location = useLocation();
   const stateBusiness = location.state?.business;
   const [showCallNumber, setShowCallNumber] = useState(false);
+
+  const handleBack = () => {
+    if (typeof onBack === "function") {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
 
   const handleCallClick = (e) => {
     const isMobile =
@@ -254,8 +262,8 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
        <div>
          <Navbar />
         <button
-          onClick={onBack || (() => window.history.back())}
-          className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-sm text-black bg-white/40 backdrop-blur-sm px-3 py-1.5 rounded-full transition-colors"
+          onClick={handleBack}
+          className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-sm text-black bg-white/40 backdrop-blur-sm px-3 py-1.5 rounded-full transition-colors cursor-pointer"
         >
           <FiArrowLeft size={15} /> Back
         </button>

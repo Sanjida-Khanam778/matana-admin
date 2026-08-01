@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { ScrollRestoration, useLocation, useParams } from "react-router-dom";
+import { ScrollRestoration, useLocation, useParams, useNavigate } from "react-router-dom";
 import {
   FiPhone,
   FiMail,
@@ -193,10 +193,19 @@ function InquiryForm({ fields = [] }) {
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
 export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
+  const navigate = useNavigate();
   const { id: paramId } = useParams();
   const location = useLocation();
   const stateBusiness = location.state?.business;
   const targetId = paramId || stateBusiness?.id;
+
+  const handleBack = () => {
+    if (typeof onBack === "function") {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
 
   // Fetch business details from API if ID is available
   const { data: apiBusiness, isLoading } = useGetBusinessDetailsQuery(targetId, {
@@ -307,7 +316,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
         <div className="absolute inset-0 bg-black/40"></div>
 
         <button
-          onClick={onBack || (() => window.history.back())}
+          onClick={handleBack}
           className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-sm text-black bg-white/40 backdrop-blur-sm px-3 py-1.5 rounded-full transition-colors cursor-pointer"
         >
           <FiArrowLeft size={15} /> Back
