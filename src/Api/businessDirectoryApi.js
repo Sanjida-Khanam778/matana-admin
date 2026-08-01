@@ -40,6 +40,9 @@ export const businessDirectoryApi = api.injectEndpoints({
     getCategoryStores: builder.query({
       query: (categoryId) => `/categories/${categoryId}/`,
     }),
+    getMapCommunities: builder.query({
+      query: () => "/add-communities/to/map/",
+    }),
     getBusinessDetails: builder.query({
       query: (id) => `/businesses/${id}/`,
     }),
@@ -52,6 +55,7 @@ export const {
   useGetCommunitiesQuery,
   useGetCommunityStoresByCityQuery,
   useGetCategoryStoresQuery,
+  useGetMapCommunitiesQuery,
   useGetBusinessDetailsQuery,
   useGetStatsQuery,
   useGetOrderSummaryQuery,

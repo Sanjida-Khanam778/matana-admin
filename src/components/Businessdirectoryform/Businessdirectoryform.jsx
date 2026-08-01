@@ -134,9 +134,8 @@ function UploadBox({ label, multiple = false, files = [], onAdd, onRemove, warni
 const inputCls =
   "w-full px-3.5 py-3 rounded-xl border-[1.5px] border-gray bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800";
 
-// iFields PUBLIC key — safe for frontend. This key can ONLY be used with
-// the iFields tokenization flow (getTokens), never with direct gateway calls.
-const SOLA_IFIELDS_KEY = "matanashop3799067ff16b498c9b0b31b1e3aadfad";
+// iFields PUBLIC key — safe for frontend. Sandbox iFields Key.
+const SOLA_IFIELDS_KEY = "ifields_matanashopdevc161df9081ad4e24a866367f";
 
 export default function Pricing() {
   const formRef = useRef(null);
@@ -423,6 +422,9 @@ export default function Pricing() {
         payment_type: paymentType,
         duration_months: durationMonths,
         payment_method_id: cardSut,
+        card_sut: cardSut,
+        card_cvv_sut: cvvSut,
+        card_expiry: expiry, // MMYY
         photo_ids: photoIds,
         flyer_image: flyerImageId,
         ...(plan === "premium" && promoVideoLink

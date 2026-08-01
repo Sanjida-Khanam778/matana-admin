@@ -5,34 +5,51 @@ import { LuShieldCheck } from "react-icons/lu";
 import { IoGiftOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
-import ListBusinessModal from "../../components/Modals/ListBusinessModal";
+import { useGetMapCommunitiesQuery } from "../../Api/businessDirectoryApi";
 
 // ── Scattered positions matching the screenshot layout ──
-const locations = [
-  { city: "Toronto", stores: 63, top: "0%", left: "80%" },
-  { city: "Monsey", stores: 93, top: "20%", left: "70%" },
-  { city: "Lakewood", stores: 43, top: "20%", left: "90%" },
-  { city: "Brooklyn/boro park", stores: 43, top: "40%", left: "82%" },
-  { city: "Cleveland", stores: 45, top: "60%", left: "72%" },
-  { city: "Passaic", stores: 43, top: "60%", left: "94%" },
-  { city: "Five towns", stores: 73, top: "80%", left: "85%" },
-
+const DESKTOP_POSITIONS = [
+  { top: "0%", left: "80%" },
+  { top: "20%", left: "70%" },
+  { top: "20%", left: "90%" },
+  { top: "40%", left: "82%" },
+  { top: "60%", left: "72%" },
+  { top: "60%", left: "94%" },
+  { top: "80%", left: "85%" },
 ];
 
-const locationsPhone = [
-  { city: "Toronto", stores: 63, top: "0%", left: "50%" },
-  { city: "Monsey", stores: 93, top: "12%", left: "30%" },
-  { city: "Lakewood", stores: 43, top: "25%", left: "50%" },
-  { city: "Brooklyn", stores: 43, top: "38%", left: "20%" },
-  { city: "Cleveland", stores: 45, top: "52%", left: "52%" },
-  { city: "Passaic", stores: 43, top: "65%", left: "32%" },
-  { city: "Five towns", stores: 73, top: "80%", left: "50%" },
+const PHONE_POSITIONS = [
+  { top: "0%", left: "50%" },
+  { top: "12%", left: "30%" },
+  { top: "25%", left: "50%" },
+  { top: "38%", left: "20%" },
+  { top: "52%", left: "52%" },
+  { top: "65%", left: "32%" },
+  { top: "80%", left: "50%" },
 ];
 
-function LocationCard({ city, stores, top, left, delay, duration }) {
+function LocationCard({ city, stores, top, left, delay, duration, community }) {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate("/all-community-stores", {
+      state: {
+        community: community || {
+          city,
+          state: "NY",
+          rating: 5,
+          businesses: stores,
+          featured: 0,
+          image: null,
+        },
+      },
+    });
+  };
+
   return (
-    <Link
-      to="/all-community"
+    <div
+      onClick={handleClick}
       className="absolute w-fit bg-white rounded-md sm:rounded-lg lg:rounded-xl shadow-sm border border-gray-100 px-1.5 md:px-3 py-1 sm:py-2 animate-float hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer"
       style={{
         top,
@@ -43,7 +60,6 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
     >
       <div className="relative flex flex-col items-center justify-center text-center">
         <div className="-top-5 sm:-top-10 -left-6 sm:-left-9 absolute text-primary">
-          {/* <IoGiftOutline size={28} /> */}
           <img src={map} className="w-6 sm:w-10" alt="" />
         </div>
         <p className="text-[9px] sm:text-sm xl:text-base font-bold text-[#085027]">
@@ -51,7 +67,7 @@ function LocationCard({ city, stores, top, left, delay, duration }) {
         </p>
         <p className="text-[7px] sm:text-xs text-gray-400 mt-0 sm:mt-0.5">{stores} Stores</p>
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -59,6 +75,48 @@ export default function HeroSection() {
   const [isMobile, setIsMobile] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+  const { data: communitiesData } = useGetMapCommunitiesQuery();
+
+  const locations = (communitiesData ?? []).map((item, index) => {
+    const pos = DESKTOP_POSITIONS[index % DESKTOP_POSITIONS.length];
+    return {
+      city: item.name,
+      stores: item.business_count ?? 0,
+      top: pos.top,
+      left: pos.left,
+      community: {
+        id: item.id,
+        city: item.name,
+        state: item.state || "NY",
+        rating: 5,
+        businesses: item.business_count ?? 0,
+        featured: item.featured_count ?? 0,
+        image: item.image,
+        raw: item,
+      },
+    };
+  });
+
+  const locationsPhone = (communitiesData ?? []).map((item, index) => {
+    const pos = PHONE_POSITIONS[index % PHONE_POSITIONS.length];
+    return {
+      city: item.name,
+      stores: item.business_count ?? 0,
+      top: pos.top,
+      left: pos.left,
+      community: {
+        id: item.id,
+        city: item.name,
+        state: item.state || "NY",
+        rating: 5,
+        businesses: item.business_count ?? 0,
+        featured: item.featured_count ?? 0,
+        image: item.image,
+        raw: item,
+      },
+    };
+  });
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -125,6 +183,7 @@ export default function HeroSection() {
                 stores={loc.stores}
                 top={loc.top}
                 left={loc.left}
+                community={loc.community}
                 delay={`${(i * 0.15).toFixed(2)}s`}
                 duration={`${5.5 + (i % 5) * 0.4}s`}
               />
@@ -174,6 +233,7 @@ export default function HeroSection() {
               stores={loc.stores}
               top={loc.top}
               left={loc.left}
+              community={loc.community}
               delay={`${(i * 0.15).toFixed(2)}s`}
               duration={`${5.5 + (i % 5) * 0.4}s`}
             />
