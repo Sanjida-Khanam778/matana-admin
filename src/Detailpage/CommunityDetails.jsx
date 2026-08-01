@@ -325,7 +325,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
 
       {/* Header */}
       <div className="lg:w-10/12 w-11/12 mx-auto py-4 flex items-start gap-3 xl:gap-6 my-10">
-        <div className="w-18 h-18 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0">
           {d.logoImage ? (
             <img
               src={d.logoImage}

@@ -272,11 +272,11 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
 
       {/* Header */}
       <div className="lg:w-10/12 w-11/12 mx-auto py-4 flex items-start gap-3 xl:gap-6 my-10">
-        <div className="w-18 h-18 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
           {d.logoImage ? (
             <img
               src={d.logoImage}
-              className="w-full h-full object-cover rounded-xl"
+              className="w-12 h-12 object-cover rounded-xl"
               alt="logo"
             />
           ) : (
@@ -367,7 +367,7 @@ export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
                     <img
                       src={img}
                       alt=""
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      className=" object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                 ))}
