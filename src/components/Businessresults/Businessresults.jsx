@@ -6,30 +6,6 @@ import {
   useFilterBusinessesQuery,
 } from "../../Api/businessDirectoryApi";
 
-const defaultBusinesses = [
-  {
-    id: 1,
-    name: "Home Gift",
-    category: "Gift Shops",
-    location: "Lakewood, N J",
-    image: IMAGES.business1,
-  },
-  {
-    id: 2,
-    name: "Home Gift",
-    category: "Gift Shops",
-    location: "Lakewood, N J",
-    image: IMAGES.business2,
-  },
-  {
-    id: 3,
-    name: "Home Gift",
-    category: "Gift Shops",
-    location: "Lakewood, N J",
-    image: IMAGES.business3,
-  },
-];
-
 function LocationIcon() {
   return (
     <svg
@@ -93,10 +69,17 @@ export default function BusinessResults({
   const navigate = useNavigate();
   const locationState = useLocation().state;
 
-  const hasFilterParams = selCats.length > 0 || selLocs.length > 0 || selServices.length > 0;
+  const effectiveCats =
+    selCats.length > 0
+      ? selCats
+      : categoryName && isNaN(Number(categoryName))
+      ? [categoryName]
+      : [];
+
+  const hasFilterParams = effectiveCats.length > 0 || selLocs.length > 0 || selServices.length > 0;
 
   const filterArgs = {
-    categories: selCats.join(","),
+    categories: effectiveCats.join(","),
     locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
     services_tags: selServices.join(","),
   };
@@ -119,9 +102,8 @@ export default function BusinessResults({
 
   const isLoading = hasFilterParams ? isFilterLoading : isCategoryLoading;
 
-  const groupLabel = hasFilterParams
-    ? "Filtered Businesses"
-    : categoryData?.name || categoryName || locationState?.categoryName || "Businesses";
+  const groupLabel =
+    categoryName || locationState?.categoryName || categoryData?.name || "Businesses";
 
   const rawBusinesses = hasFilterParams
     ? filterData?.businesses || []
@@ -159,12 +141,7 @@ export default function BusinessResults({
     };
   });
 
-  const displayBusinesses =
-    mappedBusinesses.length > 0
-      ? mappedBusinesses
-      : hasFilterParams
-      ? []
-      : defaultBusinesses;
+  const displayBusinesses = mappedBusinesses;
 
   const openBusinessDetails = (business) => {
     const id = business?.id || 1;

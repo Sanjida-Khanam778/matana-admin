@@ -7,6 +7,7 @@ import {
   IoChevronBack,
   IoArrowForwardOutline,
 } from "react-icons/io5";
+import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 import { ScrollRestoration, useNavigate, useLocation } from "react-router-dom";
 import { CiLocationArrow1 } from "react-icons/ci";
@@ -161,12 +162,12 @@ export default function AllCommunity() {
   }, [cityData]);
 
   // Sidebar filters state
-  const [selCats, setSelCats] = useState(["All Categories"]);
-  const [selLocs, setSelLocs] = useState([communityName]);
-  const [selLevels, setSelLevels] = useState([]);
-  const [selOccasions, setSelOccasions] = useState([]);
-  const [selTov, setSelTov] = useState([]);
+  const [selCats, setSelCats] = useState([]);
+  const [selLocs, setSelLocs] = useState([]);
+  const [selServices, setSelServices] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const hasSidebarFilters = selCats.length > 0 || selLocs.length > 0 || selServices.length > 0;
 
   // Filter businesses by search input & dropdown category
   const filteredBusinesses = useMemo(() => {
@@ -219,12 +220,8 @@ export default function AllCommunity() {
           onToggleCategory={(v) => toggle(selCats, setSelCats, v)}
           selectedLocations={selLocs}
           onToggleLocation={(v) => toggle(selLocs, setSelLocs, v)}
-          selectedKosherLevels={selLevels}
-          onToggleKosherLevel={(v) => toggle(selLevels, setSelLevels, v)}
-          selectedOccasions={selOccasions}
-          onToggleOccasion={(v) => toggle(selOccasions, setSelOccasions, v)}
-          selectedTov={selTov}
-          onToggleTov={(v) => toggle(selTov, setSelTov, v)}
+          selectedServices={selServices}
+          onToggleService={(v) => toggle(selServices, setSelServices, v)}
           isOpen={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}
         />
@@ -351,9 +348,15 @@ export default function AllCommunity() {
 
           {/* ── Content Layout ── */}
           <div className="my-6 lg:my-10 pb-12">
-            {/* ── Main Content ── */}
-            <div className="w-full">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {hasSidebarFilters ? (
+              <BusinessResults
+                selCats={selCats}
+                selLocs={selLocs}
+                selServices={selServices}
+              />
+            ) : (
+              <div className="w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 {isLoading &&
                   Array.from({ length: 6 }).map((_, index) => (
                     <div
@@ -413,6 +416,7 @@ export default function AllCommunity() {
                 </div>
               )}
             </div>
+            )}
           </div>
         </div>
       </div>

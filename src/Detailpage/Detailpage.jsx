@@ -18,88 +18,9 @@ import {
 } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
 import detailsImage from "../assets/images/detailsHeader.png";
-import decor1 from "../assets/images/decor1.png";
-import decor2 from "../assets/images/decor2.png";
-import decor3 from "../assets/images/decor3.png";
-import related1 from "../assets/images/related1.png";
-import related2 from "../assets/images/related2.png";
-import logo from "../assets/icons/details_logo.png";
 import { LocateIcon, PlayCircle, PlayIcon } from "lucide-react";
 import { GrLocation } from "react-icons/gr";
 import Navbar from "../components/Navbar/Navbar";
-// ══════════════════════════════════════════════════
-//  SAMPLE DATA
-// ══════════════════════════════════════════════════
-export const SAMPLE_BUSINESS = {
-  type: "business",
-  badge: "Featured Business",
-  name: "Home Decor Gifts",
-  subtitle: "Home Gift · Home Store",
-  coverImage: detailsImage,
-  logoImage: logo,
-  actions: {
-    call: "+1(212) 555-0066",
-    website: "homedecoratgifts.com",
-    instagram: "@homedecoratgifts",
-    visitLabel: "Visit Store",
-  },
-  about:
-    "Elegant gifts and home decor for every occasion. We carry a premium selection of gift baskets, candles, and luxury products for any lifestyle. Our curated store inventory is full of everything you need to refresh and update all your gift-giving occasions.",
-  gallery: [decor1, decor2, decor3],
-  video: null,
-  tags: [],
-  related: [
-    {
-      name: "Home Gift",
-      businesses: 12,
-      image: related1,
-    },
-    {
-      name: "Home Store",
-      businesses: 8,
-      image: related2,
-    },
-  ],
-  reviews: [
-    {
-      name: "Caleb Cohen",
-      badge: "Verified",
-      rating: 5,
-      text: "Exceptional experience! The team is outstanding and the service and environment of the community.",
-      date: "2w ago",
-    },
-    {
-      name: "Patrick Miller",
-      badge: "Verified",
-      rating: 4,
-      text: "Had a wonderful experience here! Highly recommend by visiting here!",
-      date: "3w ago",
-    },
-    {
-      name: "Rachel Coleman",
-      badge: null,
-      rating: 5,
-      text: "Absolutely outstanding! The professionality and attitude of the staff is fantastic.",
-      date: "1m ago",
-    },
-  ],
-  contact: {
-    phone: "+1(212) 555-0066",
-    email: "info@homedecoratgifts.com",
-    address: "48 Pine Ave, Lakewood, NJ 08717",
-  },
-  hours: {
-    Monday: "9:00 AM – 6:00 PM",
-    Tuesday: "9:00 AM – 6:00 PM",
-    Wednesday: "10:00 AM – 5:00 PM",
-    Thursday: "9:00 AM – 6:00 PM",
-    Friday: "9:00 AM – 3:00 PM",
-    Saturday: "Closed",
-    Sunday: "Closed",
-  },
-  certifications: ["OU", "Vaad"],
-  inquiry: { fields: ["name", "email", "phone", "message"] },
-};
 
 // ══════════════════════════════════════════════════
 //  SUB COMPONENTS
@@ -207,7 +128,7 @@ function InquiryForm({ fields = [] }) {
 // ══════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
-export default function DetailPage({ data = SAMPLE_BUSINESS, onBack }) {
+export default function DetailPage({ data = {}, onBack }) {
   const navigate = useNavigate();
   const location = useLocation();
   const stateBusiness = location.state?.business;

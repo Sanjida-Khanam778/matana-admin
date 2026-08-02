@@ -10,98 +10,6 @@ const hideScrollbarStyle = `
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 `;
 
-// ── Data ──
-const fallbackCategories = [
-  { name: "Anniversary", count: 87 },
-  { name: "Baby", count: 87 },
-  { name: "Bakery & Cakes", count: 65 },
-  { name: "Bar Mitzvah", count: 87 },
-  { name: "Birthday", count: 87 },
-  { name: "Bris", count: 87 },
-  { name: "Cafe", count: 75 },
-  { name: "Catering", count: 83 },
-  { name: "Chicken Boards", count: 120 },
-  { name: "Chanukah", count: 87 },
-  { name: "Corporate Gifting & Catering", count: 87 },
-  { name: "Custom Baked Goods", count: 156 },
-  { name: "Custom Gifts", count: 89 },
-  { name: "Custom Merchandise", count: 42 },
-  { name: "Desserts", count: 78 },
-  { name: "Engagements, Vorts & Weddings", count: 87 },
-  { name: "Fish Boards", count: 34 },
-  { name: "Floral Arrangements", count: 105 },
-  { name: "Graduation", count: 87 },
-  { name: "Home Gift", count: 156 },
-  { name: "Homemade Baked Goods", count: 56 },
-  { name: "Judaica", count: 65 },
-  { name: "Just Because", count: 87 },
-  { name: "Kiddush", count: 87 },
-  { name: "Layette & Baby Gifts", count: 190 },
-  { name: "Liquor & Wine", count: 46 },
-  { name: "Meat Boards", count: 86 },
-  { name: "Nut & Candy Arrangements", count: 112 },
-  { name: "Party", count: 87 },
-  { name: "Pas Yisroel", count: 134 },
-  { name: "Pareve Only", count: 204 },
-  { name: "Pesach", count: 87 },
-  { name: "Purim", count: 99 },
-  { name: "Rosh Hashana", count: 99 },
-  { name: "Shabbos", count: 112 },
-  { name: "Shavuot", count: 120 },
-  { name: "Shiva & Condolences", count: 57 },
-  { name: "Shiva and Condolences", count: 57 },
-  { name: "Silver Gifts", count: 145 },
-  { name: "Sukkos", count: 42 },
-  { name: "Thank you", count: 55 },
-  { name: "Tu Bshvat", count: 60 },
-  { name: "Upsherin", count: 80 },
-];
-
-const fallbackLocations = [
-  { name: "Baltimore, MD", count: 97 },
-  { name: "Brooklyn, NY", count: 358 },
-  { name: "Five Towns, NY", count: 1781 },
-  { name: "Lakewood, NJ", count: 234 },
-  { name: "Los Angeles, CA", count: 204 },
-  { name: "Miami, FL", count: 188 },
-  { name: "Monsey, NY", count: 122 },
-  { name: "Queens, NY", count: 175 },
-];
-
-const fallbackServices = [
-  { name: "Glatt Kosher", count: 175 },
-  { name: "Cholov Yisroel", count: 358 },
-  { name: "Mehadrin", count: 88 },
-  { name: "Pareve Only", count: 204 },
-  { name: "Pas Yisroel", count: 134 },
-  { name: "Standard Supervision", count: 1781 },
-];
-
-const occasions = [
-  { name: "Anniversaries", count: 88 },
-  { name: "Baby Gifts", count: 88 },
-  { name: "Bar Mitzvah", count: 88 },
-  { name: "Bas Mitzvah", count: 88 },
-  { name: "Birthdays", count: 34 },
-  { name: "Corporate Gifts", count: 56 },
-  { name: "Engagements, Vorts & Weddings", count: 28 },
-  { name: "Just Because", count: 112 },
-  { name: "Shabbos Host", count: 67 },
-  { name: "Showers", count: 124 },
-  { name: "Thank you", count: 86 },
-];
-
-// const tov = [
-//   { name: "Anniversary", count: 88 },
-//   { name: "Baby", count: 88 },
-//   { name: "Bar Mitzvah", count: 88 },
-//   { name: "Birthday", count: 134 },
-//   { name: "Bris", count: 204 },
-//   { name: "Chanukah", count: 1781 },
-//   { name: "Corporate Gifting & Catering", count: 358 },
-//   { name: "Engagements, Vorts & Weddings", count: 175 },
-//   { name: "Home Gift", count: 88 },
-// ];
 // ── Icons ──────────────────────────────────────────
 function ChevronUpIcon() {
   return (
@@ -186,25 +94,26 @@ function SidebarSection({ title, items, selected, onToggle }) {
           className="hide-scrollbar overflow-y-auto pr-1"
           style={{ maxHeight: "210px" }}
         >
-          {items.map((item) => (
-            <label
-              key={item.name}
-              className="flex items-center justify-between py-2 cursor-pointer group"
-            >
-              <div className="flex items-center gap-2.5">
-                <Checkbox
-                  checked={selected.includes(item.name)}
-                  onChange={() => onToggle(item.name)}
-                />
-                <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                  {item.name}
-                </span>
-              </div>
-              {item.count !== undefined && item.count !== null && (
-                <span className="text-xs text-gray-400">({item.count})</span>
-              )}
-            </label>
-          ))}
+          {Array.isArray(items) &&
+            items.map((item) => (
+              <label
+                key={item.name}
+                className="flex items-center justify-between py-2 cursor-pointer group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Checkbox
+                    checked={selected.includes(item.name)}
+                    onChange={() => onToggle(item.name)}
+                  />
+                  <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+                    {item.name}
+                  </span>
+                </div>
+                {item.count !== undefined && item.count !== null && (
+                  <span className="text-xs text-gray-400">({item.count})</span>
+                )}
+              </label>
+            ))}
         </div>
       )}
     </div>
@@ -219,10 +128,6 @@ export default function SidebarFilter({
   onToggleLocation,
   selectedServices = [],
   onToggleService,
-  selectedOccasions = [],
-  onToggleOccasion,
-  // selectedTov = [],
-  // onToggleTov,
   isOpen = false,
   onClose,
 }) {
@@ -236,7 +141,7 @@ export default function SidebarFilter({
           name: cat.name,
           count: cat.business_count,
         }))
-      : fallbackCategories;
+      : [];
 
   const locationItems =
     communitiesData && Array.isArray(communitiesData)
@@ -244,7 +149,7 @@ export default function SidebarFilter({
           name: `${loc.name}, ${loc.state}`,
           count: loc.business_count,
         }))
-      : fallbackLocations;
+      : [];
 
   const servicesItems =
     tagsData && Array.isArray(tagsData)
@@ -252,7 +157,7 @@ export default function SidebarFilter({
           name: typeof tag === "string" ? tag : tag.name,
           count: typeof tag === "object" ? (tag.business_count ?? tag.count ?? null) : null,
         }))
-      : fallbackServices;
+      : [];
 
   return (
     <>
@@ -312,18 +217,6 @@ export default function SidebarFilter({
               selected={selectedCategories}
               onToggle={onToggleCategory}
             />
-            {/* <SidebarSection
-              title="Occasions"
-              items={occasions}
-              selected={selectedOccasions}
-              onToggle={onToggleOccasion}
-            /> */}
-            {/* <SidebarSection
-              title="toV"
-              items={tov}
-              selected={selectedTov}
-              onToggle={onToggleTov}
-            /> */}
             <div className="border-t border-gray-100 my-2" />
             <SidebarSection
               title="Locations"

@@ -232,9 +232,9 @@ function VenueCard({ venue }) {
 // ── Main Component ─────────────────────────────────
 export default function AllEvents() {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selCats, setSelCats] = useState(["Custom Baked Goods"]);
-  const [selLocs, setSelLocs] = useState(["Brooklyn, NY"]);
-  const [selLevels, setSelLevels] = useState(["Cholov Yisroel"]);
+  const [selCats, setSelCats] = useState([]);
+  const [selLocs, setSelLocs] = useState([]);
+  const [selServices, setSelServices] = useState([]);
   const [page, setPage] = useState(2);
 
   function toggle(arr, setArr, val) {
@@ -266,14 +266,19 @@ export default function AllEvents() {
           onToggleCategory={(v) => toggle(selCats, setSelCats, v)}
           selectedLocations={selLocs}
           onToggleLocation={(v) => toggle(selLocs, setSelLocs, v)}
-          selectedKosherLevels={selLevels}
-          onToggleKosherLevel={(v) => toggle(selLevels, setSelLevels, v)}
+          selectedServices={selServices}
+          onToggleService={(v) => toggle(selServices, setSelServices, v)}
         />
 
         {/* ── Main content ── */}
         <div className="flex-1 min-w-0">
-          {selectedCategory ? (
-            <BusinessResults categoryName={selectedCategory} />
+          {selectedCategory || selCats.length > 0 || selLocs.length > 0 || selServices.length > 0 ? (
+            <BusinessResults
+              categoryName={selectedCategory}
+              selCats={selCats}
+              selLocs={selLocs}
+              selServices={selServices}
+            />
           ) : (
             <>
               {/* 3-col grid */}
