@@ -147,8 +147,8 @@ export default function PaymentSection({
             id="card-number-token"
             ref={cardNumTokenRef}
             data-ifields-id="card-number-token"
-            name="xCardNum"
             type="hidden"
+            autoComplete="off"
           />
         </div>
 
@@ -171,8 +171,8 @@ export default function PaymentSection({
               id="cvv-token"
               ref={cvvTokenRef}
               data-ifields-id="cvv-token"
-              name="xCVV"
               type="hidden"
+              autoComplete="off"
             />
           </div>
           <div>
@@ -185,6 +185,7 @@ export default function PaymentSection({
               maxLength={7}
               value={cardExpiry}
               onChange={handleExpiryChange}
+              autoComplete="off"
               className={inputCls}
             />
           </div>

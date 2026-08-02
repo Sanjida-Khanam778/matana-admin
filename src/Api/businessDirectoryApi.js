@@ -49,6 +49,15 @@ export const businessDirectoryApi = api.injectEndpoints({
     getTags: builder.query({
       query: () => "/business/tags/",
     }),
+    filterBusinesses: builder.query({
+      query: ({ categories, services_tags, locations }) => {
+        const params = new URLSearchParams();
+        if (categories) params.append("categories", categories);
+        if (services_tags) params.append("services_tags", services_tags);
+        if (locations) params.append("locations", locations);
+        return `/business/filter/?${params.toString()}`;
+      },
+    }),
   }),
 });
 
@@ -63,6 +72,7 @@ export const {
   useGetStatsQuery,
   useGetOrderSummaryQuery,
   useGetTagsQuery,
+  useFilterBusinessesQuery,
   useUploadMediaMutation,
   useRegisterBusinessMutation,
 } = businessDirectoryApi;
