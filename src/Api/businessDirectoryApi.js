@@ -46,6 +46,9 @@ export const businessDirectoryApi = api.injectEndpoints({
     getBusinessDetails: builder.query({
       query: (id) => `/businesses/${id}/`,
     }),
+    getTags: builder.query({
+      query: () => "/business/tags/",
+    }),
   }),
 });
 
@@ -59,6 +62,7 @@ export const {
   useGetBusinessDetailsQuery,
   useGetStatsQuery,
   useGetOrderSummaryQuery,
+  useGetTagsQuery,
   useUploadMediaMutation,
   useRegisterBusinessMutation,
 } = businessDirectoryApi;

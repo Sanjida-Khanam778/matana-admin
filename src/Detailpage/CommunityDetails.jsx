@@ -18,77 +18,76 @@ import { BsShop } from "react-icons/bs";
 import related1 from "../assets/images/related1.png";
 import related2 from "../assets/images/related2.png";
 import logo from "../assets/icons/details_logo.png";
-import { PlayIcon } from "lucide-react";
 import { GrLocation } from "react-icons/gr";
 import { useGetBusinessDetailsQuery } from "../Api/businessDirectoryApi";
 import ubereats from "../assets/images/ubereats.png"
 import whatsapp from "../assets/images/whatsapp.png"
-export const SAMPLE_CAFE = {
-  type: "cafe",
-  badge: "Featured Business",
-  name: "Brooklyn Brew Cafe",
-  subtitle: "Cafe & Bakery",
+// export const SAMPLE_CAFE = {
+//   type: "cafe",
+//   badge: "Featured Business",
+//   name: "Brooklyn Brew Cafe",
+//   subtitle: "Cafe & Bakery",
 
-  coverImage:
-    "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80",
-  logoImage: logo,
+//   coverImage:
+//     "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80",
+//   logoImage: logo,
 
-  actions: {
-    call: "+1 (718) 555-3456",
-    website: "brooklynbrewcafe.com",
-    instagram: "@brooklynbrewcafe",
-    other_social_link: "",
-    visitLabel: "Visit Website",
-  },
+//   actions: {
+//     call: "+1 (718) 555-3456",
+//     website: "brooklynbrewcafe.com",
+//     instagram: "@brooklynbrewcafe",
+//     other_social_link: "",
+//     visitLabel: "Visit Website",
+//   },
 
-  about:
-    "Founded in 2018, Brooklyn Brew Cafe is where handcrafted coffee meets artisan baking. From expertly roasted espresso to buttery croissants and fresh pastries, every item is made with premium ingredients. Whether you're grabbing your morning coffee, meeting friends, or working remotely, our cozy atmosphere is designed to make every visit memorable.",
+//   about:
+//     "Founded in 2018, Brooklyn Brew Cafe is where handcrafted coffee meets artisan baking. From expertly roasted espresso to buttery croissants and fresh pastries, every item is made with premium ingredients. Whether you're grabbing your morning coffee, meeting friends, or working remotely, our cozy atmosphere is designed to make every visit memorable.",
 
-  gallery: [
-    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
-    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
-    "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80",
-    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
-  ],
+//   gallery: [
+//     "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
+//     "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
+//     "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80",
+//     "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
+//   ],
 
-  video: null,
+//   video: null,
 
-  tags: ["Coffee", "Cafe", "Bakery", "Breakfast", "Free WiFi"],
+//   tags: ["Coffee", "Cafe", "Bakery", "Breakfast", "Free WiFi"],
 
-  related: [
-    {
-      name: "Zenith Space",
-      businesses: 8,
-      image: related1,
-    },
-    {
-      name: "Crust & Crumb",
-      businesses: 14,
-      image: related2,
-    },
-  ],
+//   related: [
+//     {
+//       name: "Zenith Space",
+//       businesses: 8,
+//       image: related1,
+//     },
+//     {
+//       name: "Crust & Crumb",
+//       businesses: 14,
+//       image: related2,
+//     },
+//   ],
 
-  contact: {
-    phone: "(718) 555-3456",
-    email: "info@brooklynbrewcafe.com",
-    address: "126 Oak Avenue, Brooklyn, NY 11201",
-  },
+//   contact: {
+//     phone: "(718) 555-3456",
+//     email: "info@brooklynbrewcafe.com",
+//     address: "126 Oak Avenue, Brooklyn, NY 11201",
+//   },
 
-  hours: {
-    Sunday: "9:00 AM – 7:00 PM",
-    Monday: "6:00 AM – 7:00 PM",
-    Tuesday: "6:00 AM – 7:00 PM",
-    Wednesday: "6:00 AM – 7:00 PM",
-    Thursday: "6:00 AM – 7:00 PM",
-    Friday: "6:00 AM – 8:00 PM",
-    Saturday: "8:00 AM – 6:00 PM",
-  },
+//   hours: {
+//     Sunday: "9:00 AM – 7:00 PM",
+//     Monday: "6:00 AM – 7:00 PM",
+//     Tuesday: "6:00 AM – 7:00 PM",
+//     Wednesday: "6:00 AM – 7:00 PM",
+//     Thursday: "6:00 AM – 7:00 PM",
+//     Friday: "6:00 AM – 8:00 PM",
+//     Saturday: "8:00 AM – 6:00 PM",
+//   },
 
 
-  inquiry: {
-    fields: ["name", "email", "phone", "message"],
-  },
-};
+//   inquiry: {
+//     fields: ["name", "email", "phone", "message"],
+//   },
+// };
 
 // ══════════════════════════════════════════════════
 //  SUB COMPONENTS
@@ -192,7 +191,7 @@ function InquiryForm({ fields = [] }) {
 // ══════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
-export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
+export default function CommunityDetails({ data , onBack }) {
   const navigate = useNavigate();
   const { id: paramId } = useParams();
   const location = useLocation();
@@ -237,33 +236,39 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
       b?.flyer_image ||
       (b?.community?.image) ||
       data.coverImage,
-    logoImage: b?.flyer_image || data.logoImage,
+    logoImage: b?.flyer_image,
 
     actions: {
       call: b?.business_phone || b?.contact_phone || data.actions?.call,
-      website: b?.website || data.actions?.website,
-      instagram: b?.instagram || data.actions?.instagram,
-      facebook: b?.facebook || data.actions?.facebook,
-      business_phone: b?.business_phone || data.actions?.business_phone,
-      other_social_link: b?.other_social_link || data.actions?.other_social_link,
+      website: b?.website,
+      instagram: b?.instagram,
+      facebook: b?.facebook,
+      business_phone: b?.business_phone,
+      other_social_link: b?.other_social_link,
     },
 
-    about: b?.description || data.about,
+    about: b?.description,
 
     gallery:
       b?.photos && Array.isArray(b.photos) && b.photos.length > 0 && typeof b.photos[0] === "string"
         ? b.photos
         : b?.flyer_image
-          ? [b.flyer_image]
-          : data.gallery,
+          && [b.flyer_image],
 
-    video: b?.promo_video_link ? { src: b.promo_video_link } : data.video,
+    video: b?.promo_video_link && { src: b.promo_video_link } ,
 
     tags: b?.services_tags
       ? b.services_tags.split(",").map((t) => t.trim()).filter(Boolean)
       : data.tags,
 
-    related: data.related,
+    related: (b?.related_businesses || []).map((r) => ({
+      id: r.id,
+      name: r.name,
+      category: r.services_tags ? r.services_tags.split(",")[0].trim() : "Business Services",
+      location: r.community ? `${r.community.name}, ${r.community.state}` : r.business_address || "",
+      image: r.flyer_image || r.community?.image || "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80",
+      raw: r,
+    })),
 
     contact: {
       phone: b?.business_phone || b?.contact_phone || data.contact?.phone,
@@ -275,7 +280,7 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
     },
 
     hours: b?.business_hours || data.hours,
-    inquiry: data.inquiry,
+    inquiry: [],
   };
 
   const days = [
@@ -487,24 +492,36 @@ export default function CommunityDetails({ data = SAMPLE_CAFE, onBack }) {
               <div className="grid grid-cols-2 gap-3">
                 {d.related.map((r, i) => (
                   <div
-                    key={i}
+                    key={r.id || i}
+                    onClick={() => {
+                      navigate(`/community-details/${r.id}`);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
                     className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
                   >
-                    <div className="h-52 overflow-hidden">
+                    <div className="h-52 overflow-hidden bg-gray-100">
                       <img
                         src={r.image}
                         alt={r.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80";
+                        }}
                       />
                     </div>
                     <div className="px-3 py-2.5">
-                      <p className="text-xs md:text-base lg:text-lg xl:text-xl font-bold text-gray-900">
+                      <p className="text-xs md:text-base lg:text-lg xl:text-xl font-bold text-gray-900 line-clamp-1">
                         {r.name}
                       </p>
-                      <p className="text-base py-1 text-gray-400">Gift Shops</p>
-                      <p className="text-base flex items-center gap-2 text-gray-400">
-                        <GrLocation /> Lakewood, N J
-                      </p>
+                      {r.category && (
+                        <p className="text-xs md:text-sm py-1 text-gray-400 truncate">{r.category}</p>
+                      )}
+                      {r.location && (
+                        <p className="text-xs md:text-sm flex items-center gap-1.5 text-gray-400 truncate">
+                          <GrLocation className="flex-shrink-0" /> {r.location}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}

@@ -1,12 +1,17 @@
 import { useState } from "react";
+import {
+  useGetTagsQuery,
+  useGetCategoriesQuery,
+  useGetCommunitiesQuery,
+} from "../../Api/businessDirectoryApi";
 
 const hideScrollbarStyle = `
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 `;
 
-// ── Data ───────────────────────────────────────────
-const categories = [
+// ── Data ──
+const fallbackCategories = [
   { name: "Anniversary", count: 87 },
   { name: "Baby", count: 87 },
   { name: "Bakery & Cakes", count: 65 },
@@ -52,7 +57,7 @@ const categories = [
   { name: "Upsherin", count: 80 },
 ];
 
-const locations = [
+const fallbackLocations = [
   { name: "Baltimore, MD", count: 97 },
   { name: "Brooklyn, NY", count: 358 },
   { name: "Five Towns, NY", count: 1781 },
@@ -63,7 +68,7 @@ const locations = [
   { name: "Queens, NY", count: 175 },
 ];
 
-const Services = [
+const fallbackServices = [
   { name: "Glatt Kosher", count: 175 },
   { name: "Cholov Yisroel", count: 358 },
   { name: "Mehadrin", count: 88 },
@@ -195,7 +200,9 @@ function SidebarSection({ title, items, selected, onToggle }) {
                   {item.name}
                 </span>
               </div>
-              <span className="text-xs text-gray-400">({item.count})</span>
+              {item.count !== undefined && item.count !== null && (
+                <span className="text-xs text-gray-400">({item.count})</span>
+              )}
             </label>
           ))}
         </div>
@@ -219,6 +226,34 @@ export default function SidebarFilter({
   isOpen = false,
   onClose,
 }) {
+  const { data: categoriesData } = useGetCategoriesQuery();
+  const { data: communitiesData } = useGetCommunitiesQuery();
+  const { data: tagsData } = useGetTagsQuery();
+
+  const categoryItems =
+    categoriesData && Array.isArray(categoriesData)
+      ? categoriesData.map((cat) => ({
+          name: cat.name,
+          count: cat.business_count,
+        }))
+      : fallbackCategories;
+
+  const locationItems =
+    communitiesData && Array.isArray(communitiesData)
+      ? communitiesData.map((loc) => ({
+          name: `${loc.name}, ${loc.state}`,
+          count: loc.business_count,
+        }))
+      : fallbackLocations;
+
+  const servicesItems =
+    tagsData && Array.isArray(tagsData)
+      ? tagsData.map((tag) => ({
+          name: typeof tag === "string" ? tag : tag.name,
+          count: typeof tag === "object" ? (tag.business_count ?? tag.count ?? null) : null,
+        }))
+      : fallbackServices;
+
   return (
     <>
       <style>{hideScrollbarStyle}</style>
@@ -273,7 +308,7 @@ export default function SidebarFilter({
           <div className="flex-1 overflow-y-auto lg:overflow-visible hide-scrollbar pr-1 mt-2">
             <SidebarSection
               title="Categories"
-              items={categories}
+              items={categoryItems}
               selected={selectedCategories}
               onToggle={onToggleCategory}
             />
@@ -292,14 +327,14 @@ export default function SidebarFilter({
             <div className="border-t border-gray-100 my-2" />
             <SidebarSection
               title="Locations"
-              items={locations}
+              items={locationItems}
               selected={selectedLocations}
               onToggle={onToggleLocation}
             />
             <div className="border-t border-gray-100 my-2" />
             <SidebarSection
               title="Services & Tags"
-              items={Services}
+              items={servicesItems}
               selected={selectedServices}
               onToggle={onToggleService}
             />
