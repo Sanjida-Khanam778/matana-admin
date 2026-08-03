@@ -19,7 +19,7 @@ import related1 from "../assets/images/related1.png";
 import related2 from "../assets/images/related2.png";
 import logo from "../assets/icons/details_logo.png";
 import { GrLocation } from "react-icons/gr";
-import { useGetBusinessDetailsQuery } from "../Api/businessDirectoryApi";
+import { useGetBusinessDetailsQuery, useSendInquiryMutation } from "../Api/businessDirectoryApi";
 import ubereats from "../assets/images/ubereats.png"
 import whatsapp from "../assets/images/whatsapp.png"
 // export const SAMPLE_CAFE = {
@@ -128,9 +128,12 @@ function VideoPlayer({ video }) {
   );
 }
 
-function InquiryForm({ fields = [] }) {
+function InquiryForm({ fields = [], businessId }) {
   const [form, setForm] = useState({});
   const [sent, setSent] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [sendInquiry, { isLoading: submitting }] = useSendInquiryMutation();
+
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }));
 
   const inputCls =
@@ -150,6 +153,31 @@ function InquiryForm({ fields = [] }) {
     "message",
   ];
 
+  const handleSubmit = async () => {
+    setErrorMsg("");
+    if (!form.name?.trim() || !form.email?.trim() || !form.message?.trim()) {
+      setErrorMsg("Please fill in all required fields (name, email, message).");
+      return;
+    }
+
+    try {
+      const payload = {
+        full_name: form.name || "",
+        email: form.email || "",
+        phone: form.phone || "",
+        message: form.message || "",
+        business: businessId ? parseInt(businessId, 10) : 0,
+      };
+      await sendInquiry(payload).unwrap();
+      setSent(true);
+      setForm({});
+      setTimeout(() => setSent(false), 3000);
+    } catch (err) {
+      console.error("Failed to send inquiry:", err);
+      setErrorMsg(err?.data?.detail || err?.data?.message || "Failed to send inquiry. Please try again.");
+    }
+  };
+
   return (
     <div className="space-y-2.5">
       {allFields.map((f) =>
@@ -165,7 +193,7 @@ function InquiryForm({ fields = [] }) {
         ) : (
           <input
             key={f}
-            type="text"
+            type={f === "email" ? "email" : f === "phone" ? "tel" : "text"}
             placeholder={placeholders[f]}
             className={inputCls}
             value={form[f] || ""}
@@ -173,16 +201,17 @@ function InquiryForm({ fields = [] }) {
           />
         )
       )}
+
+      {errorMsg && (
+        <p className="text-xs text-red-500 font-medium">{errorMsg}</p>
+      )}
+
       <button
-        onClick={async () => {
-          await new Promise((r) => setTimeout(r, 500));
-          setSent(true);
-          setForm({});
-          setTimeout(() => setSent(false), 3000);
-        }}
-        className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-xs lg:text-base font-semibold py-3 rounded-xl transition-colors"
+        onClick={handleSubmit}
+        disabled={submitting}
+        className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] disabled:opacity-60 text-white text-xs lg:text-base font-semibold py-3 rounded-xl transition-colors"
       >
-        <FiSend size={16} /> {sent ? "✓ Sent!" : "Send Inquiry"}
+        <FiSend size={16} /> {submitting ? "Sending..." : sent ? "✓ Sent!" : "Send Inquiry"}
       </button>
     </div>
   );
@@ -654,14 +683,14 @@ export default function CommunityDetails({ data , onBack }) {
               )}
 
               {/* Action buttons */}
-              <div className="flex gap-3">
+              {/* <div className="flex gap-3">
                 <button className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 bg-white text-gray-700 text-sm py-2.5 rounded-full hover:bg-gray-50 transition-colors font-bold shadow-sm">
                   <FiShare2 size={16} /> Share
                 </button>
                 <button className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 bg-white text-gray-700 text-sm py-2.5 rounded-full hover:bg-gray-50 transition-colors font-bold shadow-sm">
                   <FiHeart size={16} /> Save
                 </button>
-              </div>
+              </div> */}
             </div>
           )}
 
@@ -697,7 +726,7 @@ export default function CommunityDetails({ data , onBack }) {
             <h3 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3 lg:mb-6">
               Send Secure Inquiry
             </h3>
-            <InquiryForm fields={d.inquiry?.fields || []} />
+            <InquiryForm fields={d.inquiry?.fields || []} businessId={targetId} />
           </div>
         </div>
       </div>

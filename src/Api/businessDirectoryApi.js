@@ -58,6 +58,13 @@ export const businessDirectoryApi = api.injectEndpoints({
         return `/business/filter/?${params.toString()}`;
       },
     }),
+    sendInquiry: builder.mutation({
+      query: (body) => ({
+        url: "/inquiry/",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -75,4 +82,5 @@ export const {
   useFilterBusinessesQuery,
   useUploadMediaMutation,
   useRegisterBusinessMutation,
+  useSendInquiryMutation,
 } = businessDirectoryApi;
