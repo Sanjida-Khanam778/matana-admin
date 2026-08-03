@@ -67,7 +67,7 @@ function CategoryCard({ id, name, count, image }) {
       />
 
       {/* Image */}
-      <div className="rounded-2xl p-6 bg-[#EAF2EC] overflow-hidden mb-3 relative flex items-center justify-center md:h-52 h-32">
+      <div className="rounded-2xl p-6 bg-[#EBEFEA] overflow-hidden mb-3 relative flex items-center justify-center md:h-52 h-32">
         <img
           src={image}
           alt={name}

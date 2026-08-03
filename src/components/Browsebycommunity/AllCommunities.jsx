@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
     IoChevronForward,
     IoChevronBack,
@@ -9,18 +9,8 @@ import { ScrollRestoration, useNavigate } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa";
 import { IMAGES } from "../../assets";
 import { useGetCommunitiesQuery } from "../../Api/businessDirectoryApi";
-// ── Data ───
-const community = {
-    district: "New York City District",
-    name: "Brooklyn, NY",
-    businesses: 342,
-    featured: 12,
-    rating: 4.8,
-    coverImage:
-        "https://images.unsplash.com/photo-1546436836-07a91091f160?w=900&q=80",
-};
 
-const TOTAL_PAGES = 4;
+const ITEMS_PER_PAGE = 12;
 
 function CommunityCard({ city, state, rating, businesses, featured, image }) {
     const [hovered, setHovered] = useState(false);
@@ -97,7 +87,7 @@ function CommunityCard({ city, state, rating, businesses, featured, image }) {
 // ── Main ───────────────────────────────────────────
 export default function AllCommunities() {
     const { data: communitiesData, isLoading } = useGetCommunitiesQuery();
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(1);
     const [selCats, setSelCats] = useState([]);
     const [selLocs, setSelLocs] = useState([]);
     const [selServices, setSelServices] = useState([]);
@@ -105,15 +95,24 @@ export default function AllCommunities() {
 
     const hasSidebarFilters = selCats.length > 0 || selLocs.length > 0 || selServices.length > 0;
 
-    const communities = (communitiesData ?? []).map((c) => ({
-        id: c.id,
-        city: c.name,
-        state: c.state,
-        rating: c.rating ?? 4.8,
-        businesses: c.business_count ?? 0,
-        featured: c.featured_count ?? 0,
-        image: c.image || IMAGES.browse1,
-    }));
+    const communities = useMemo(() => {
+        return (communitiesData ?? []).map((c) => ({
+            id: c.id,
+            city: c.name,
+            state: c.state,
+            rating: c.rating ?? 4.8,
+            businesses: c.business_count ?? 0,
+            featured: c.featured_count ?? 0,
+            image: c.image || IMAGES.browse1,
+        }));
+    }, [communitiesData]);
+
+    const totalPages = Math.ceil(communities.length / ITEMS_PER_PAGE) || 1;
+
+    const currentPageCommunities = useMemo(() => {
+        const startIndex = (page - 1) * ITEMS_PER_PAGE;
+        return communities.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [communities, page]);
 
     function toggle(arr, setArr, val) {
         setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));
@@ -156,41 +155,46 @@ export default function AllCommunities() {
                                             />
                                         ))}
                                     {!isLoading &&
-                                        communities.map((c) => (
+                                        currentPageCommunities.map((c) => (
                                             <CommunityCard key={c.id} {...c} />
                                         ))}
                                 </div>
 
-                            {/* Pagination */}
-                            <div className="flex items-center justify-center gap-2">
-                                <button
-                                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                                >
-                                    <IoChevronBack size={14} color="#374151" />
-                                </button>
+                                {/* Pagination */}
+                                {totalPages > 1 && (
+                                    <div className="flex items-center justify-center gap-2">
+                                        <button
+                                            onClick={() => setPage((p) => Math.max(1, p - 1))}
+                                            disabled={page === 1}
+                                            className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <IoChevronBack size={14} color="#374151" />
+                                        </button>
 
-                                {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setPage(i + 1)}
-                                        className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${page === i + 1
-                                            ? "bg-[#085027] text-white"
-                                            : "border border-gray-300 text-gray-600 hover:bg-gray-100"
-                                            }`}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                ))}
+                                        {Array.from({ length: totalPages }).map((_, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setPage(i + 1)}
+                                                className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                                                    page === i + 1
+                                                        ? "bg-[#085027] text-white"
+                                                        : "border border-gray-300 text-gray-600 hover:bg-gray-100"
+                                                }`}
+                                            >
+                                                {i + 1}
+                                            </button>
+                                        ))}
 
-                                <button
-                                    onClick={() => setPage((p) => Math.min(TOTAL_PAGES, p + 1))}
-                                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                                >
-                                    <IoChevronForward size={14} color="#374151" />
-                                </button>
+                                        <button
+                                            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                                            disabled={page === totalPages}
+                                            className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <IoChevronForward size={14} color="#374151" />
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-                        </div>
                         )}
                     </div>
                 </div>
