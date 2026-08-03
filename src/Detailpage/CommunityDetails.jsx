@@ -188,6 +188,31 @@ function InquiryForm({ fields = [] }) {
   );
 }
 
+function formatWhatsAppUrl(phone) {
+  if (!phone) return "#";
+  let digits = String(phone).replace(/\D/g, "");
+  if (!digits) return "#";
+
+  // Bangladesh local 11-digit starting with 01 (e.g. 01544789954 -> 8801544789954)
+  if (digits.length === 11 && digits.startsWith("01")) {
+    digits = "88" + digits;
+  }
+  // 10-digit starting with 1 (BD without leading 0 e.g. 1544789954 -> 8801544789954)
+  else if (digits.length === 10 && digits.startsWith("1")) {
+    digits = "880" + digits;
+  }
+  // 10-digit standard US/Canada (e.g. 7185553456 -> 17185553456)
+  else if (digits.length === 10) {
+    digits = "1" + digits;
+  }
+  // If starts with 0 and hasn't matched above, strip leading zero
+  else if (digits.startsWith("0")) {
+    digits = digits.replace(/^0+/, "");
+  }
+
+  return `https://api.whatsapp.com/send?phone=${digits}`;
+}
+
 // ══════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
@@ -398,7 +423,7 @@ export default function CommunityDetails({ data , onBack }) {
             )}
             {(d.actions?.business_phone || d.actions?.call) && (
               <a
-                href={`https://wa.me/${(d.actions.business_phone || d.actions.call).replace(/\D/g, "")}`}
+                href={formatWhatsAppUrl(d.actions.business_phone || d.actions.call)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -431,13 +456,13 @@ export default function CommunityDetails({ data , onBack }) {
           )}
 
           {/* Gallery */}
-          {d.gallery?.length > 0 && (
+          {d.photos?.length > 0 && (
             <section>
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2 lg:mb-4">
                 Gallery
               </h2>
               <div className="grid grid-cols-3 gap-2">
-                {d.gallery.map((img, i) => (
+                {d.photos.map((img, i) => (
                   <div
                     key={i}
                     className="overflow-hidden rounded-xl"
@@ -610,9 +635,23 @@ export default function CommunityDetails({ data , onBack }) {
               </div>
 
               {/* Get Directions Button */}
-              <button className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-sm sm:text-base font-bold py-3 rounded-full transition-colors mt-2 shadow-sm">
-                <FiNavigation size={18} className="rotate-45" /> Get Directions
-              </button>
+              {d.contact?.address ? (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.contact.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-sm sm:text-base font-bold py-3 rounded-full transition-colors mt-2 shadow-sm"
+                >
+                  <FiNavigation size={18} className="rotate-45" /> Get Directions
+                </a>
+              ) : (
+                <button
+                  disabled
+                  className="w-full flex items-center justify-center gap-2 bg-gray-300 text-white text-sm sm:text-base font-bold py-3 rounded-full cursor-not-allowed mt-2 shadow-sm"
+                >
+                  <FiNavigation size={18} className="rotate-45" /> Get Directions
+                </button>
+              )}
 
               {/* Action buttons */}
               <div className="flex gap-3">

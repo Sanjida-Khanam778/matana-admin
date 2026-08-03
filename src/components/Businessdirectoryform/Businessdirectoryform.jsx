@@ -136,6 +136,7 @@ export default function Pricing() {
   const [galleryFiles, setGalleryFiles] = useState([]);
   const [galleryWarning, setGalleryWarning] = useState("");
   const [flyerFiles, setFlyerFiles] = useState([]);
+  const [bannerFiles, setBannerFiles] = useState([]);
   const [cardTokenReady, setCardTokenReady] = useState(false);
   const [tokenizing, setTokenizing] = useState(false);
 
@@ -288,6 +289,13 @@ export default function Pricing() {
       const res = await uploadMedia(fd).unwrap();
       if (res[0]?.id) flyerImageId = res[0].id;
     }
+    let bannerImageId = null;
+    for (const file of bannerFiles) {
+      const fd = new FormData();
+      fd.append("image", file);
+      const res = await uploadMedia(fd).unwrap();
+      if (res[0]?.id) bannerImageId = res[0].id;
+    }
     setUploadingImages(false);
 
     // Step 2 — Tokenize card LAST, right before registerBusiness
@@ -344,6 +352,7 @@ export default function Pricing() {
       card_exp: cardExpiry.replace("/", ""),
       photo_ids: photoIds,
       flyer_image: flyerImageId,
+      banner: bannerImageId,
       ...(plan === "premium" && promoVideoLink ? { promo_video_link: promoVideoLink } : {}),
     };
 
@@ -547,6 +556,8 @@ export default function Pricing() {
             setPromoVideoLink={setPromoVideoLink}
             flyerFiles={flyerFiles}
             setFlyerFiles={setFlyerFiles}
+            bannerFiles={bannerFiles}
+            setBannerFiles={setBannerFiles}
             submitError={submitError}
             handleSubmit={handleSubmit}
             submitting={submitting}
