@@ -116,6 +116,7 @@ export default function Pricing() {
   const [facebook, setFacebook] = useState("");
   const [otherSocialLink, setOtherSocialLink] = useState("");
   const [servicesTags, setServicesTags] = useState("");
+  const [occasions, setOccasions] = useState("");
   const [website, setWebsite] = useState("");
 
   // ── Card fields ──
@@ -344,6 +345,7 @@ export default function Pricing() {
       instagram, facebook,
       other_social_link: otherSocialLink,
       services_tags: servicesTags,
+      occasions,
       website,
       plan_id: selectedPlanApi?.id,
       payment_type: paymentType,
@@ -356,7 +358,7 @@ export default function Pricing() {
       ...(plan === "premium" && promoVideoLink ? { promo_video_link: promoVideoLink } : {}),
     };
 
-    const response = await registerBusiness(body).unwrap();
+    await registerBusiness(body).unwrap();
     setSubmitSuccess(true);
   } catch (err) {
     setUploadingImages(false);
@@ -372,87 +374,9 @@ export default function Pricing() {
   }
 };
 
-  const submitRegistration = async (cardSut, cvvSut, expiry) => {
-    try {
-      setUploadingImages(true);
-      const photoIds = [];
-
-      for (const file of galleryFiles) {
-        const fd = new FormData();
-        fd.append("image", file);
-        const res = await uploadMedia(fd).unwrap();
-        if (res[0]?.id) photoIds.push(res[0].id);
-      }
-
-      let flyerImageId = null;
-      for (const file of flyerFiles) {
-        const fd = new FormData();
-        fd.append("image", file);
-        const res = await uploadMedia(fd).unwrap();
-        if (res[0]?.id) flyerImageId = res[0].id;
-      }
-
-      setUploadingImages(false);
-
-      const body = {
-        name,
-        description,
-        categories: cats.map((c) => c.id),
-        contact_email: contactEmail,
-        contact_name: contactName,
-        contact_phone: contactPhone,
-        community_id: city ? parseInt(city, 10) : null,
-        business_address: businessAddress,
-        business_phone: businessPhone,
-        business_hours: businessHours,
-        serving_areas: servingAreas,
-        instagram,
-        facebook,
-        other_social_link: otherSocialLink,
-        services_tags: servicesTags,
-        website,
-        plan_id: selectedPlanApi?.id,
-        payment_type: paymentType,
-        duration_months: durationMonths,
-        payment_method_id: cardSut,
-        card_exp: expiry,
-        photo_ids: photoIds,
-        flyer_image: flyerImageId,
-        ...(plan === "premium" && promoVideoLink
-          ? { promo_video_link: promoVideoLink }
-          : {}),
-      };
-
-      console.log("=== SUBMITTING BUSINESS REGISTRATION TO API ===");
-      console.log("Payload body:", JSON.stringify(body, null, 2));
-
-      const response = await registerBusiness(body).unwrap();
-      console.log("=== REGISTRATION SUCCESS RESPONSE ===", response);
-      setSubmitSuccess(true);
-    } catch (err) {
-      console.error("=== REGISTRATION API ERROR RESPONSE ===");
-      console.error("Full Error Object:", err);
-      console.error("Error Status:", err?.status);
-      console.error("Error Response Data:", err?.data);
-
-      setUploadingImages(false);
-      const errData = err?.data;
-      if (errData && typeof errData === "object") {
-        const messages = Object.entries(errData)
-          .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`)
-          .join(" · ");
-        setSubmitError(messages);
-      } else if (typeof errData === "string") {
-        setSubmitError(errData);
-      } else {
-        setSubmitError("Something went wrong. Please try again.");
-      }
-    }
-  };
-
   if (submitSuccess) {
     return (
-      <div className="bg-[#f8f7f3] min-h-[60vh] flex items-center justify-center p-8">
+      <div className="bg-[#f8f7f3] h-screen flex items-center justify-center p-8">
         <div className="bg-white rounded-3xl p-10 text-center max-w-md shadow-sm">
           <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
             <Check className="w-7 h-7 text-green-700" />
@@ -543,6 +467,8 @@ export default function Pricing() {
             setOtherSocialLink={setOtherSocialLink}
             servicesTags={servicesTags}
             setServicesTags={setServicesTags}
+            occasions={occasions}
+            setOccasions={setOccasions}
             website={website}
             setWebsite={setWebsite}
             plan={plan}

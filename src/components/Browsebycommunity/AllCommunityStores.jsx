@@ -41,6 +41,7 @@ function FeaturedBadge() {
 }
 
 function BusinessCard({ business, onClick }) {
+  console.log(business)
   return (
     <div
       onClick={onClick}
@@ -49,7 +50,7 @@ function BusinessCard({ business, onClick }) {
       {/* Image */}
       <div className="relative h-44 flex-shrink-0 overflow-hidden">
         <img
-          src={business.image}
+          src={business.raw.banner}
           alt={business.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           draggable={false}

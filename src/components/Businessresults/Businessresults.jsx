@@ -111,10 +111,10 @@ export default function BusinessResults({
 
   const mappedBusinesses = rawBusinesses.map((b) => {
     const imgUrl =
-      typeof b.flyer_image === "object" && b.flyer_image?.url
-        ? b.flyer_image.url
-        : typeof b.flyer_image === "string" && b.flyer_image
-        ? b.flyer_image
+      typeof b.banner === "object" && b.banner?.url
+        ? b.banner.url
+        : typeof b.banner === "string" && b.banner
+        ? b.banner
         : b.community?.image
         ? b.community.image
         : b.photos && b.photos.length > 0 && typeof b.photos[0] === "string"

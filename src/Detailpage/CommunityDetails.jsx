@@ -287,8 +287,9 @@ export default function CommunityDetails({ data , onBack }) {
       ? b.services_tags || (b.community ? `${b.community.name}, ${b.community.state}` : "")
       : data.subtitle,
     coverImage:
+      b?.banner ||
       b?.flyer_image ||
-      (b?.community?.image) ||
+      b?.community?.image ||
       data.coverImage,
     logoImage: b?.flyer_image,
 
@@ -303,11 +304,19 @@ export default function CommunityDetails({ data , onBack }) {
 
     about: b?.description,
 
-    gallery:
-      b?.photos && Array.isArray(b.photos) && b.photos.length > 0 && typeof b.photos[0] === "string"
+    photos:
+      b?.photos && Array.isArray(b.photos) && b.photos.length > 0
         ? b.photos
         : b?.flyer_image
-          && [b.flyer_image],
+        ? [b.flyer_image]
+        : data?.gallery || [],
+
+    gallery:
+      b?.photos && Array.isArray(b.photos) && b.photos.length > 0
+        ? b.photos
+        : b?.flyer_image
+        ? [b.flyer_image]
+        : data?.gallery || [],
 
     video: b?.promo_video_link && { src: b.promo_video_link } ,
 

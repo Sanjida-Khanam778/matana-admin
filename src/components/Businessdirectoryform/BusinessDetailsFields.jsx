@@ -1,5 +1,187 @@
+import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import UploadBox from "./UploadBox";
+
+const DAYS_LIST = [
+  { label: "Monday", short: "Mon" },
+  { label: "Tuesday", short: "Tue" },
+  { label: "Wednesday", short: "Wed" },
+  { label: "Thursday", short: "Thu" },
+  { label: "Friday", short: "Fri" },
+  { label: "Saturday", short: "Sat" },
+  { label: "Sunday", short: "Sun" },
+];
+
+const TIME_OPTIONS = [
+  "6:00 AM",
+  "6:30 AM",
+  "7:00 AM",
+  "7:30 AM",
+  "8:00 AM",
+  "8:30 AM",
+  "9:00 AM",
+  "9:30 AM",
+  "10:00 AM",
+  "10:30 AM",
+  "11:00 AM",
+  "11:30 AM",
+  "12:00 PM",
+  "12:30 PM",
+  "1:00 PM",
+  "1:30 PM",
+  "2:00 PM",
+  "2:30 PM",
+  "3:00 PM",
+  "3:30 PM",
+  "4:00 PM",
+  "4:30 PM",
+  "5:00 PM",
+  "5:30 PM",
+  "6:00 PM",
+  "6:30 PM",
+  "7:00 PM",
+  "7:30 PM",
+  "8:00 PM",
+  "8:30 PM",
+  "9:00 PM",
+  "9:30 PM",
+  "10:00 PM",
+  "10:30 PM",
+  "11:00 PM",
+  "11:30 PM",
+  "12:00 AM",
+  "Closed",
+  "Open 24 Hours",
+];
+
+function BusinessHoursField({ value, onChange }) {
+  const [startDay, setStartDay] = useState("Monday");
+  const [endDay, setEndDay] = useState("Friday");
+  const [openTime, setOpenTime] = useState("9:00 AM");
+  const [closeTime, setCloseTime] = useState("6:00 PM");
+
+  const getShortDay = (dayName) =>
+    DAYS_LIST.find((d) => d.label === dayName)?.short || dayName;
+
+  const updateHours = (sDay, eDay, oTime, cTime) => {
+    setStartDay(sDay);
+    setEndDay(eDay);
+    setOpenTime(oTime);
+    setCloseTime(cTime);
+
+    const startShort = getShortDay(sDay);
+    const endShort = getShortDay(eDay);
+
+    const dayText =
+      !eDay || eDay === "None" || eDay === sDay
+        ? startShort
+        : `${startShort} - ${endShort}`;
+
+    let result = "";
+    if (oTime === "Open 24 Hours" || cTime === "Open 24 Hours") {
+      result = `${dayText}: Open 24 Hours`;
+    } else if (cTime === "Closed") {
+      result = `${dayText}: Closed`;
+    } else {
+      result = `${dayText}: ${oTime} - ${cTime}`;
+    }
+
+    onChange({ target: { value: result } });
+  };
+
+  return (
+    <div className="space-y-2 bg-stone-50/80 p-3.5 rounded-xl border border-stone-200/80">
+      <div className="flex items-center justify-between">
+        <label className="text-xs font-semibold text-stone-700">
+          Business Hours
+        </label>
+        <span className="text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+          {value || "Not set"}
+        </span>
+      </div>
+
+      {/* Select Dropdowns Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5 pt-1">
+        <div>
+          <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+            Start Day
+          </label>
+          <select
+            value={startDay}
+            onChange={(e) =>
+              updateHours(e.target.value, endDay, openTime, closeTime)
+            }
+            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-2 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+          >
+            {DAYS_LIST.map((d) => (
+              <option key={d.label} value={d.label}>
+                {d.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+            End Day
+          </label>
+          <select
+            value={endDay}
+            onChange={(e) =>
+              updateHours(startDay, e.target.value, openTime, closeTime)
+            }
+            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-2 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+          >
+            <option value="None">Same Day Only</option>
+            {DAYS_LIST.map((d) => (
+              <option key={d.label} value={d.label}>
+                {d.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+            Opening Time
+          </label>
+          <select
+            value={openTime}
+            onChange={(e) =>
+              updateHours(startDay, endDay, e.target.value, closeTime)
+            }
+            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-2 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+          >
+            {TIME_OPTIONS.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+            Closing Time
+          </label>
+          <select
+            value={closeTime}
+            onChange={(e) =>
+              updateHours(startDay, endDay, openTime, e.target.value)
+            }
+            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-2 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+          >
+            {TIME_OPTIONS.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function BusinessDetailsFields({
   name,
@@ -35,6 +217,8 @@ export default function BusinessDetailsFields({
   setOtherSocialLink,
   servicesTags,
   setServicesTags,
+  occasions,
+  setOccasions,
   website,
   setWebsite,
   plan,
@@ -88,7 +272,7 @@ export default function BusinessDetailsFields({
               className={`px-4 py-2 rounded-full text-[12.5px] border-[1.5px] transition-colors ${
                 cats.some((c) => c.id === cat.id)
                   ? "bg-green-900 border-green-900 text-white"
-                  : "bg-white border-gray-200 text-gray-900 hover:border-green-300"
+                  : "bg-white border-gray text-gray-900 hover:border-green-300"
               }`}
             >
               {cat.name}
@@ -190,16 +374,10 @@ export default function BusinessDetailsFields({
         </div>
       </div>
 
-      <div>
-        <label className="block text-[13px] font-semibold mb-1.5">Business hours</label>
-        <input
-          type="text"
-          placeholder="e.g. Sun-Thu 9am-6pm, Fri 9am-2pm, Sat closed"
-          value={businessHours}
-          onChange={(e) => setBusinessHours(e.target.value)}
-          className={inputCls}
-        />
-      </div>
+      <BusinessHoursField
+        value={businessHours}
+        onChange={(e) => setBusinessHours(e.target.value)}
+      />
 
       <div>
         <label className="block text-[13px] font-semibold mb-1.5">
@@ -263,6 +441,20 @@ export default function BusinessDetailsFields({
       </div>
 
       <div>
+        <label className="block text-[13px] font-semibold mb-1.5">Occasions</label>
+        <input
+          type="text"
+          placeholder="comma separated, e.g. Wedding, Bar Mitzvah, Purim, Baby"
+          value={occasions}
+          onChange={(e) => setOccasions(e.target.value)}
+          className={inputCls}
+        />
+        <div className="text-[11.5px] text-gray-500 mt-1">
+          Specify occasions relevant to your business
+        </div>
+      </div>
+
+      <div>
         <label className="block text-[13px] font-semibold mb-1.5">Website</label>
         <input
           type="text"
@@ -281,7 +473,7 @@ export default function BusinessDetailsFields({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className={`w-full min-h-[90px] px-3.5 py-3 rounded-xl border-[1.5px] ${
-            descOverLimit ? "border-red-400" : "border-gray-200"
+            descOverLimit ? "border-red-400" : "border-gray"
           } bg-white text-[13.5px] placeholder-gray-400 focus:outline-none focus:border-green-800`}
         />
         <div
