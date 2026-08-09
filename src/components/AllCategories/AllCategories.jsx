@@ -164,7 +164,9 @@ export default function BusinessSearch() {
 
   useEffect(() => {
     if (categoryName) {
-      setSelectedCategory(decodeURIComponent(categoryName));
+      const decoded = decodeURIComponent(categoryName);
+      setSelectedCategory(decoded);
+      setSelCats((prev) => (prev.includes(decoded) ? prev : [decoded]));
     } else {
       setSelectedCategory(null);
     }

@@ -3,14 +3,16 @@ import { persistStore, persistReducer } from "redux-persist";
 
 import storage from "redux-persist/lib/storage";
 import { api } from "../Api/api";
+import visitorReducer from "./visitorSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "visitor"],
 };
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
+  visitor: visitorReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

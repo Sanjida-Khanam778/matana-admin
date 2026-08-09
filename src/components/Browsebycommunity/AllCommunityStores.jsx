@@ -13,7 +13,7 @@ import { ScrollRestoration, useNavigate, useLocation } from "react-router-dom";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import {
-  useGetCommunityStoresByCityQuery,
+  useFilterBusinessesQuery,
   useGetCategoriesQuery,
   useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
@@ -103,10 +103,26 @@ export default function AllCommunity() {
   const selectedCity =
     communityState?.city || location.state?.cityName || location.state?.city || "Brooklyn";
 
-  // Fetch dynamic stores data for the city
-  const { data: cityData, isLoading } = useGetCommunityStoresByCityQuery(selectedCity, {
-    skip: !selectedCity,
-  });
+  // Sidebar filters state
+  const [selCats, setSelCats] = useState([]);
+  const [selLocs, setSelLocs] = useState(selectedCity ? [selectedCity] : []);
+  const [selServices, setSelServices] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  useEffect(() => {
+    if (selectedCity) {
+      setSelLocs((prev) => (prev.includes(selectedCity) ? prev : [selectedCity]));
+    }
+  }, [selectedCity]);
+
+  // Fetch filtered businesses using /api/business/filter/
+  const filterArgs = {
+    categories: selCats.join(","),
+    locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
+    services_tags: selServices.join(","),
+  };
+
+  const { data: filterData, isLoading } = useFilterBusinessesQuery(filterArgs);
 
   // Fetch categories for dropdown filter
   const { data: categoriesApiData } = useGetCategoriesQuery();
@@ -122,30 +138,28 @@ export default function AllCommunity() {
   const [page, setPage] = useState(1);
 
   // Community details from response or fallback state
-  const cityInfo = cityData?.city;
-  const communityName = cityInfo
-    ? `${cityInfo.name}${cityInfo.state ? `, ${cityInfo.state}` : ""}`
-    : communityState?.city
+  const communityName = communityState?.city
     ? `${communityState.city}${communityState.state ? `, ${communityState.state}` : ""}`
-    : `${selectedCity}, NY`;
+    : `${selectedCity}`;
 
   const coverImage =
-    cityInfo?.image ||
     communityState?.image ||
     "https://images.unsplash.com/photo-1546436836-07a91091f160?w=900&q=80";
 
-  const businessCount = cityInfo?.business_count ?? communityState?.businesses ?? 0;
-  const featuredCount = cityInfo?.featured_count ?? communityState?.featured ?? 0;
+  const businessCount = filterData?.count ?? communityState?.businesses ?? 0;
+  const featuredCount = communityState?.featured ?? 0;
 
   // Map API businesses to UI representation
   const allBusinesses = useMemo(() => {
-    const rawList = cityData?.businesses || [];
+    const rawList = filterData?.businesses || [];
     return rawList.map((b) => ({
       id: b.id,
       tag: b.services_tags
-        ? b.services_tags
+        ? b.services_tags.split(",")[0].trim()
         : b.categories && b.categories.length > 0
-        ? `CATEGORY ${b.categories[0]}`
+        ? typeof b.categories[0] === "object"
+          ? b.categories[0].name
+          : `CATEGORY ${b.categories[0]}`
         : "STORE",
       name: b.name,
       desc: b.description || "",
@@ -155,19 +169,14 @@ export default function AllCommunity() {
       rating: null,
       badge: b.is_featured ? "FEATURED" : null,
       image:
+        b.banner ||
         b.flyer_image ||
         (b.photos && b.photos.length > 0 && typeof b.photos[0] === "string"
           ? b.photos[0]
           : "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&q=80"),
       raw: b,
     }));
-  }, [cityData]);
-
-  // Sidebar filters state
-  const [selCats, setSelCats] = useState([]);
-  const [selLocs, setSelLocs] = useState([]);
-  const [selServices, setSelServices] = useState([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  }, [filterData]);
 
   const hasSidebarFilters = selCats.length > 0 || selLocs.length > 0 || selServices.length > 0;
 

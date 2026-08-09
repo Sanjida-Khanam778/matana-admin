@@ -95,6 +95,13 @@ export const businessDirectoryApi = api.injectEndpoints({
         body: { click_type },
       }),
     }),
+    registerWebsiteVisitor: builder.mutation({
+      query: (body) => ({
+        url: "/website-visitors/",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -118,4 +125,5 @@ export const {
   useRecordPageVisitMutation,
   useGetMyAnalyticsQuery,
   useTrackClickMutation,
+  useRegisterWebsiteVisitorMutation,
 } = businessDirectoryApi;

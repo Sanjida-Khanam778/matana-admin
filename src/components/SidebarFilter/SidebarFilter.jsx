@@ -95,25 +95,39 @@ function SidebarSection({ title, items, selected, onToggle }) {
           style={{ maxHeight: "210px" }}
         >
           {Array.isArray(items) &&
-            items.map((item) => (
-              <label
-                key={item.name}
-                className="flex items-center justify-between py-2 cursor-pointer group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Checkbox
-                    checked={selected.includes(item.name)}
-                    onChange={() => onToggle(item.name)}
-                  />
-                  <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                    {item.name}
-                  </span>
-                </div>
-                {item.count !== undefined && item.count !== null && (
-                  <span className="text-xs text-gray-400">({item.count})</span>
-                )}
-              </label>
-            ))}
+            items.map((item) => {
+              const isChecked =
+                selected.includes(item.name) ||
+                (item.fullName && selected.includes(item.fullName)) ||
+                selected.some(
+                  (s) =>
+                    s &&
+                    (s.toLowerCase() === item.name.toLowerCase() ||
+                      (item.fullName && s.toLowerCase() === item.fullName.toLowerCase()) ||
+                      s.toLowerCase().includes(item.name.toLowerCase()) ||
+                      item.name.toLowerCase().includes(s.toLowerCase()))
+                );
+
+              return (
+                <label
+                  key={item.name}
+                  className="flex items-center justify-between py-2 cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Checkbox
+                      checked={isChecked}
+                      onChange={() => onToggle(item.name)}
+                    />
+                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+                      {item.name}
+                    </span>
+                  </div>
+                  {item.count !== undefined && item.count !== null && (
+                    <span className="text-xs text-gray-400">({item.count})</span>
+                  )}
+                </label>
+              );
+            })}
         </div>
       )}
     </div>
