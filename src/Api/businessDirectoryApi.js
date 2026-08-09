@@ -65,6 +65,20 @@ export const businessDirectoryApi = api.injectEndpoints({
         body,
       }),
     }),
+    requestOtp: builder.mutation({
+      query: (body) => ({
+        url: "/auth/business-login/request-otp/",
+        method: "POST",
+        body,
+      }),
+    }),
+    verifyOtp: builder.mutation({
+      query: (body) => ({
+        url: "/auth/business-login/verify-otp/",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -83,4 +97,6 @@ export const {
   useUploadMediaMutation,
   useRegisterBusinessMutation,
   useSendInquiryMutation,
+  useRequestOtpMutation,
+  useVerifyOtpMutation,
 } = businessDirectoryApi;

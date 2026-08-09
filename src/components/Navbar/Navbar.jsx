@@ -108,6 +108,22 @@ export default function Navbar() {
               >
                 List Your Business
               </Link>
+
+              {localStorage.getItem("access_token") || localStorage.getItem("auth") ? (
+                <Link
+                  to="/business-dashboard"
+                  className="flex-shrink-0 border-2 border-[#085027] text-[#085027] hover:bg-green-50 text-xs lg:text-sm font-bold px-4 lg:px-5 py-1.5 lg:py-2 rounded-full transition-colors whitespace-nowrap"
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <Link
+                  to="/business-login"
+                  className="flex-shrink-0 border-2 border-[#085027] text-[#085027] hover:bg-green-50 text-xs lg:text-sm font-bold px-4 lg:px-5 py-1.5 lg:py-2 rounded-full transition-colors whitespace-nowrap"
+                >
+                  Login
+                </Link>
+              )}
             </div>
 
             {/* Mobile: Hamburger Menu */}
@@ -133,8 +149,8 @@ export default function Navbar() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden w-full mx-auto mt-4 pb-4 flex flex-col border-t border-gray-200/60 pt-4">
-              <div className="space-y-3 mb-4">
+            <div className="md:hidden w-full mx-auto mt-4 pb-4 flex flex-col border-t border-gray-200/60 pt-4 gap-2">
+              <div className="space-y-3 mb-2">
                 {NAV_CONFIG.map ((item) => (
                   <button
                     key={item.label}
@@ -146,8 +162,6 @@ export default function Navbar() {
                 ))}
               </div>
 
-             
-
               {/* Mobile CTA */}
               <Link
                 to="/pricing"
@@ -158,6 +172,24 @@ export default function Navbar() {
               >
                 List Your Business
               </Link>
+
+              {localStorage.getItem("access_token") || localStorage.getItem("auth") ? (
+                <Link
+                  to="/business-dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center px-10 border-2 border-[#085027] text-[#085027] text-sm font-bold py-2.5 rounded-lg transition-colors"
+                >
+                  Business Dashboard
+                </Link>
+              ) : (
+                <Link
+                  to="/business-login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center px-10 border-2 border-[#085027] text-[#085027] text-sm font-bold py-2.5 rounded-lg transition-colors"
+                >
+                  Login
+                </Link>
+              )}
             </div>
           )}
         </div>

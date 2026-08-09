@@ -281,20 +281,20 @@ export default function CommunityDetails({ data , onBack }) {
 
   // Construct dynamic data object `d`
   const d = {
-    badge: b ? (b.is_featured ? "Featured Business" : null) : data.badge,
-    name: b?.name || data.name,
+    badge: b ? (b.is_featured ? "Featured Business" : null) : data?.badge,
+    name: b?.name || data?.name || "",
     subtitle: b
       ? b.services_tags || (b.community ? `${b.community.name}, ${b.community.state}` : "")
-      : data.subtitle,
+      : data?.subtitle,
     coverImage:
       b?.banner ||
       b?.flyer_image ||
       b?.community?.image ||
-      data.coverImage,
+      data?.coverImage,
     logoImage: b?.flyer_image,
 
     actions: {
-      call: b?.business_phone || b?.contact_phone || data.actions?.call,
+      call: b?.business_phone || b?.contact_phone || data?.actions?.call,
       website: b?.website,
       instagram: b?.instagram,
       facebook: b?.facebook,
@@ -322,9 +322,9 @@ export default function CommunityDetails({ data , onBack }) {
 
     tags: b?.services_tags
       ? b.services_tags.split(",").map((t) => t.trim()).filter(Boolean)
-      : data.tags,
+      : data?.tags,
 
-    related: (b?.related_businesses || []).map((r) => ({
+    related: (b?.related_businesses || []).slice(0, 4).map((r) => ({
       id: r.id,
       name: r.name,
       category: r.services_tags ? r.services_tags.split(",")[0].trim() : "Business Services",
@@ -334,15 +334,15 @@ export default function CommunityDetails({ data , onBack }) {
     })),
 
     contact: {
-      phone: b?.business_phone || b?.contact_phone || data.contact?.phone,
-      email: b?.contact_email || data.contact?.email,
+      phone: b?.business_phone || b?.contact_phone || data?.contact?.phone,
+      email: b?.contact_email || data?.contact?.email,
       address:
         b?.business_address ||
-        (b?.community ? `${b.community.name}, ${b.community.state}` : data.contact?.address),
-      website: b?.website || data.contact?.website,
+        (b?.community ? `${b.community.name}, ${b.community.state}` : data?.contact?.address),
+      website: b?.website || data?.contact?.website,
     },
 
-    hours: b?.business_hours || data.hours,
+    hours: b?.business_hours || data?.hours,
     inquiry: [],
   };
 

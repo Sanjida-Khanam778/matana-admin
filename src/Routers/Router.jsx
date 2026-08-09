@@ -10,6 +10,9 @@ import AllCommunity from "../components/Browsebycommunity/AllCommunityStores";
 import Pricing from "../components/Businessdirectoryform/Businessdirectoryform";
 import AllCommunities from "../components/Browsebycommunity/AllCommunities";
 
+import BusinessLogin from "../Pages/BusinessLogin/BusinessLogin";
+import BusinessDashboard from "../Pages/BusinessDashboard/BusinessDashboard";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -55,12 +58,20 @@ export const router = createBrowserRouter([
       {
         path: "/pricing",
         element: <Pricing />,
-      }
+      },
+      {
+        path: "/business-login",
+        element: <BusinessLogin />,
+      },
+      {
+        path: "/business-dashboard",
+        element: <BusinessDashboard />,
+      },
     ],
   },
   {
     path: "/login",
-    element: <h1>Login</h1>,
+    element: <BusinessLogin />,
   },
   {
     path: "/register",
