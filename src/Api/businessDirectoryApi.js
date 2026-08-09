@@ -82,7 +82,7 @@ export const businessDirectoryApi = api.injectEndpoints({
     recordPageVisit: builder.mutation({
       query: (id) => ({
         url: `/businesses/${id}/`,
-        method: "POST",
+        method: "PATCH",
       }),
     }),
     getMyAnalytics: builder.query({
