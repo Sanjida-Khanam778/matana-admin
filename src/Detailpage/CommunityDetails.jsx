@@ -23,79 +23,10 @@ import {
   useGetBusinessDetailsQuery,
   useSendInquiryMutation,
   useRecordPageVisitMutation,
+  useTrackClickMutation,
 } from "../Api/businessDirectoryApi";
 import ubereats from "../assets/images/ubereats.png"
 import whatsapp from "../assets/images/whatsapp.png"
-// export const SAMPLE_CAFE = {
-//   type: "cafe",
-//   badge: "Featured Business",
-//   name: "Brooklyn Brew Cafe",
-//   subtitle: "Cafe & Bakery",
-
-//   coverImage:
-//     "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80",
-//   logoImage: logo,
-
-//   actions: {
-//     call: "+1 (718) 555-3456",
-//     website: "brooklynbrewcafe.com",
-//     instagram: "@brooklynbrewcafe",
-//     other_social_link: "",
-//     visitLabel: "Visit Website",
-//   },
-
-//   about:
-//     "Founded in 2018, Brooklyn Brew Cafe is where handcrafted coffee meets artisan baking. From expertly roasted espresso to buttery croissants and fresh pastries, every item is made with premium ingredients. Whether you're grabbing your morning coffee, meeting friends, or working remotely, our cozy atmosphere is designed to make every visit memorable.",
-
-//   gallery: [
-//     "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
-//     "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
-//     "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80",
-//     "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
-//   ],
-
-//   video: null,
-
-//   tags: ["Coffee", "Cafe", "Bakery", "Breakfast", "Free WiFi"],
-
-//   related: [
-//     {
-//       name: "Zenith Space",
-//       businesses: 8,
-//       image: related1,
-//     },
-//     {
-//       name: "Crust & Crumb",
-//       businesses: 14,
-//       image: related2,
-//     },
-//   ],
-
-//   contact: {
-//     phone: "(718) 555-3456",
-//     email: "info@brooklynbrewcafe.com",
-//     address: "126 Oak Avenue, Brooklyn, NY 11201",
-//   },
-
-//   hours: {
-//     Sunday: "9:00 AM – 7:00 PM",
-//     Monday: "6:00 AM – 7:00 PM",
-//     Tuesday: "6:00 AM – 7:00 PM",
-//     Wednesday: "6:00 AM – 7:00 PM",
-//     Thursday: "6:00 AM – 7:00 PM",
-//     Friday: "6:00 AM – 8:00 PM",
-//     Saturday: "8:00 AM – 6:00 PM",
-//   },
-
-
-//   inquiry: {
-//     fields: ["name", "email", "phone", "message"],
-//   },
-// };
-
-// ══════════════════════════════════════════════════
-//  SUB COMPONENTS
-// ══════════════════════════════════════════════════
 
 function VideoPlayer({ video }) {
   const [playing, setPlaying] = useState(false);
@@ -269,8 +200,17 @@ export default function CommunityDetails({ data , onBack }) {
     skip: !targetId,
   });
   const [recordPageVisit] = useRecordPageVisitMutation();
+  const [trackClick] = useTrackClickMutation();
   const [showCallNumber, setShowCallNumber] = useState(false);
   const b = apiBusiness || stateBusiness;
+
+  const handleTrackClick = (click_type) => {
+    if (targetId) {
+      trackClick({ id: targetId, click_type })
+        .unwrap()
+        .catch((err) => console.error("Track click error:", err));
+    }
+  };
 
   const handleCallClick = (e) => {
     const isMobile =
@@ -429,7 +369,10 @@ export default function CommunityDetails({ data , onBack }) {
             {d.actions?.call && (
               <a
                 href={`tel:${d.actions.call}`}
-                onClick={handleCallClick}
+                onClick={(e) => {
+                  handleCallClick(e);
+                  handleTrackClick("phone");
+                }}
                 className="flex items-center gap-1.5 bg-[#085027] text-white font-medium px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                 title={d.actions.call}
               >
@@ -443,6 +386,7 @@ export default function CommunityDetails({ data , onBack }) {
                     ? d.actions.website
                     : `https://${d.actions.website}`
                 }
+                onClick={() => handleTrackClick("website")}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1.5 text-black border-2 font-medium px-3 py-1.5 rounded-full transition-colors"
@@ -457,6 +401,7 @@ export default function CommunityDetails({ data , onBack }) {
                     ? d.actions.instagram
                     : `https://instagram.com/${d.actions.instagram.replace("@", "")}`
                 }
+                onClick={() => handleTrackClick("instagram")}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1.5 text-black border-2 font-medium px-3 py-1.5 rounded-full transition-colors"
@@ -467,6 +412,7 @@ export default function CommunityDetails({ data , onBack }) {
             {(d.actions?.business_phone || d.actions?.call) && (
               <a
                 href={formatWhatsAppUrl(d.actions.business_phone || d.actions.call)}
+                onClick={() => handleTrackClick("whatsapp")}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -684,6 +630,7 @@ export default function CommunityDetails({ data , onBack }) {
               {d.contact?.address ? (
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.contact.address)}`}
+                  onClick={() => handleTrackClick("directions")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 bg-[#085027] hover:bg-[#063d1e] text-white text-sm sm:text-base font-bold py-3 rounded-full transition-colors mt-2 shadow-sm"
@@ -692,7 +639,7 @@ export default function CommunityDetails({ data , onBack }) {
                 </a>
               ) : (
                 <button
-                  disabled
+                  disabled  onClick={() => handleTrackClick("directions")}
                   className="w-full flex items-center justify-center gap-2 bg-gray-300 text-white text-sm sm:text-base font-bold py-3 rounded-full cursor-not-allowed mt-2 shadow-sm"
                 >
                   <FiNavigation size={18} className="rotate-45" /> Get Directions

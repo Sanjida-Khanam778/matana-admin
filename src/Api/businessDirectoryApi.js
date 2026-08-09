@@ -88,6 +88,13 @@ export const businessDirectoryApi = api.injectEndpoints({
     getMyAnalytics: builder.query({
       query: () => "/business/my-analytics/",
     }),
+    trackClick: builder.mutation({
+      query: ({ id, click_type }) => ({
+        url: `/businesses/${id}/track-click/`,
+        method: "POST",
+        body: { click_type },
+      }),
+    }),
   }),
 });
 
@@ -110,4 +117,5 @@ export const {
   useVerifyOtpMutation,
   useRecordPageVisitMutation,
   useGetMyAnalyticsQuery,
+  useTrackClickMutation,
 } = businessDirectoryApi;
