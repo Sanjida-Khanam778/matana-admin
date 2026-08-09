@@ -19,7 +19,11 @@ import related1 from "../assets/images/related1.png";
 import related2 from "../assets/images/related2.png";
 import logo from "../assets/icons/details_logo.png";
 import { GrLocation } from "react-icons/gr";
-import { useGetBusinessDetailsQuery, useSendInquiryMutation } from "../Api/businessDirectoryApi";
+import {
+  useGetBusinessDetailsQuery,
+  useSendInquiryMutation,
+  useRecordPageVisitMutation,
+} from "../Api/businessDirectoryApi";
 import ubereats from "../assets/images/ubereats.png"
 import whatsapp from "../assets/images/whatsapp.png"
 // export const SAMPLE_CAFE = {
@@ -264,6 +268,7 @@ export default function CommunityDetails({ data , onBack }) {
   const { data: apiBusiness, isLoading } = useGetBusinessDetailsQuery(targetId, {
     skip: !targetId,
   });
+  const [recordPageVisit] = useRecordPageVisitMutation();
   const [showCallNumber, setShowCallNumber] = useState(false);
   const b = apiBusiness || stateBusiness;
 
@@ -557,6 +562,9 @@ export default function CommunityDetails({ data , onBack }) {
                   <div
                     key={r.id || i}
                     onClick={() => {
+                      if (r.id) {
+                        recordPageVisit(r.id).unwrap().catch((err) => console.error("Page visit count API error:", err));
+                      }
                       navigate(`/community-details/${r.id}`);
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }}

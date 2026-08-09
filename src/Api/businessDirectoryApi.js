@@ -79,6 +79,15 @@ export const businessDirectoryApi = api.injectEndpoints({
         body,
       }),
     }),
+    recordPageVisit: builder.mutation({
+      query: (id) => ({
+        url: `/businesses/${id}/`,
+        method: "POST",
+      }),
+    }),
+    getMyAnalytics: builder.query({
+      query: () => "/business/my-analytics/",
+    }),
   }),
 });
 
@@ -99,4 +108,6 @@ export const {
   useSendInquiryMutation,
   useRequestOtpMutation,
   useVerifyOtpMutation,
+  useRecordPageVisitMutation,
+  useGetMyAnalyticsQuery,
 } = businessDirectoryApi;

@@ -15,6 +15,7 @@ import { FaStar } from "react-icons/fa";
 import {
   useGetCommunityStoresByCityQuery,
   useGetCategoriesQuery,
+  useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
 
 const ITEMS_PER_PAGE = 6;
@@ -200,8 +201,14 @@ export default function AllCommunity() {
     return filteredBusinesses.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredBusinesses, page]);
 
+  const [recordPageVisit] = useRecordPageVisitMutation();
+
   const openBusinessDetails = (business) => {
-    navigate(`/community-details/${business.id}`, {
+    const targetId = business?.id || business?.raw?.id;
+    if (targetId) {
+      recordPageVisit(targetId).unwrap().catch((err) => console.error("Page visit count API error:", err));
+    }
+    navigate(`/community-details/${targetId}`, {
       state: { business: business.raw || business },
     });
   };

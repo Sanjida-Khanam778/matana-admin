@@ -4,6 +4,7 @@ import { IMAGES } from "../../assets";
 import {
   useGetCategoryStoresQuery,
   useFilterBusinessesQuery,
+  useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
 
 function LocationIcon() {
@@ -143,8 +144,13 @@ export default function BusinessResults({
 
   const displayBusinesses = mappedBusinesses;
 
+  const [recordPageVisit] = useRecordPageVisitMutation();
+
   const openBusinessDetails = (business) => {
     const id = business?.id || 1;
+    if (id) {
+      recordPageVisit(id).unwrap().catch((err) => console.error("Page visit count API error:", err));
+    }
     navigate(`/community-details/${id}`, {
       state: { business: business.raw || business },
     });
