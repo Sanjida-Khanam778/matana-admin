@@ -15,6 +15,7 @@ import { FaStar } from "react-icons/fa";
 import {
   useFilterBusinessesQuery,
   useGetCategoriesQuery,
+  useGetCommunitiesQuery,
   useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
 
@@ -105,6 +106,7 @@ export default function AllCommunity() {
 
   // Sidebar filters state
   const [selCats, setSelCats] = useState([]);
+  const [selOccasions, setSelOccasions] = useState([]);
   const [selLocs, setSelLocs] = useState(selectedCity ? [selectedCity] : []);
   const [selServices, setSelServices] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -118,6 +120,7 @@ export default function AllCommunity() {
   // Fetch filtered businesses using /api/business/filter/
   const filterArgs = {
     categories: selCats.join(","),
+    occasions: selOccasions.join(","),
     locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
     services_tags: selServices.join(","),
   };
@@ -137,17 +140,33 @@ export default function AllCommunity() {
   const [catOpen, setCatOpen] = useState(false);
   const [page, setPage] = useState(1);
 
-  // Community details from response or fallback state
-  const communityName = communityState?.city
-    ? `${communityState.city}${communityState.state ? `, ${communityState.state}` : ""}`
-    : `${selectedCity}`;
+  const { data: communitiesData } = useGetCommunitiesQuery();
+
+  // Show cover header ONLY if exactly 1 location is selected
+  const showCoverHeader = selLocs.length === 1;
+  const activeLocName = selLocs.length === 1 ? selLocs[0] : "";
+
+  const matchedCommunity = useMemo(() => {
+    if (!communitiesData || !activeLocName) return null;
+    const clean = activeLocName.includes(",") ? activeLocName.split(",")[0].trim() : activeLocName.trim();
+    return communitiesData.find(
+      (c) =>
+        c.name.toLowerCase() === clean.toLowerCase() ||
+        `${c.name}, ${c.state}`.toLowerCase() === activeLocName.toLowerCase()
+    );
+  }, [communitiesData, activeLocName]);
+
+  const communityName = matchedCommunity
+    ? `${matchedCommunity.name}${matchedCommunity.state ? `, ${matchedCommunity.state}` : ""}`
+    : activeLocName || selectedCity;
 
   const coverImage =
+    matchedCommunity?.image ||
     communityState?.image ||
     "https://images.unsplash.com/photo-1546436836-07a91091f160?w=900&q=80";
 
-  const businessCount = filterData?.count ?? communityState?.businesses ?? 0;
-  const featuredCount = communityState?.featured ?? 0;
+  const businessCount = filterData?.count ?? matchedCommunity?.business_count ?? 0;
+  const featuredCount = matchedCommunity?.featured_count ?? communityState?.featured ?? 0;
 
   // Map API businesses to UI representation
   const allBusinesses = useMemo(() => {
@@ -222,8 +241,33 @@ export default function AllCommunity() {
     });
   };
 
-  function toggle(arr, setArr, val) {
-    setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));
+  function toggle(arr, setArr, val, isChecked) {
+    if (isChecked) {
+      const valLower = val.toLowerCase().trim();
+      const valShort = val.includes(",") ? val.split(",")[0].trim().toLowerCase() : valLower;
+      setArr((p) =>
+        p.filter((x) => {
+          if (!x) return false;
+          const xLower = x.toLowerCase().trim();
+          const xShort = x.includes(",") ? x.split(",")[0].trim().toLowerCase() : xLower;
+          return (
+            xLower !== valLower &&
+            xLower !== valShort &&
+            xShort !== valLower &&
+            xShort !== valShort &&
+            !xLower.includes(valShort) &&
+            !valLower.includes(xShort)
+          );
+        })
+      );
+    } else {
+      setArr((p) => {
+        if (p.includes(val)) {
+          return p.filter((x) => x !== val);
+        }
+        return [...p, val];
+      });
+    }
   }
 
   return (
@@ -234,134 +278,212 @@ export default function AllCommunity() {
         {/* ── Sidebar ── */}
         <SidebarFilter
           selectedCategories={selCats}
-          onToggleCategory={(v) => toggle(selCats, setSelCats, v)}
+          onToggleCategory={(v, chk) => toggle(selCats, setSelCats, v, chk)}
+          selectedOccasions={selOccasions}
+          onToggleOccasion={(v, chk) => toggle(selOccasions, setSelOccasions, v, chk)}
           selectedLocations={selLocs}
-          onToggleLocation={(v) => toggle(selLocs, setSelLocs, v)}
+          onToggleLocation={(v, chk) => toggle(selLocs, setSelLocs, v, chk)}
           selectedServices={selServices}
-          onToggleService={(v) => toggle(selServices, setSelServices, v)}
+          onToggleService={(v, chk) => toggle(selServices, setSelServices, v, chk)}
           isOpen={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}
         />
         <div className="flex-1 w-full min-w-0">
-          {/* ── Cover ── */}
-          <div className="relative w-full rounded-2xl overflow-hidden h-[380px] sm:h-[320px] shadow-sm">
-            <img
-              src={coverImage}
-              alt={communityName}
-              className="w-full h-full object-cover"
-              draggable={false}
-            />
-            {/* Dark overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/10" />
+          {/* ── Cover Header (Shown ONLY if exactly 1 location is selected) ── */}
+          {showCoverHeader && (
+            <div className="relative w-full rounded-2xl overflow-hidden h-[380px] sm:h-[320px] shadow-sm mb-6">
+              <img
+                src={coverImage}
+                alt={communityName}
+                className="w-full h-full object-cover"
+                draggable={false}
+              />
+              {/* Dark overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/10" />
 
-            {/* Info overlay */}
-            <div className="absolute bottom-0 left-0 w-full">
-              <div className="flex items-center px-4 sm:px-6 gap-1.5 text-white/70 text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest mb-1">
-                <IoLocationOutline size={18} color="#f59e0b" />
-                New York City District
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 px-4 sm:px-6">
-                {communityName}
-              </h1>
-              <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 mb-4">
-                <div>
-                  <p className="text-white text-base sm:text-lg font-bold leading-none">
-                    {businessCount}
-                  </p>
-                  <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider mt-0.5">
-                    Businesses
-                  </p>
+              {/* Info overlay */}
+              <div className="absolute bottom-0 left-0 w-full">
+                <div className="flex items-center px-4 sm:px-6 gap-1.5 text-white/70 text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest mb-1">
+                  <IoLocationOutline size={18} color="#f59e0b" />
+                  Community District
                 </div>
-                <div className="w-px h-8 bg-white/20" />
-                <div>
-                  <p className="text-white text-base sm:text-lg font-bold leading-none">
-                    {featuredCount}
-                  </p>
-                  <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider mt-0.5">
-                    Featured
-                  </p>
-                </div>
-                <div className="w-px h-8 bg-white/20" />
-              </div>
-              {/* ── Search bar ── */}
-              <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mx-auto">
-                  {/* Search input */}
-                  <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-white hover:border-gray-300 transition-colors">
-                    <IoSearchOutline size={16} color="#9ca3af" />
-                    <input
-                      type="text"
-                      placeholder={`What are you looking for in ${communityName.split(",")[0]}?`}
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      className="flex-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none"
-                    />
+                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 px-4 sm:px-6">
+                  {communityName}
+                </h1>
+                <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 mb-4">
+                  <div>
+                    <p className="text-white text-base sm:text-lg font-bold leading-none">
+                      {businessCount}
+                    </p>
+                    <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider mt-0.5">
+                      Businesses
+                    </p>
                   </div>
-
-                  {/* Category dropdown & Filter Toggle & Find Local button */}
-                  <div className="flex items-center gap-2 sm:contents">
-                    {/* Filters Toggle Button for mobile/tablet */}
-                    <button
-                      onClick={() => setIsFilterOpen(true)}
-                      className="lg:hidden flex items-center justify-center gap-1.5 border border-gray-200 rounded-full px-3.5 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                      </svg>
-                      <span>Filters</span>
-                    </button>
-
-                    {/* Category dropdown */}
-                    <div className="relative flex-1 sm:flex-initial">
-                      <button
-                        onClick={() => setCatOpen((v) => !v)}
-                        className="w-full flex items-center justify-between sm:justify-start gap-2 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
-                      >
-                        <span className="truncate max-w-[120px] sm:max-w-none">{category}</span>
-                        <IoChevronDown
-                          size={14}
-                          className={`transition-transform flex-shrink-0 ${catOpen ? "rotate-180" : ""}`}
-                        />
-                      </button>
-                      {catOpen && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl z-30 overflow-hidden max-h-60 overflow-y-auto">
-                          {categoriesList.map((c) => (
-                            <button
-                              key={c}
-                              onClick={() => {
-                                setCategory(c);
-                                setCatOpen(false);
-                              }}
-                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50 ${
-                                category === c ? "text-[#085027] font-semibold" : "text-gray-600"
-                              }`}
-                            >
-                              {c}
-                            </button>
-                          ))}
-                        </div>
-                      )}
+                  <div className="w-px h-8 bg-white/20" />
+                  <div>
+                    <p className="text-white text-base sm:text-lg font-bold leading-none">
+                      {featuredCount}
+                    </p>
+                    <p className="text-white/60 text-[9px] sm:text-[10px] uppercase tracking-wider mt-0.5">
+                      Featured
+                    </p>
+                  </div>
+                  <div className="w-px h-8 bg-white/20" />
+                </div>
+                {/* ── Search bar ── */}
+                <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mx-auto">
+                    {/* Search input */}
+                    <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-white hover:border-gray-300 transition-colors">
+                      <IoSearchOutline size={16} color="#9ca3af" />
+                      <input
+                        type="text"
+                        placeholder={`What are you looking for in ${communityName.split(",")[0]}?`}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="flex-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none"
+                      />
                     </div>
 
-                    {/* Find Local button */}
-                    <button className="flex-1 hidden md:block sm:flex-initial bg-[#085027] hover:bg-[#063d1e] text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors whitespace-nowrap">
-                      Find Local
-                    </button>
+                    {/* Category dropdown & Filter Toggle & Find Local button */}
+                    <div className="flex items-center gap-2 sm:contents">
+                      {/* Filters Toggle Button for mobile/tablet */}
+                      <button
+                        onClick={() => setIsFilterOpen(true)}
+                        className="lg:hidden flex items-center justify-center gap-1.5 border border-gray-200 rounded-full px-3.5 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+                        <span>Filters</span>
+                      </button>
+
+                      {/* Category dropdown */}
+                      <div className="relative flex-1 sm:flex-initial">
+                        <button
+                          onClick={() => setCatOpen((v) => !v)}
+                          className="w-full flex items-center justify-between sm:justify-start gap-2 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
+                        >
+                          <span className="truncate max-w-[120px] sm:max-w-none">{category}</span>
+                          <IoChevronDown
+                            size={14}
+                            className={`transition-transform flex-shrink-0 ${catOpen ? "rotate-180" : ""}`}
+                          />
+                        </button>
+                        {catOpen && (
+                          <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl z-30 overflow-hidden max-h-60 overflow-y-auto">
+                            {categoriesList.map((c) => (
+                              <button
+                                key={c}
+                                onClick={() => {
+                                  setCategory(c);
+                                  setCatOpen(false);
+                                }}
+                                className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50 ${
+                                  category === c ? "text-[#085027] font-semibold" : "text-gray-600"
+                                }`}
+                              >
+                                {c}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Find Local button */}
+                      <button className="flex-1 hidden md:block sm:flex-initial bg-[#085027] hover:bg-[#063d1e] text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors whitespace-nowrap">
+                        Find Local
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {!showCoverHeader && (
+            <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border mb-6">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mx-auto">
+                <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-white hover:border-gray-300 transition-colors">
+                  <IoSearchOutline size={16} color="#9ca3af" />
+                  <input
+                    type="text"
+                    placeholder="Search businesses, services or tags..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="flex-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 sm:contents">
+                  <button
+                    onClick={() => setIsFilterOpen(true)}
+                    className="lg:hidden flex items-center justify-center gap-1.5 border border-gray-200 rounded-full px-3.5 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    <span>Filters</span>
+                  </button>
+
+                  <div className="relative flex-1 sm:flex-initial">
+                    <button
+                      onClick={() => setCatOpen((v) => !v)}
+                      className="w-full flex items-center justify-between sm:justify-start gap-2 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
+                    >
+                      <span className="truncate max-w-[120px] sm:max-w-none">{category}</span>
+                      <IoChevronDown
+                        size={14}
+                        className={`transition-transform flex-shrink-0 ${catOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {catOpen && (
+                      <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl z-30 overflow-hidden max-h-60 overflow-y-auto">
+                        {categoriesList.map((c) => (
+                          <button
+                            key={c}
+                            onClick={() => {
+                              setCategory(c);
+                              setCatOpen(false);
+                            }}
+                            className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50 ${
+                              category === c ? "text-[#085027] font-semibold" : "text-gray-600"
+                            }`}
+                          >
+                            {c}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <button className="flex-1 hidden md:block sm:flex-initial bg-[#085027] hover:bg-[#063d1e] text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors whitespace-nowrap">
+                    Find Local
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Content Layout ── */}
           <div className="my-6 lg:my-10 pb-12">

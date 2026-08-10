@@ -124,7 +124,7 @@ export default function BusinessLogin() {
   };
 
   return (
-    <div className="bg-[#f8f7f3] flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-[#f8f7f3] flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans min-h-[60vh]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">

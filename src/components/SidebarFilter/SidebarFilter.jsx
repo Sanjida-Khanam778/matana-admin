@@ -3,6 +3,7 @@ import {
   useGetTagsQuery,
   useGetCategoriesQuery,
   useGetCommunitiesQuery,
+  useGetOccasionsQuery,
 } from "../../Api/businessDirectoryApi";
 
 const hideScrollbarStyle = `
@@ -116,7 +117,7 @@ function SidebarSection({ title, items, selected, onToggle }) {
                   <div className="flex items-center gap-2.5">
                     <Checkbox
                       checked={isChecked}
-                      onChange={() => onToggle(item.name)}
+                      onChange={() => onToggle(item.name, isChecked)}
                     />
                     <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
                       {item.name}
@@ -138,6 +139,8 @@ function SidebarSection({ title, items, selected, onToggle }) {
 export default function SidebarFilter({
   selectedCategories = [],
   onToggleCategory,
+  selectedOccasions = [],
+  onToggleOccasion,
   selectedLocations = [],
   onToggleLocation,
   selectedServices = [],
@@ -146,6 +149,7 @@ export default function SidebarFilter({
   onClose,
 }) {
   const { data: categoriesData } = useGetCategoriesQuery();
+  const { data: occasionsData } = useGetOccasionsQuery();
   const { data: communitiesData } = useGetCommunitiesQuery();
   const { data: tagsData } = useGetTagsQuery();
 
@@ -154,6 +158,14 @@ export default function SidebarFilter({
       ? categoriesData.map((cat) => ({
           name: cat.name,
           count: cat.business_count,
+        }))
+      : [];
+
+  const occasionItems =
+    occasionsData && Array.isArray(occasionsData)
+      ? occasionsData.map((occ) => ({
+          name: typeof occ === "string" ? occ : occ.name,
+          count: typeof occ === "object" ? (occ.business_count ?? null) : null,
         }))
       : [];
 
@@ -230,6 +242,13 @@ export default function SidebarFilter({
               items={categoryItems}
               selected={selectedCategories}
               onToggle={onToggleCategory}
+            />
+            <div className="border-t border-gray-100 my-2" />
+            <SidebarSection
+              title="Occasions"
+              items={occasionItems}
+              selected={selectedOccasions}
+              onToggle={onToggleOccasion}
             />
             <div className="border-t border-gray-100 my-2" />
             <SidebarSection

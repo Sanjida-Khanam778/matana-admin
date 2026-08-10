@@ -151,7 +151,7 @@ export default function HeroSection() {
               One Place, Endless Possibilities.
             </h2>
             <p className="text-lg text-[#0E3D2BCC] leading-relaxed">
-              Find the perfect gift in the perfect place.
+              Find whatever you need, wherever you need it.
             </p>
             <div className="w-full max-w-[400px] flex items-center gap-4 mt-5">
               <div className="flex-1 h-[1.5px] bg-[#085027]/30" />
@@ -204,7 +204,7 @@ export default function HeroSection() {
             One Place,<br />Endless<br />Possibilities.
           </h2>
           <p className="text-xs text-[#0E3D2BCC] leading-relaxed mb-4">
-            Find the perfect gift in the perfect place.
+           Find whatever you need, wherever you need it.
           </p>
           <div className="flex items-center gap-2 mb-4">
             <div className="flex-1 h-[1px] bg-[#085027]/30" />

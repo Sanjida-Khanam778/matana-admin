@@ -64,6 +64,7 @@ export default function BusinessResults({
   categoryId,
   categoryName,
   selCats = [],
+  selOccasions = [],
   selLocs = [],
   selServices = [],
 }) {
@@ -77,10 +78,15 @@ export default function BusinessResults({
       ? [categoryName]
       : [];
 
-  const hasFilterParams = effectiveCats.length > 0 || selLocs.length > 0 || selServices.length > 0;
+  const hasFilterParams =
+    effectiveCats.length > 0 ||
+    selOccasions.length > 0 ||
+    selLocs.length > 0 ||
+    selServices.length > 0;
 
   const filterArgs = {
     categories: effectiveCats.join(","),
+    occasions: selOccasions.join(","),
     locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
     services_tags: selServices.join(","),
   };

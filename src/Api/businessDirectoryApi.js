@@ -50,11 +50,12 @@ export const businessDirectoryApi = api.injectEndpoints({
       query: () => "/business/tags/",
     }),
     filterBusinesses: builder.query({
-      query: ({ categories, services_tags, locations }) => {
+      query: ({ categories, services_tags, locations, occasions }) => {
         const params = new URLSearchParams();
         if (categories) params.append("categories", categories);
         if (services_tags) params.append("services_tags", services_tags);
         if (locations) params.append("locations", locations);
+        if (occasions) params.append("occasions", occasions);
         return `/business/filter/?${params.toString()}`;
       },
     }),
@@ -102,6 +103,9 @@ export const businessDirectoryApi = api.injectEndpoints({
         body,
       }),
     }),
+    getOccasions: builder.query({
+      query: () => "/business/occasions/",
+    }),
   }),
 });
 
@@ -126,4 +130,5 @@ export const {
   useGetMyAnalyticsQuery,
   useTrackClickMutation,
   useRegisterWebsiteVisitorMutation,
+  useGetOccasionsQuery,
 } = businessDirectoryApi;

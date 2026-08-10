@@ -172,8 +172,36 @@ export default function BusinessSearch() {
     }
   }, [categoryName]);
 
-  function toggle(arr, setArr, val) {
-    setArr((p) => (p.includes(val) ? p.filter((x) => x !== val) : [...p, val]));
+  function toggle(arr, setArr, val, isChecked) {
+    if (isChecked) {
+      const valLower = val.toLowerCase().trim();
+      const valShort = val.includes(",") ? val.split(",")[0].trim().toLowerCase() : valLower;
+      setArr((p) =>
+        p.filter((x) => {
+          if (!x) return false;
+          const xLower = x.toLowerCase().trim();
+          const xShort = x.includes(",") ? x.split(",")[0].trim().toLowerCase() : xLower;
+          return (
+            xLower !== valLower &&
+            xLower !== valShort &&
+            xShort !== valLower &&
+            xShort !== valShort &&
+            !xLower.includes(valShort) &&
+            !valLower.includes(xShort)
+          );
+        })
+      );
+      if (arr === selCats && arr.length <= 1) {
+        setSelectedCategory(null);
+      }
+    } else {
+      setArr((p) => {
+        if (p.includes(val)) {
+          return p.filter((x) => x !== val);
+        }
+        return [...p, val];
+      });
+    }
   }
 
   return (
@@ -226,26 +254,27 @@ export default function BusinessSearch() {
         {/* ── Sidebar ── */}
         <SidebarFilter
           selectedCategories={selCats}
-          onToggleCategory={(v) => toggle(selCats, setSelCats, v)}
+          onToggleCategory={(v, chk) => toggle(selCats, setSelCats, v, chk)}
           selectedLocations={selLocs}
-          onToggleLocation={(v) => toggle(selLocs, setSelLocs, v)}
+          onToggleLocation={(v, chk) => toggle(selLocs, setSelLocs, v, chk)}
           selectedServices={selServices}
-          onToggleService={(v) => toggle(selServices, setSelServices, v)}
+          onToggleService={(v, chk) => toggle(selServices, setSelServices, v, chk)}
           selectedOccasions={selOccasions}
-          onToggleOccasion={(v) => toggle(selOccasions, setSelOccasions, v)}
+          onToggleOccasion={(v, chk) => toggle(selOccasions, setSelOccasions, v, chk)}
           selectedTov={selTov}
-          onToggleTov={(v) => toggle(selTov, setSelTov, v)}
+          onToggleTov={(v, chk) => toggle(selTov, setSelTov, v, chk)}
           isOpen={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}
         />
 
         {/* ── Main content ── */}
         <div className="flex-1 min-w-0">
-          {selectedCategory || selCats.length > 0 || selLocs.length > 0 || selServices.length > 0 ? (
+          {selectedCategory || selCats.length > 0 || selOccasions.length > 0 || selLocs.length > 0 || selServices.length > 0 ? (
             <BusinessResults
               categoryId={categoryName}
               categoryName={selectedCategory}
               selCats={selCats}
+              selOccasions={selOccasions}
               selLocs={selLocs}
               selServices={selServices}
             />
