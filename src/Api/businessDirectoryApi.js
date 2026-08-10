@@ -106,6 +106,16 @@ export const businessDirectoryApi = api.injectEndpoints({
     getOccasions: builder.query({
       query: () => "/business/occasions/",
     }),
+    getMyBusinessProfile: builder.query({
+      query: () => "/business/me/",
+    }),
+    updateBusiness: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: id ? `/businesses/${id}/` : "/business/update/",
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -131,4 +141,6 @@ export const {
   useTrackClickMutation,
   useRegisterWebsiteVisitorMutation,
   useGetOccasionsQuery,
+  useGetMyBusinessProfileQuery,
+  useUpdateBusinessMutation,
 } = businessDirectoryApi;
