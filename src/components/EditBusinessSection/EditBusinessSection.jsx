@@ -12,10 +12,11 @@ import {
   useGetCommunitiesQuery,
   useGetCategoriesQuery,
   useUploadMediaMutation,
-  useUpdateBusinessMutation,
   useGetBusinessDetailsQuery,
   useGetMyBusinessProfileQuery,
+  useRequestUpdateMutation,
 } from "../../Api/businessDirectoryApi";
+import toast from "react-hot-toast";
 
 // Helpers
 function getMediaUrl(media) {
@@ -63,7 +64,7 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
   const { data: categoriesData = [], isLoading: categoriesLoading } = useGetCategoriesQuery();
 
   const [uploadMedia] = useUploadMediaMutation();
-  const [updateBusiness, { isLoading: isSaving }] = useUpdateBusinessMutation();
+  const [updateBusiness, { isLoading: isSaving }, error] = useRequestUpdateMutation();
 
   const activeBusiness = myBusinessProfile || fetchedDetails || initialBusiness || {};
 
@@ -268,6 +269,7 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
 
       await updateBusiness(payload).unwrap();
       setSuccessMsg("Business details update request submitted successfully!");
+      toast.success("Business details update request submitted successfully!");
 
       if (onSaved) onSaved();
 
@@ -277,11 +279,17 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
     } catch (err) {
       setUploadingMedia(false);
       console.error("Failed to update business details:", err);
-      setUploadError(
+      const apiErrorMsg =
+        err?.data?.error ||
         err?.data?.detail ||
-          err?.data?.message ||
-          "Failed to update business details. Please check your inputs and try again."
-      );
+        err?.data?.message ||
+        (typeof err?.data === "string" ? err.data : null);
+
+      const displayErr =
+        apiErrorMsg || "Failed to update business details. Please check your inputs and try again.";
+
+      setUploadError(displayErr);
+      toast.error(displayErr);
     }
   };
 

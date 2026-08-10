@@ -251,17 +251,13 @@ export default function CommunityDetails({ data , onBack }) {
 
     photos:
       b?.photos && Array.isArray(b.photos) && b.photos.length > 0
-        ? b.photos
-        : b?.flyer_image
-        ? [b.flyer_image]
-        : data?.gallery || [],
+        ? b?.photos
+        : [],
 
     gallery:
       b?.photos && Array.isArray(b.photos) && b.photos.length > 0
-        ? b.photos
-        : b?.flyer_image
-        ? [b.flyer_image]
-        : data?.gallery || [],
+        ? b?.photos
+        : [],
 
     video: b?.promo_video_link && { src: b.promo_video_link } ,
 

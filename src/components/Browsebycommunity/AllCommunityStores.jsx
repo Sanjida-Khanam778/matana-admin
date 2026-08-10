@@ -43,7 +43,6 @@ function FeaturedBadge() {
 }
 
 function BusinessCard({ business, onClick }) {
-  console.log(business)
   return (
     <div
       onClick={onClick}
@@ -52,7 +51,7 @@ function BusinessCard({ business, onClick }) {
       {/* Image */}
       <div className="relative h-44 flex-shrink-0 overflow-hidden">
         <img
-          src={business.raw.banner}
+          src={business?.raw?.banner || business?.raw?.flyer_image}
           alt={business.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           draggable={false}
@@ -331,9 +330,8 @@ export default function AllCommunity() {
                   <div className="w-px h-8 bg-white/20" />
                 </div>
                 {/* ── Search bar ── */}
-                <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
+                {/* <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border">
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mx-auto">
-                    {/* Search input */}
                     <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-white hover:border-gray-300 transition-colors">
                       <IoSearchOutline size={16} color="#9ca3af" />
                       <input
@@ -345,9 +343,7 @@ export default function AllCommunity() {
                       />
                     </div>
 
-                    {/* Category dropdown & Filter Toggle & Find Local button */}
                     <div className="flex items-center gap-2 sm:contents">
-                      {/* Filters Toggle Button for mobile/tablet */}
                       <button
                         onClick={() => setIsFilterOpen(true)}
                         className="lg:hidden flex items-center justify-center gap-1.5 border border-gray-200 rounded-full px-3.5 py-2.5 text-sm text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
@@ -368,7 +364,6 @@ export default function AllCommunity() {
                         <span>Filters</span>
                       </button>
 
-                      {/* Category dropdown */}
                       <div className="relative flex-1 sm:flex-initial">
                         <button
                           onClick={() => setCatOpen((v) => !v)}
@@ -400,13 +395,12 @@ export default function AllCommunity() {
                         )}
                       </div>
 
-                      {/* Find Local button */}
                       <button className="flex-1 hidden md:block sm:flex-initial bg-[#085027] hover:bg-[#063d1e] text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors whitespace-nowrap">
                         Find Local
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           )}

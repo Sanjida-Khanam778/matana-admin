@@ -109,9 +109,10 @@ export const businessDirectoryApi = api.injectEndpoints({
     getMyBusinessProfile: builder.query({
       query: () => "/business/me/",
     }),
-    updateBusiness: builder.mutation({
+   
+    requestUpdate: builder.mutation({
       query: ({ id, ...body }) => ({
-        url: id ? `/businesses/${id}/` : "/business/update/",
+        url: "/businesses/request-update/",
         method: "PATCH",
         body,
       }),
@@ -142,5 +143,5 @@ export const {
   useRegisterWebsiteVisitorMutation,
   useGetOccasionsQuery,
   useGetMyBusinessProfileQuery,
-  useUpdateBusinessMutation,
+  useRequestUpdateMutation,
 } = businessDirectoryApi;

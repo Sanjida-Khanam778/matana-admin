@@ -210,7 +210,7 @@ export default function BusinessSearch() {
 
       {/* Back button and filters toggle on mobile */}
       <div className="px-4 sm:px-8 pt-6 pb-2 flex items-center justify-between">
-        <button
+        {/* <button
           onClick={() => {
             if (selectedCategory) {
               setSelectedCategory(null);
@@ -226,7 +226,7 @@ export default function BusinessSearch() {
           onToggleTov={(v) => toggle(selTov, setSelTov, v)}
         >
           <ArrowLeftIcon /> Back
-        </button>
+        </button> */}
 
         {/* Filters Toggle Button for mobile/tablet */}
         <button

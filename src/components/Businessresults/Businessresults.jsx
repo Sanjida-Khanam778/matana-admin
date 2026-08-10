@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FiSearch, FiX } from "react-icons/fi";
 import { IMAGES } from "../../assets";
 import {
   useGetCategoryStoresQuery,
@@ -29,31 +30,33 @@ function LocationIcon() {
 function BusinessCard({ name, category, location, image, onClick }) {
   return (
     <div
-      className="bg-white p-4 rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
       onClick={onClick}
+      className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col cursor-pointer hover:shadow-md transition-shadow group"
     >
       {/* Image */}
-      <div className="h-32 md:h-44 overflow-hidden bg-gray-100 rounded-xl">
+      <div className="relative w-full h-36 sm:h-44 md:h-48 overflow-hidden bg-gray-100">
         <img
           src={image}
           alt={name}
-          className="w-full h-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
-          draggable={false}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = IMAGES.business1;
           }}
         />
       </div>
-      {/* Info */}
-      <div className="py-3.5">
-        <p className="text-sm md:text-base font-bold text-gray-900 mb-1 line-clamp-1">
+
+      {/* Content */}
+      <div className="p-3 sm:p-4 flex flex-col flex-1 justify-between gap-1 sm:gap-1.5">
+        <span className="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider">
+          {category}
+        </span>
+        <h3 className="text-xs sm:text-sm md:text-base font-bold text-gray-900 line-clamp-1 group-hover:text-[#085027] transition-colors">
           {name}
-        </p>
-        <p className="text-xs md:text-sm text-gray-400 mb-2 truncate">{category}</p>
-        <div className="flex items-center gap-1 text-gray-500 truncate">
+        </h3>
+        <div className="flex items-center gap-1 text-[11px] sm:text-xs text-gray-500">
           <LocationIcon />
-          <span className="text-xs md:text-sm truncate">{location}</span>
+          <span className="truncate">{location}</span>
         </div>
       </div>
     </div>
@@ -70,6 +73,7 @@ export default function BusinessResults({
 }) {
   const navigate = useNavigate();
   const locationState = useLocation().state;
+  const [searchTerm, setSearchTerm] = useState("");
 
   const effectiveCats =
     selCats.length > 0
@@ -116,39 +120,74 @@ export default function BusinessResults({
     ? filterData?.businesses || []
     : categoryData?.businesses || [];
 
-  const mappedBusinesses = rawBusinesses.map((b) => {
-    const imgUrl =
-      typeof b.banner === "object" && b.banner?.url
-        ? b.banner.url
-        : typeof b.banner === "string" && b.banner
-        ? b.banner
-        : b.community?.image
-        ? b.community.image
-        : b.photos && b.photos.length > 0 && typeof b.photos[0] === "string"
-        ? b.photos[0]
-        : IMAGES.business1;
+  const mappedBusinesses = useMemo(() => {
+    return rawBusinesses.map((b) => {
+      const bannerUrl =
+        typeof b.banner === "object" && b.banner?.url
+          ? b.banner.url
+          : typeof b.banner === "string" && b.banner.trim()
+          ? b.banner
+          : null;
 
-    const catLabel =
-      b.categories && b.categories.length > 0
-        ? typeof b.categories[0] === "object"
-          ? b.categories[0].name
-          : "Business"
-        : b.services_tags
-        ? b.services_tags.split(",")[0].trim()
-        : groupLabel;
+      const flyerUrl =
+        typeof b.flyer_image === "object" && b.flyer_image?.url
+          ? b.flyer_image.url
+          : typeof b.flyer_image === "string" && b.flyer_image.trim()
+          ? b.flyer_image
+          : null;
 
-    return {
-      id: b.id,
-      name: b.name || "Business",
-      category: catLabel,
-      location:
-        b.community ? `${b.community.name}, ${b.community.state}` : b.business_address || "Lakewood, N J",
-      image: imgUrl,
-      raw: b,
-    };
-  });
+      const photoUrl =
+        Array.isArray(b.photos) && b.photos.length > 0
+          ? typeof b.photos[0] === "string" && b.photos[0].trim()
+            ? b.photos[0]
+            : typeof b.photos[0] === "object" && b.photos[0]?.url
+            ? b.photos[0].url
+            : null
+          : null;
 
-  const displayBusinesses = mappedBusinesses;
+      const communityUrl =
+        typeof b.community?.image === "string" && b.community.image.trim()
+          ? b.community.image
+          : null;
+
+      const imgUrl = bannerUrl || flyerUrl || photoUrl || communityUrl || IMAGES.business1;
+
+      const catLabel =
+        b.categories && b.categories.length > 0
+          ? typeof b.categories[0] === "object"
+            ? b.categories[0].name
+            : "Business"
+          : b.services_tags
+          ? b.services_tags.split(",")[0].trim()
+          : groupLabel;
+
+      return {
+        id: b.id,
+        name: b.name || "Business",
+        category: catLabel,
+        location:
+          b.community ? `${b.community.name}, ${b.community.state}` : b.business_address || "Lakewood, N J",
+        image: imgUrl,
+        raw: b,
+      };
+    });
+  }, [rawBusinesses, groupLabel]);
+
+  const displayBusinesses = useMemo(() => {
+    if (!searchTerm.trim()) return mappedBusinesses;
+    const term = searchTerm.toLowerCase().trim();
+    return mappedBusinesses.filter((b) => {
+      const raw = b.raw || {};
+      const nameMatch = b.name && b.name.toLowerCase().includes(term);
+      const catMatch = b.category && b.category.toLowerCase().includes(term);
+      const locMatch = b.location && b.location.toLowerCase().includes(term);
+      const descMatch = raw.description && raw.description.toLowerCase().includes(term);
+      const tagMatch = raw.services_tags && raw.services_tags.toLowerCase().includes(term);
+      const occasionMatch = raw.occasions && raw.occasions.toLowerCase().includes(term);
+
+      return nameMatch || catMatch || locMatch || descMatch || tagMatch || occasionMatch;
+    });
+  }, [mappedBusinesses, searchTerm]);
 
   const [recordPageVisit] = useRecordPageVisitMutation();
 
@@ -163,27 +202,59 @@ export default function BusinessResults({
   };
 
   return (
-    <div className="py-2">
-      {/* Result count */}
-      <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-5">
-        {isLoading ? "Loading..." : `${displayBusinesses.length} Businesses Found`}
-      </h1>
+    <div className="py-2 space-y-5">
+      {/* Search Input Bar & Result Count Header */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-gray-50/50 hover:bg-white focus-within:bg-white focus-within:border-[#085027] transition">
+          <FiSearch size={18} className="text-gray-400 flex-shrink-0" />
+          <input
+            type="text"
+            placeholder="Search businesses, services, location or tags..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 text-xs sm:text-sm text-gray-800 placeholder-gray-400 bg-transparent outline-none"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="text-gray-400 hover:text-gray-600 transition cursor-pointer p-1"
+            >
+              <FiX size={16} />
+            </button>
+          )}
+        </div>
+
+        <div className="text-xs sm:text-sm font-semibold text-gray-500 whitespace-nowrap">
+          {isLoading ? "Loading..." : `${displayBusinesses.length} Businesses Found`}
+        </div>
+      </div>
 
       {/* Category label */}
-      <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-700 mb-4">
-        {groupLabel}
-      </p>
-
-      {/* Responsive grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-        {displayBusinesses.map((b) => (
-          <BusinessCard
-            key={b.id}
-            {...b}
-            onClick={() => openBusinessDetails(b)}
-          />
-        ))}
+      <div className="flex items-center justify-between">
+        <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-700">
+          {groupLabel}
+        </p>
       </div>
+
+      {/* Grid or Empty Search Result State */}
+      {displayBusinesses.length === 0 && !isLoading ? (
+        <div className="py-12 text-center bg-white rounded-2xl border border-gray-100 p-8 space-y-2">
+          <p className="text-sm font-bold text-gray-800">No businesses found matching &quot;{searchTerm}&quot;</p>
+          <p className="text-xs text-gray-500">
+            Try searching with different keywords or clearing your active filters.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {displayBusinesses.map((b) => (
+            <BusinessCard
+              key={b.id}
+              {...b}
+              onClick={() => openBusinessDetails(b)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

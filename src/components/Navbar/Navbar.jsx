@@ -91,7 +91,7 @@ export default function Navbar() {
 
             {/* Desktop Search & CTA */}
             <div className="hidden sm:flex items-center gap-2 lg:gap-4">
-              <div className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
+              {/* <div className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
                 <SearchIcon />
                 <input
                   type="text"
@@ -100,7 +100,7 @@ export default function Navbar() {
                   onChange={(e) => setSearch(e.target.value)}
                   className="text-xs lg:text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none w-32 lg:w-40"
                 />
-              </div>
+              </div> */}
 
               <Link
                 to="/pricing"
