@@ -7,17 +7,12 @@ import {
   FiGlobe,
   FiInstagram,
   FiArrowLeft,
-  FiShare2,
-  FiHeart,
   FiSend,
   FiNavigation,
   FiTag,
   FiPlay,
 } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
-import related1 from "../assets/images/related1.png";
-import related2 from "../assets/images/related2.png";
-import logo from "../assets/icons/details_logo.png";
 import { GrLocation } from "react-icons/gr";
 import {
   useGetBusinessDetailsQuery,
