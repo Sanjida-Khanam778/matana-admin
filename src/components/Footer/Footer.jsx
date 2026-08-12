@@ -123,12 +123,12 @@ export default function Footer() {
                   </button>
                 </li>
                 <li>
-                  <button
-                    onClick={() => setShowModal(true)}
+                  <Link
+                 to={'/pricing'}
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors text-left"
                   >
                     List Your Business
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <button

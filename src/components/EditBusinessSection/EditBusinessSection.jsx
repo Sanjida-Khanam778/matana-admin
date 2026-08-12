@@ -33,6 +33,224 @@ function getUploadedMediaId(res) {
   return null;
 }
 
+const DAYS_LIST = [
+  { label: "Monday", short: "Mon" },
+  { label: "Tuesday", short: "Tue" },
+  { label: "Wednesday", short: "Wed" },
+  { label: "Thursday", short: "Thu" },
+  { label: "Friday", short: "Fri" },
+  { label: "Saturday", short: "Sat" },
+  { label: "Sunday", short: "Sun" },
+];
+
+const TIME_OPTIONS = [
+  "6:00 AM",
+  "6:30 AM",
+  "7:00 AM",
+  "7:30 AM",
+  "8:00 AM",
+  "8:30 AM",
+  "9:00 AM",
+  "9:30 AM",
+  "10:00 AM",
+  "10:30 AM",
+  "11:00 AM",
+  "11:30 AM",
+  "12:00 PM",
+  "12:30 PM",
+  "1:00 PM",
+  "1:30 PM",
+  "2:00 PM",
+  "2:30 PM",
+  "3:00 PM",
+  "3:30 PM",
+  "4:00 PM",
+  "4:30 PM",
+  "5:00 PM",
+  "5:30 PM",
+  "6:00 PM",
+  "6:30 PM",
+  "7:00 PM",
+  "7:30 PM",
+  "8:00 PM",
+  "8:30 PM",
+  "9:00 PM",
+  "9:30 PM",
+  "10:00 PM",
+  "10:30 PM",
+  "11:00 PM",
+  "11:30 PM",
+  "12:00 AM",
+  "Closed",
+  "Open 24 Hours",
+];
+
+function BusinessHoursField({ value, onChange }) {
+  const [rows, setRows] = useState([
+    { startDay: "Monday", endDay: "Friday", openTime: "9:00 AM", closeTime: "6:00 PM" },
+  ]);
+
+  const getShortDay = (dayName) =>
+    DAYS_LIST.find((d) => d.label === dayName)?.short || dayName;
+
+  const formatRowText = (r) => {
+    const startShort = getShortDay(r.startDay);
+    const endShort = getShortDay(r.endDay);
+
+    const dayText =
+      !r.endDay || r.endDay === "None" || r.endDay === r.startDay
+        ? startShort
+        : `${startShort} - ${endShort}`;
+
+    if (r.openTime === "Open 24 Hours" || r.closeTime === "Open 24 Hours") {
+      return `${dayText}: Open 24 Hours`;
+    } else if (r.closeTime === "Closed" || r.openTime === "Closed") {
+      return `${dayText}: Closed`;
+    }
+    return `${dayText}: ${r.openTime} - ${r.closeTime}`;
+  };
+
+  const updateRows = (newRows) => {
+    setRows(newRows);
+    const result = newRows.map(formatRowText).join(", ");
+    onChange({ target: { value: result } });
+  };
+
+  const updateRowField = (idx, field, val) => {
+    const updated = rows.map((r, i) => (i === idx ? { ...r, [field]: val } : r));
+    updateRows(updated);
+  };
+
+  const addRow = () => {
+    const nextRow = {
+      startDay: "Sunday",
+      endDay: "None",
+      openTime: "10:00 AM",
+      closeTime: "4:00 PM",
+    };
+    updateRows([...rows, nextRow]);
+  };
+
+  const removeRow = (idx) => {
+    if (rows.length === 1) return;
+    const updated = rows.filter((_, i) => i !== idx);
+    updateRows(updated);
+  };
+
+  return (
+    <div className="space-y-3 bg-stone-50/80 p-3.5 sm:p-4 rounded-xl border border-stone-200/80">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <label className="text-xs font-semibold text-stone-700">
+          Business Hours
+        </label>
+        <span className="text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full max-w-full truncate">
+          {value || "Not set"}
+        </span>
+      </div>
+
+      {/* Rows List */}
+      <div className="space-y-3">
+        {rows.map((row, idx) => (
+          <div
+            key={idx}
+            className="grid grid-cols-1 sm:grid-cols-9 gap-2 items-end p-2.5 bg-white rounded-lg border border-stone-200"
+          >
+            <div className="sm:col-span-2">
+              <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+                Start Day
+              </label>
+              <select
+                value={row.startDay}
+                onChange={(e) => updateRowField(idx, "startDay", e.target.value)}
+                className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+              >
+                {DAYS_LIST.map((d) => (
+                  <option key={d.label} value={d.label}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+                End Day
+              </label>
+              <select
+                value={row.endDay}
+                onChange={(e) => updateRowField(idx, "endDay", e.target.value)}
+                className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+              >
+                <option value="None">Same Day Only</option>
+                {DAYS_LIST.map((d) => (
+                  <option key={d.label} value={d.label}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+                Opening Time
+              </label>
+              <select
+                value={row.openTime}
+                onChange={(e) => updateRowField(idx, "openTime", e.target.value)}
+                className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+              >
+                {TIME_OPTIONS.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="text-[11px] font-medium text-stone-500 mb-1 block">
+                Closing Time
+              </label>
+              <select
+                value={row.closeTime}
+                onChange={(e) => updateRowField(idx, "closeTime", e.target.value)}
+                className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-xs text-stone-800 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition"
+              >
+                {TIME_OPTIONS.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-1 flex justify-end">
+              {rows.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeRow(idx)}
+                  className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                  title="Remove this schedule row"
+                >
+                  <FiTrash2 size={16} />
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={addRow}
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition border border-emerald-200 cursor-pointer"
+      >
+        <FiPlus size={14} /> Add Hours Row
+      </button>
+    </div>
+  );
+}
+
 const PLAN_META = {
   standard: {
     name: "Standard Partner",
@@ -494,7 +712,7 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
                   Flyer Image
                 </label>
                 <span className="text-[10px] text-[#085027] bg-[#EEFFF4] border border-green-200 px-1.5 py-0.5 rounded font-bold">
-                  800×600 px
+                  600×600 px
                 </span>
               </div>
               {currentFlyerUrl ? (
@@ -692,33 +910,26 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
             </div>
           )}
 
-          {/* Tags & Hours */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
-                Services & Tags (Comma separated)
-              </label>
-              <input
-                type="text"
-                value={form.services_tags}
-                onChange={update("services_tags")}
-                placeholder="IT, Consulting, Software"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-2xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#085027]"
-              />
-            </div>
+          {/* Services & Tags */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+              Services & Tags (Comma separated)
+            </label>
+            <input
+              type="text"
+              value={form.services_tags}
+              onChange={update("services_tags")}
+              placeholder="IT, Consulting, Software"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-2xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#085027]"
+            />
+          </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
-                Business Hours
-              </label>
-              <input
-                type="text"
-                value={form.business_hours}
-                onChange={update("business_hours")}
-                placeholder="Mon-Fri: 9 AM - 6 PM"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-2xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#085027]"
-              />
-            </div>
+          {/* Business Hours (Multi-Row Component) */}
+          <div>
+            <BusinessHoursField
+              value={form.business_hours}
+              onChange={update("business_hours")}
+            />
           </div>
 
           {/* Action Buttons */}
