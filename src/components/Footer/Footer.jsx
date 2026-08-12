@@ -77,7 +77,7 @@ export default function Footer() {
                     onClick={() => scrollToSection("featured")}
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
                   >
-                    Featured
+                    Premium
                   </button>
                 </li>
               </ul>
@@ -94,7 +94,7 @@ export default function Footer() {
                     to="/all-categories"
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
                   >
-                    Gift Shops
+                   All Categories
                   </Link>
                 </li>
                 <li>

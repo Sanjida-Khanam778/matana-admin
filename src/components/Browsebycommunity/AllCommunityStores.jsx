@@ -94,14 +94,25 @@ function BusinessCard({ business, onClick }) {
 
 // ── Main ───────────────────────────────────────────
 export default function AllCommunity() {
-  const [search, setSearch] = useState("");
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  const navSearch = location.state?.search || "";
+  const [search, setSearch] = useState(navSearch);
 
   // Get selected city from router state
   const communityState = location.state?.community;
   const selectedCity =
-    communityState?.city || location.state?.cityName || location.state?.city || "Brooklyn";
+    communityState?.city ||
+    location.state?.cityName ||
+    location.state?.city ||
+    (location.state?.search ? null : "Brooklyn");
+
+  // Sync search state if router state changes
+  useEffect(() => {
+    if (location.state?.search !== undefined) {
+      setSearch(location.state.search);
+    }
+  }, [location.state?.search]);
 
   // Sidebar filters state
   const [selCats, setSelCats] = useState([]);

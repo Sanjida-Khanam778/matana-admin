@@ -41,6 +41,14 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const handleSearchSubmit = (e) => {
+    if (e) e.preventDefault();
+    if (search.trim()) {
+      navigate("/all-community-stores", { state: { search: search.trim() } });
+      setMobileMenuOpen(false);
+    }
+  };
+
   function handleNav(item) {
     setActive(item.label);
     setMobileMenuOpen(false); // Close mobile menu after navigation
@@ -91,16 +99,18 @@ export default function Navbar() {
 
             {/* Desktop Search & CTA */}
             <div className="hidden sm:flex items-center gap-2 lg:gap-4">
-              {/* <div className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
-                <SearchIcon />
+              <form onSubmit={handleSearchSubmit} className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm focus-within:border-[#085027] transition">
+                <button type="submit" className="cursor-pointer text-gray-400 hover:text-[#085027] transition-colors">
+                  <SearchIcon />
+                </button>
                 <input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search business, category, tags..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="text-xs lg:text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none w-32 lg:w-40"
+                  className="text-xs lg:text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none w-32 lg:w-44"
                 />
-              </div> */}
+              </form>
 
               <Link
                 to="/pricing"
@@ -128,16 +138,18 @@ export default function Navbar() {
 
             {/* Mobile: Hamburger Menu */}
             <div className="flex md:hidden items-center gap-2">
-                <div className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm">
-                <SearchIcon />
+              <form onSubmit={handleSearchSubmit} className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 py-2 shadow-sm focus-within:border-[#085027] transition">
+                <button type="submit" className="cursor-pointer text-gray-400 hover:text-[#085027] transition-colors">
+                  <SearchIcon />
+                </button>
                 <input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="text-xs lg:text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none w-32 lg:w-40"
+                  className="text-xs text-gray-700 placeholder-gray-400 bg-transparent outline-none w-24 sm:w-32"
                 />
-              </div>
+              </form>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 text-gray-600 hover:text-gray-900"

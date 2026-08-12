@@ -493,14 +493,17 @@ export default function BusinessDetailsFields({
 
       {plan === "featured" && (
         <div>
-          <label className="block text-[13px] font-semibold mb-1.5">
-            Photo gallery{" "}
-            <span className="text-gray-500 font-normal text-[12px]">
-              (up to 5 photos — {galleryFiles.length} / 5 added)
-            </span>
-          </label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="block text-[13px] font-semibold">
+              Photo gallery{" "}
+              <span className="text-gray-500 font-normal text-[12px]">
+                (up to 5 photos — {galleryFiles.length} / 5 added)
+              </span>
+            </label>
+           
+          </div>
           <UploadBox
-            label="Click to upload photos (JPG or PNG)"
+            label="Click to upload photos (800×600 px, JPG or PNG)"
             multiple
             files={galleryFiles}
             onAdd={handleAddGallery}
@@ -513,14 +516,17 @@ export default function BusinessDetailsFields({
       {plan === "premium" && (
         <>
           <div>
-            <label className="block text-[13px] font-semibold mb-1.5">
-              Photo gallery{" "}
-              <span className="text-gray-500 font-normal text-[12px]">
-                (up to 10 photos — {galleryFiles.length} / 10 added)
-              </span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-[13px] font-semibold">
+                Photo gallery{" "}
+                <span className="text-gray-500 font-normal text-[12px]">
+                  (up to 10 photos — {galleryFiles.length} / 10 added)
+                </span>
+              </label>
+            
+            </div>
             <UploadBox
-              label="Click to upload photos (JPG or PNG)"
+              label="Click to upload photos (800×600 px, JPG or PNG)"
               multiple
               files={galleryFiles}
               onAdd={handleAddGallery}
@@ -547,11 +553,14 @@ export default function BusinessDetailsFields({
       )}
 
       <div>
-        <label className="block text-[13px] font-semibold mb-1.5">
-          Flyer image <span className="text-red-500">*</span>
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="block text-[13px] font-semibold">
+            Flyer image <span className="text-red-500">*</span>
+          </label>
+          
+        </div>
         <UploadBox
-          label="Click to upload your flyer (JPG or PNG)"
+          label="Click to upload your flyer (600×600 px, JPG or PNG)"
           files={flyerFiles}
           onAdd={(newFiles) => setFlyerFiles(newFiles.slice(0, 1))}
           onRemove={() => setFlyerFiles([])}
@@ -559,11 +568,14 @@ export default function BusinessDetailsFields({
       </div>
 
       <div>
-        <label className="block text-[13px] font-semibold mb-1.5">
-          Banner image
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="block text-[13px] font-semibold">
+            Banner image
+          </label>
+         
+        </div>
         <UploadBox
-          label="Click to upload your banner (JPG or PNG)"
+          label="Click to upload your banner (1200×400 px, JPG or PNG)"
           files={bannerFiles}
           onAdd={(newFiles) => setBannerFiles(newFiles.slice(0, 1))}
           onRemove={() => setBannerFiles([])}

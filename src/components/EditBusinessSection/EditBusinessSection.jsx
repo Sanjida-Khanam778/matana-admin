@@ -489,9 +489,14 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 p-4 rounded-2xl bg-gray-50/70 border border-gray-200/80">
             {/* Flyer Image */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
-                Flyer Image
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
+                  Flyer Image
+                </label>
+                <span className="text-[10px] text-[#085027] bg-[#EEFFF4] border border-green-200 px-1.5 py-0.5 rounded font-bold">
+                  800×600 px
+                </span>
+              </div>
               {currentFlyerUrl ? (
                 <div className="relative h-28 rounded-xl overflow-hidden border border-gray-200 bg-white">
                   <img src={currentFlyerUrl} alt="Flyer preview" className="w-full h-full object-cover" />
@@ -510,9 +515,14 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
 
             {/* Banner Image */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
-                Banner Image
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
+                  Banner Image
+                </label>
+                <span className="text-[10px] text-[#085027] bg-[#EEFFF4] border border-green-200 px-1.5 py-0.5 rounded font-bold">
+                  1200×400 px
+                </span>
+              </div>
               {currentBannerUrl ? (
                 <div className="relative h-28 rounded-xl overflow-hidden border border-gray-200 bg-white">
                   <img src={currentBannerUrl} alt="Banner preview" className="w-full h-full object-cover" />
@@ -532,9 +542,16 @@ export default function EditBusinessSection({ businessId, initialBusiness, onClo
             {/* Photo Gallery */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
-                  Photo Gallery
-                </label>
+                <div className="flex items-center gap-1.5">
+                  <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
+                    Photo Gallery
+                  </label>
+                  {planMeta.maxPhotos > 0 && (
+                    <span className="text-[10px] text-[#085027] bg-[#EEFFF4] border border-green-200 px-1.5 py-0.5 rounded font-bold">
+                      800×600 px
+                    </span>
+                  )}
+                </div>
                 {planMeta.maxPhotos > 0 && (
                   <span className="text-xs text-gray-500">
                     ({galleryFiles.length} / {planMeta.maxPhotos})
