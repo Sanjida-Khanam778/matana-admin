@@ -416,7 +416,7 @@ export default function AllCommunity() {
             </div>
           )}
 
-          {!showCoverHeader && (
+          {/* {!showCoverHeader && (
             <div className="bg-white px-4 sm:px-5 w-full py-4 shadow-sm rounded-2xl border mb-6">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mx-auto">
                 <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2.5 bg-white hover:border-gray-300 transition-colors">
@@ -488,10 +488,10 @@ export default function AllCommunity() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* ── Content Layout ── */}
-          <div className="my-6 lg:my-10 pb-12">
+          <div className="mb-6 lg:mb-10 pb-12">
             {hasSidebarFilters ? (
               <BusinessResults
                 selCats={selCats}
