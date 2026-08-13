@@ -22,6 +22,7 @@ import {
 } from "../Api/businessDirectoryApi";
 import ubereats from "../assets/images/ubereats.png"
 import whatsapp from "../assets/images/whatsapp.png"
+import detailsHeader from "../assets/images/detailsHeader.png"
 
 function VideoPlayer({ video }) {
   const [playing, setPlaying] = useState(false);
@@ -226,11 +227,7 @@ export default function CommunityDetails({ data , onBack }) {
     subtitle: b
       ? b.services_tags || (b.community ? `${b.community.name}, ${b.community.state}` : "")
       : data?.subtitle,
-    coverImage:
-      b?.banner ||
-      b?.flyer_image ||
-      b?.community?.image ||
-      data?.coverImage,
+    coverImage: b?.banner || data?.coverImage || detailsHeader,
     logoImage: b?.flyer_image,
 
     actions: {

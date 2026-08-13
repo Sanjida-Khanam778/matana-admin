@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://10.10.29.168:8005/api",
+  baseUrl: "https://matanashop.publicvm.com/api",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth?.accessToken || null;
     const accessToken = localStorage.getItem("access_token");
