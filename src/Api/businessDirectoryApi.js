@@ -50,12 +50,13 @@ export const businessDirectoryApi = api.injectEndpoints({
       query: () => "/business/tags/",
     }),
     filterBusinesses: builder.query({
-      query: ({ categories, services_tags, locations, occasions }) => {
+      query: ({ categories, services_tags, locations, occasions, search }) => {
         const params = new URLSearchParams();
         if (categories) params.append("categories", categories);
         if (services_tags) params.append("services_tags", services_tags);
         if (locations) params.append("locations", locations);
         if (occasions) params.append("occasions", occasions);
+        if (search) params.append("search", search);
         return `/business/filter/?${params.toString()}`;
       },
     }),

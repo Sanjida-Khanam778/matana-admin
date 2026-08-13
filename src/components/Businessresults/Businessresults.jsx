@@ -73,7 +73,7 @@ export default function BusinessResults({
 }) {
   const navigate = useNavigate();
   const locationState = useLocation().state;
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(locationState?.search || "");
 
   const effectiveCats =
     selCats.length > 0
@@ -86,13 +86,15 @@ export default function BusinessResults({
     effectiveCats.length > 0 ||
     selOccasions.length > 0 ||
     selLocs.length > 0 ||
-    selServices.length > 0;
+    selServices.length > 0 ||
+    Boolean(searchTerm.trim());
 
   const filterArgs = {
     categories: effectiveCats.join(","),
     occasions: selOccasions.join(","),
     locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
     services_tags: selServices.join(","),
+    search: searchTerm.trim(),
   };
 
   const { data: filterData, isLoading: isFilterLoading } = useFilterBusinessesQuery(filterArgs, {
