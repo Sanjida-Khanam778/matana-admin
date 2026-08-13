@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.gitGithub123/
+.gitGitlab123/
 
 # Editor directories and files
 .vscode/*
