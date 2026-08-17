@@ -446,12 +446,11 @@ export default function CommunityDetails({ data, onBack }) {
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-2 lg:mb-4">
                 Gallery
               </h2>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {d.photos.map((img, i) => (
                   <div
                     key={i}
-                    className="overflow-hidden rounded-xl"
-                    style={{ height: 250 }}
+                    className="overflow-hidden rounded-xl aspect-[4/3] bg-gray-100"
                   >
                     <img
                       src={img}

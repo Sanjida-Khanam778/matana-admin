@@ -81,8 +81,22 @@ export default function Pricing() {
   const [uploadMedia] = useUploadMediaMutation();
   const [registerBusiness, { isLoading: submitting }] = useRegisterBusinessMutation();
 
-  const [plan, setPlan] = useState("standard");
-  const planMeta = PLAN_META[plan] ?? PLAN_META.standard;
+  const [plan, setPlan] = useState(null);
+  const planMeta = PLAN_META[plan || "standard"];
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleSelectPlan = (selectedPlanId) => {
+    setPlan(selectedPlanId);
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  };
 
   const PLANS = (plansData ?? []).map((p) => ({
     id: p.tier,
@@ -223,10 +237,7 @@ export default function Pricing() {
     }
   }, [plan]);
 
-  useEffect(() => {
-    if (formRef.current)
-      formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [plan]);
+
 
   const handleAddGallery = (newFiles) => {
     setGalleryWarning("");
@@ -411,10 +422,11 @@ export default function Pricing() {
           plans={PLANS}
           currentPlan={plan}
           plansLoading={plansLoading}
-          onSelectPlan={setPlan}
+          onSelectPlan={handleSelectPlan}
         />
 
-        <div ref={formRef} className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5">
+        {plan && (
+          <div ref={formRef} className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5">
           <PaymentSection
             paymentType={paymentType}
             setPaymentType={setPaymentType}
@@ -492,6 +504,7 @@ export default function Pricing() {
             inputCls={inputCls}
           />
         </div>
+        )}
       </div>
     </div>
   );
