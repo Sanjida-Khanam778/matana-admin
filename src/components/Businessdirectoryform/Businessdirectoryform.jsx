@@ -81,8 +81,9 @@ export default function Pricing() {
   const [uploadMedia] = useUploadMediaMutation();
   const [registerBusiness, { isLoading: submitting }] = useRegisterBusinessMutation();
 
-  const [plan, setPlan] = useState(null);
-  const planMeta = PLAN_META[plan || "standard"];
+  const [selectedPlanCard, setSelectedPlanCard] = useState(null);
+  const activePlan = selectedPlanCard || "standard";
+  const planMeta = PLAN_META[activePlan];
 
   // Scroll to top on mount
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function Pricing() {
   }, []);
 
   const handleSelectPlan = (selectedPlanId) => {
-    setPlan(selectedPlanId);
+    setSelectedPlanCard(selectedPlanId);
     setTimeout(() => {
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -212,7 +213,7 @@ export default function Pricing() {
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const selectedPlanApi = (plansData ?? []).find((p) => p.tier === plan);
+  const selectedPlanApi = (plansData ?? []).find((p) => p.tier === activePlan);
   const descOverLimit = description.length > planMeta.maxDescChars;
 
   const orderSummaryArgs = selectedPlanApi?.id
@@ -235,7 +236,7 @@ export default function Pricing() {
     } else {
       setGalleryWarning("");
     }
-  }, [plan]);
+  }, [activePlan]);
 
 
 
@@ -366,7 +367,7 @@ export default function Pricing() {
       photo_ids: photoIds,
       flyer_image: flyerImageId,
       banner: bannerImageId,
-      ...(plan === "premium" && promoVideoLink ? { promo_video_link: promoVideoLink } : {}),
+      ...(activePlan === "premium" && promoVideoLink ? { promo_video_link: promoVideoLink } : {}),
     };
 
     await registerBusiness(body).unwrap();
@@ -420,13 +421,12 @@ export default function Pricing() {
       <div className="max-w-5xl mx-auto px-6 pb-20">
         <PlanSelection
           plans={PLANS}
-          currentPlan={plan}
+          currentPlan={selectedPlanCard}
           plansLoading={plansLoading}
           onSelectPlan={handleSelectPlan}
         />
 
-        {plan && (
-          <div ref={formRef} className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5">
+        <div ref={formRef} className="bg-white rounded-3xl p-6 md:p-9 mt-8 space-y-5">
           <PaymentSection
             paymentType={paymentType}
             setPaymentType={setPaymentType}
@@ -483,7 +483,7 @@ export default function Pricing() {
             setOccasions={setOccasions}
             website={website}
             setWebsite={setWebsite}
-            plan={plan}
+            plan={activePlan}
             planMeta={planMeta}
             descOverLimit={descOverLimit}
             galleryFiles={galleryFiles}
@@ -504,7 +504,6 @@ export default function Pricing() {
             inputCls={inputCls}
           />
         </div>
-        )}
       </div>
     </div>
   );
