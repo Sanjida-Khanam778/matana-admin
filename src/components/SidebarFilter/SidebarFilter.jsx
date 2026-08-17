@@ -98,16 +98,32 @@ function SidebarSection({ title, items, selected, onToggle }) {
           {Array.isArray(items) &&
             items.map((item) => {
               const isChecked =
-                selected.includes(item.name) ||
-                (item.fullName && selected.includes(item.fullName)) ||
-                selected.some(
-                  (s) =>
-                    s &&
-                    (s.toLowerCase() === item.name.toLowerCase() ||
-                      (item.fullName && s.toLowerCase() === item.fullName.toLowerCase()) ||
-                      s.toLowerCase().includes(item.name.toLowerCase()) ||
-                      item.name.toLowerCase().includes(s.toLowerCase()))
-                );
+                Array.isArray(selected) &&
+                selected.some((s) => {
+                  if (!s || !item || !item.name) return false;
+                  const sClean = s.toLowerCase().trim();
+                  const itemNameClean = item.name.toLowerCase().trim();
+                  const itemFullNameClean = item.fullName
+                    ? item.fullName.toLowerCase().trim()
+                    : null;
+
+                  if (sClean === itemNameClean) return true;
+                  if (itemFullNameClean && sClean === itemFullNameClean) return true;
+
+                  const sCity = sClean.includes(",") ? sClean.split(",")[0].trim() : sClean;
+                  const itemCity = itemNameClean.includes(",")
+                    ? itemNameClean.split(",")[0].trim()
+                    : itemNameClean;
+
+                  if (
+                    sCity === itemCity &&
+                    (sClean.includes(",") || itemNameClean.includes(","))
+                  ) {
+                    return true;
+                  }
+
+                  return false;
+                });
 
               return (
                 <label

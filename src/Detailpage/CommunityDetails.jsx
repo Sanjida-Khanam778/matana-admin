@@ -324,8 +324,8 @@ export default function CommunityDetails({ data, onBack }) {
       </div>
 
       {/* Header */}
-      <div className="lg:w-10/12 w-11/12 mx-auto py-4 flex items-start gap-3 xl:gap-6 my-10">
-        <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+      <div className="lg:w-10/12 w-11/12 mx-auto py-4 flex items-start gap-3 xl:gap-6 my-2 md:my-6 xl:my-10">
+        <div className="w-28 h-28 md:w-32 md:h-32 flex items-center justify-center flex-shrink-0 overflow-hidden">
           {d.logoImage ? (
             <img
               src={d.logoImage}
@@ -410,7 +410,7 @@ export default function CommunityDetails({ data, onBack }) {
                 <img src={whatsapp} alt="whatsapp" className="w-9 h-9 md:w-12 md:h-auto object-contain" />
               </a>
             )}
-            {(
+            {d.actions?.other_social_link && (
               <a
                 href={d.actions.other_social_link}
                 target="_blank"

@@ -251,33 +251,35 @@ export default function AllCommunity() {
     });
   };
 
-  function toggle(arr, setArr, val, isChecked) {
-    if (isChecked) {
+  function toggle(arr, setArr, val) {
+    setArr((p) => {
       const valLower = val.toLowerCase().trim();
-      const valShort = val.includes(",") ? val.split(",")[0].trim().toLowerCase() : valLower;
-      setArr((p) =>
-        p.filter((x) => {
+      const valCity = valLower.includes(",") ? valLower.split(",")[0].trim() : valLower;
+
+      const isAlreadySelected = p.some((x) => {
+        if (!x) return false;
+        const xLower = x.toLowerCase().trim();
+        const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
+        return (
+          xLower === valLower ||
+          (xCity === valCity && (xLower.includes(",") || valLower.includes(",")))
+        );
+      });
+
+      if (isAlreadySelected) {
+        return p.filter((x) => {
           if (!x) return false;
           const xLower = x.toLowerCase().trim();
-          const xShort = x.includes(",") ? x.split(",")[0].trim().toLowerCase() : xLower;
-          return (
-            xLower !== valLower &&
-            xLower !== valShort &&
-            xShort !== valLower &&
-            xShort !== valShort &&
-            !xLower.includes(valShort) &&
-            !valLower.includes(xShort)
+          const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
+          return !(
+            xLower === valLower ||
+            (xCity === valCity && (xLower.includes(",") || valLower.includes(",")))
           );
-        })
-      );
-    } else {
-      setArr((p) => {
-        if (p.includes(val)) {
-          return p.filter((x) => x !== val);
-        }
+        });
+      } else {
         return [...p, val];
-      });
-    }
+      }
+    });
   }
 
   return (
