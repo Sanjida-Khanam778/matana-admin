@@ -176,7 +176,7 @@ function formatWhatsAppUrl(phone) {
 // ══════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════
-export default function CommunityDetails({ data , onBack }) {
+export default function CommunityDetails({ data, onBack }) {
   const navigate = useNavigate();
   const { id: paramId } = useParams();
   const location = useLocation();
@@ -251,7 +251,7 @@ export default function CommunityDetails({ data , onBack }) {
         ? b?.photos
         : [],
 
-    video: b?.promo_video_link && { src: b.promo_video_link } ,
+    video: b?.promo_video_link && { src: b.promo_video_link },
 
     tags: b?.services_tags
       ? b.services_tags.split(",").map((t) => t.trim()).filter(Boolean)
@@ -274,7 +274,6 @@ export default function CommunityDetails({ data , onBack }) {
         (b?.community ? `${b.community.name}, ${b.community.state}` : data?.contact?.address),
       website: b?.website || data?.contact?.website,
     },
-
     hours: b?.business_hours || data?.hours,
     inquiry: [],
   };
@@ -288,6 +287,7 @@ export default function CommunityDetails({ data , onBack }) {
     "Friday",
     "Saturday",
   ];
+
   const today = days[new Date().getDay()];
 
   if (isLoading && !stateBusiness) {
@@ -303,7 +303,6 @@ export default function CommunityDetails({ data , onBack }) {
 
   return (
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
-      <ScrollRestoration />
 
       {/* Cover */}
       <div className="overflow-hidden relative" style={{ height: 380 }}>
@@ -326,11 +325,11 @@ export default function CommunityDetails({ data , onBack }) {
 
       {/* Header */}
       <div className="lg:w-10/12 w-11/12 mx-auto py-4 flex items-start gap-3 xl:gap-6 my-10">
-        <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
           {d.logoImage ? (
             <img
               src={d.logoImage}
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full object-contain"
               alt="logo"
             />
           ) : (
@@ -361,10 +360,11 @@ export default function CommunityDetails({ data , onBack }) {
                   handleCallClick(e);
                   handleTrackClick("phone");
                 }}
-                className="flex items-center gap-1.5 bg-[#085027] text-white font-medium px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-1.5 bg-[#085027] text-white font-medium rounded-full transition-colors cursor-pointer w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-1.5"
                 title={d.actions.call}
               >
-                <FiPhone size={18} /> {showCallNumber ? d.actions.call : "Call"}
+                <FiPhone size={18} />
+                <span className="hidden md:inline">{showCallNumber ? d.actions.call : "Call"}</span>
               </a>
             )}
             {d.actions?.website && (
@@ -377,9 +377,10 @@ export default function CommunityDetails({ data , onBack }) {
                 onClick={() => handleTrackClick("website")}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 text-black border-2 font-medium px-3 py-1.5 rounded-full transition-colors"
+                className="flex items-center justify-center gap-1.5 text-black border-2 font-medium rounded-full transition-colors w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-1.5"
               >
-                <FiGlobe size={18} /> Website
+                <FiGlobe size={18} />
+                <span className="hidden md:inline">Website</span>
               </a>
             )}
             {d.actions?.instagram && (
@@ -392,9 +393,10 @@ export default function CommunityDetails({ data , onBack }) {
                 onClick={() => handleTrackClick("instagram")}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 text-black border-2 font-medium px-3 py-1.5 rounded-full transition-colors"
+                className="flex items-center justify-center gap-1.5 text-black border-2 font-medium rounded-full transition-colors w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-1.5"
               >
-                <FiInstagram size={18} /> Instagram
+                <FiInstagram size={18} />
+                <span className="hidden md:inline">Instagram</span>
               </a>
             )}
             {(d.actions?.business_phone || d.actions?.call) && (
@@ -403,13 +405,19 @@ export default function CommunityDetails({ data , onBack }) {
                 onClick={() => handleTrackClick("whatsapp")}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="flex items-center justify-center w-9 h-9 md:w-auto md:h-auto"
               >
-                <img src={whatsapp} alt="whatsapp" className="w-12" />
+                <img src={whatsapp} alt="whatsapp" className="w-9 h-9 md:w-12 md:h-auto object-contain" />
               </a>
             )}
             {(
-              <a href={d.actions.other_social_link} target="_blank" rel="noopener noreferrer">
-                <img src={ubereats} alt="ubereats" className="w-11" />
+              <a
+                href={d.actions.other_social_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-9 h-9 md:w-auto md:h-auto"
+              >
+                <img src={ubereats} alt="ubereats" className="w-9 h-9 md:w-11 md:h-auto object-contain" />
               </a>
             )}
           </div>
@@ -485,9 +493,9 @@ export default function CommunityDetails({ data , onBack }) {
             </section>
           )}
 
-          {/* Related */}
+          {/* Related — Desktop only (inside left col) */}
           {d.related?.length > 0 && (
-            <section>
+            <section className="hidden lg:block">
               <h2 className="text-sm md:text-lg xl:text-2xl font-bold text-gray-900 mb-3">
                 Related Businesses
               </h2>
@@ -627,7 +635,7 @@ export default function CommunityDetails({ data , onBack }) {
                 </a>
               ) : (
                 <button
-                  disabled  onClick={() => handleTrackClick("directions")}
+                  disabled onClick={() => handleTrackClick("directions")}
                   className="w-full flex items-center justify-center gap-2 bg-gray-300 text-white text-sm sm:text-base font-bold py-3 rounded-full cursor-not-allowed mt-2 shadow-sm"
                 >
                   <FiNavigation size={18} className="rotate-45" /> Get Directions
@@ -682,6 +690,55 @@ export default function CommunityDetails({ data , onBack }) {
           </div>
         </div>
       </div>
+
+      {/* Related — Mobile only (below the full grid, no overflow) */}
+      {d.related?.length > 0 && (
+        <div className="lg:hidden lg:w-10/12 w-11/12 mx-auto pb-12 space-y-3">
+          <h2 className="text-sm font-bold text-gray-900 mb-3">
+            Related Businesses
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            {d.related.map((r, i) => (
+              <div
+                key={r.id || i}
+                onClick={() => {
+                  if (r.id) {
+                    recordPageVisit(r.id).unwrap().catch((err) => console.error("Page visit count API error:", err));
+                  }
+                  navigate(`/community-details/${r.id}`);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
+              >
+                <div className="h-36 overflow-hidden bg-gray-100">
+                  <img
+                    src={r.image}
+                    alt={r.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80";
+                    }}
+                  />
+                </div>
+                <div className="px-3 py-2.5">
+                  <p className="text-xs font-bold text-gray-900 line-clamp-1">
+                    {r.name}
+                  </p>
+                  {r.category && (
+                    <p className="text-xs py-1 text-gray-400 truncate">{r.category}</p>
+                  )}
+                  {r.location && (
+                    <p className="text-xs flex items-center gap-1.5 text-gray-400 truncate">
+                      <GrLocation className="flex-shrink-0" /> {r.location}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

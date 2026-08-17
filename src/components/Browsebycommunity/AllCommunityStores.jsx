@@ -64,8 +64,8 @@ function BusinessCard({ business, onClick }) {
 
       {/* Body */}
       <div className="p-4 flex flex-col flex-1">
-        <p className="text-xs font-semibold tracking-widest text-[#855300] uppercase mb-1">
-          {business.tag}
+        <p className="text-xs font-semibold tracking-widest text-[#855300] mb-1">
+          {business.raw.services_tags}
         </p>
         <h3 className="text-sm lg:text-base xl:text-lg font-bold text-gray-900 mb-2 leading-snug">
           {business.name}

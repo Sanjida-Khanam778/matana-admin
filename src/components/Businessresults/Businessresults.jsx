@@ -231,12 +231,7 @@ export default function BusinessResults({
         </div>
       </div>
 
-      {/* Category label */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-700">
-          {groupLabel}
-        </p>
-      </div>
+    
 
       {/* Grid or Empty Search Result State */}
       {displayBusinesses.length === 0 && !isLoading ? (
