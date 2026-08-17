@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
         element: <AllCategories />,
       },
       {
-        path: "all-stores/:categoryName?",
+        path: "all-stores",
         element: <AllCategories />,
       },
       {

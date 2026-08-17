@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { useNavigate, useParams, ScrollRestoration } from "react-router-dom";
+import { useNavigate, useLocation, ScrollRestoration } from "react-router-dom";
 import { IMAGES } from "../../assets";
 import { useGetCategoriesQuery } from "../../Api/businessDirectoryApi";
 
@@ -139,9 +139,10 @@ function GridCard({ name, count, image, onClick }) {
 // ── Main Component ──
 export default function BusinessSearch() {
   const navigate = useNavigate();
-  const { categoryName } = useParams();
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selCats, setSelCats] = useState([]);
+  const location = useLocation();
+  const categoryStateName = location.state?.categoryName;
+
+  const [selCats, setSelCats] = useState(categoryStateName ? [categoryStateName] : []);
   const [selLocs, setSelLocs] = useState([]);
   const [selServices, setSelServices] = useState([]);
   const [page, setPage] = useState(1);
@@ -163,14 +164,10 @@ export default function BusinessSearch() {
   const paginatedCategories = categories.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   useEffect(() => {
-    if (categoryName) {
-      const decoded = decodeURIComponent(categoryName);
-      setSelectedCategory(decoded);
-      setSelCats((prev) => (prev.includes(decoded) ? prev : [decoded]));
-    } else {
-      setSelectedCategory(null);
+    if (categoryStateName) {
+      setSelCats((prev) => (prev.includes(categoryStateName) ? prev : [categoryStateName]));
     }
-  }, [categoryName]);
+  }, [categoryStateName]);
 
   function toggle(arr, setArr, val) {
     setArr((p) => {
@@ -188,7 +185,7 @@ export default function BusinessSearch() {
       });
 
       if (isAlreadySelected) {
-        const next = p.filter((x) => {
+        return p.filter((x) => {
           if (!x) return false;
           const xLower = x.toLowerCase().trim();
           const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
@@ -197,10 +194,6 @@ export default function BusinessSearch() {
             (xCity === valCity && (xLower.includes(",") || valLower.includes(",")))
           );
         });
-        if (arr === selCats && next.length === 0) {
-          setSelectedCategory(null);
-        }
-        return next;
       } else {
         return [...p, val];
       }
@@ -272,10 +265,8 @@ export default function BusinessSearch() {
 
         {/* ── Main content ── */}
         <div className="flex-1 min-w-0">
-          {selectedCategory || selCats.length > 0 || selOccasions.length > 0 || selLocs.length > 0 || selServices.length > 0 ? (
+          {selCats.length > 0 || selOccasions.length > 0 || selLocs.length > 0 || selServices.length > 0 ? (
             <BusinessResults
-              categoryId={categoryName}
-              categoryName={selectedCategory}
               selCats={selCats}
               selOccasions={selOccasions}
               selLocs={selLocs}
@@ -297,11 +288,7 @@ export default function BusinessSearch() {
                     <GridCard
                       key={item.id || item.name}
                       {...item}
-                      onClick={() =>
-                        navigate(`/all-stores/${item.id || encodeURIComponent(item.name)}`, {
-                          state: { categoryId: item.id, categoryName: item.name },
-                        })
-                      }
+                      onClick={() => setSelCats([item.name])}
                     />
                   ))}
               </div>

@@ -33,9 +33,8 @@ function CategoryCard({ id, name, count, image }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    const targetName = name ? encodeURIComponent(name) : id ? id : "";
-    if (targetName) {
-      navigate(`/all-stores/${targetName}`, { state: { categoryName: name } });
+    if (name) {
+      navigate("/all-stores", { state: { categoryName: name, categoryId: id } });
     } else {
       navigate("/all-categories");
     }
