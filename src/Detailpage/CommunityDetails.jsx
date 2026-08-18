@@ -305,7 +305,7 @@ export default function CommunityDetails({ data, onBack }) {
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
 
       {/* Cover */}
-      <div className="overflow-hidden relative" style={{ height: 380 }}>
+      <div className="overflow-hidden relative" style={{ height: 200, md: 380 }}>
         <img
           src={d.coverImage}
           alt={d.name}
@@ -324,8 +324,8 @@ export default function CommunityDetails({ data, onBack }) {
       </div>
 
       {/* Header */}
-      <div className="lg:w-10/12 w-11/12 mx-auto py-4 flex items-start gap-3 xl:gap-6 my-2 md:my-6 xl:my-10">
-        <div className="w-28 h-28 md:w-32 md:h-32 flex items-center justify-center flex-shrink-0 overflow-hidden">
+      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col md:flex-row items-start gap-3 xl:gap-6 my-2 md:my-6">
+        <div className="md:w-44 flex items-center justify-center flex-shrink-0 overflow-hidden">
           {d.logoImage ? (
             <img
               src={d.logoImage}
@@ -554,71 +554,94 @@ export default function CommunityDetails({ data, onBack }) {
               <div className="flex flex-col gap-3">
                 {/* Phone */}
                 {d.contact.phone && (
-                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                  <a
+                    href={`tel:${d.contact.phone}`}
+                    onClick={() => handleTrackClick("phone")}
+                    className="bg-white hover:bg-green-50/50 rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4 transition-colors cursor-pointer group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-green-50 group-hover:bg-green-100 flex items-center justify-center flex-shrink-0 transition-colors">
                       <FiPhone size={18} color="#085027" />
                     </div>
                     <div className="flex flex-col text-left">
                       <span className="text-[11px] text-gray-400 font-medium font-inter">
                         Phone
                       </span>
-                      <span className="text-sm sm:text-base font-semibold text-gray-900 leading-tight mt-0.5 font-inter">
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#085027] transition-colors leading-tight mt-0.5 font-inter">
                         {d.contact.phone}
                       </span>
                     </div>
-                  </div>
+                  </a>
                 )}
 
                 {/* Email */}
                 {d.contact.email && (
-                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+                  <a
+                    href={`mailto:${d.contact.email}`}
+                    className="bg-white hover:bg-amber-50/50 rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4 transition-colors cursor-pointer group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 group-hover:bg-amber-100 flex items-center justify-center flex-shrink-0 transition-colors">
                       <FiMail size={18} color="#d97706" />
                     </div>
                     <div className="flex flex-col text-left">
                       <span className="text-[11px] text-gray-400 font-medium">
                         Email
                       </span>
-                      <span className="text-sm sm:text-base font-semibold text-gray-900 leading-tight mt-0.5 break-all">
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#d97706] transition-colors leading-tight mt-0.5 break-all">
                         {d.contact.email}
                       </span>
                     </div>
-                  </div>
+                  </a>
                 )}
 
                 {/* Address */}
                 {d.contact.address && (
-                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.contact.address)}`}
+                    onClick={() => handleTrackClick("directions")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white hover:bg-emerald-50/50 rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4 transition-colors cursor-pointer group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 group-hover:bg-emerald-100 flex items-center justify-center flex-shrink-0 transition-colors">
                       <FiMapPin size={18} color="#059669" />
                     </div>
                     <div className="flex flex-col text-left">
                       <span className="text-[11px] text-gray-400 font-medium">
                         Address
                       </span>
-                      <span className="text-sm sm:text-base font-semibold text-gray-900 leading-tight mt-0.5">
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#059669] transition-colors leading-tight mt-0.5">
                         {d.contact.address}
                       </span>
                     </div>
-                  </div>
+                  </a>
                 )}
 
                 {/* Website */}
-                {(d.contact.website || d.actions?.website) && (
-                  <div className="bg-white rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <FiGlobe size={18} color="#2563eb" />
-                    </div>
-                    <div className="flex flex-col text-left">
-                      <span className="text-[11px] text-gray-400 font-medium">
-                        Website
-                      </span>
-                      <span className="text-sm sm:text-base font-inter font-semibold text-gray-900 leading-tight mt-0.5 break-all">
-                        {d.contact.website || d.actions?.website}
-                      </span>
-                    </div>
-                  </div>
-                )}
+                {(d.contact.website || d.actions?.website) && (() => {
+                  const webUrl = d.contact.website || d.actions?.website;
+                  const formattedWebUrl = webUrl.startsWith("http") ? webUrl : `https://${webUrl}`;
+                  return (
+                    <a
+                      href={formattedWebUrl}
+                      onClick={() => handleTrackClick("website")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white hover:bg-blue-50/50 rounded-2xl border border-gray-100/60 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center gap-4 transition-colors cursor-pointer group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center flex-shrink-0 transition-colors">
+                        <FiGlobe size={18} color="#2563eb" />
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <span className="text-[11px] text-gray-400 font-medium">
+                          Website
+                        </span>
+                        <span className="text-sm sm:text-base font-inter font-semibold text-gray-900 group-hover:text-[#2563eb] transition-colors leading-tight mt-0.5 break-all">
+                          {webUrl}
+                        </span>
+                      </div>
+                    </a>
+                  );
+                })()}
               </div>
 
               {/* Get Directions Button */}
