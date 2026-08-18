@@ -264,7 +264,7 @@ const PLAN_META = {
   },
   premium: {
     name: "Premium Partner",
-    maxPhotos: 10,
+    maxPhotos: 5,
     maxDescChars: 500,
   },
 };
