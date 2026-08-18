@@ -1,17 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "../Layouts/Dashboard";
+import CommunityDetails from "../Detailpage/CommunityDetails";
+import MainLayout from "../Layouts/MainLayout";
 import Home from "../Pages/Home/Home";
 import AllCategories from "../components/AllCategories/AllCategories";
-import MainLayout from "../Layouts/MainLayout";
 import AllEvents from "../components/AllEvents/AllEvents";
-import DetailPage from "../Detailpage/Detailpage";
-import CommunityDetails from "../Detailpage/CommunityDetails";
+import AllCommunities from "../components/Browsebycommunity/AllCommunities";
 import AllCommunity from "../components/Browsebycommunity/AllCommunityStores";
 import Pricing from "../components/Businessdirectoryform/Businessdirectoryform";
-import AllCommunities from "../components/Browsebycommunity/AllCommunities";
 
-import BusinessLogin from "../Pages/BusinessLogin/BusinessLogin";
 import BusinessDashboard from "../Pages/BusinessDashboard/BusinessDashboard";
+import BusinessLogin from "../Pages/BusinessLogin/BusinessLogin";
 
 export const router = createBrowserRouter([
   {

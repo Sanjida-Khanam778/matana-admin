@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/images/logo.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -41,11 +41,29 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const q = new URLSearchParams(location.search).get("search");
+    if (q !== null) {
+      setSearch(q);
+    }
+  }, [location.search]);
+
   const handleSearchSubmit = (e) => {
     if (e) e.preventDefault();
-    if (search.trim()) {
-      navigate("/all-community-stores", { state: { search: search.trim() } });
+    const trimmed = search.trim();
+    if (trimmed) {
+      navigate(`/all-stores?search=${encodeURIComponent(trimmed)}`, { state: { search: trimmed } });
       setMobileMenuOpen(false);
+    } else if (location.pathname === "/all-stores" || location.pathname === "/all-community-stores") {
+      navigate("/all-stores", { state: { search: "" } });
+      setMobileMenuOpen(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearch("");
+    if (location.pathname === "/all-stores" || location.pathname === "/all-community-stores") {
+      navigate("/all-stores", { state: { search: "" }, replace: true });
     }
   };
 
@@ -110,6 +128,15 @@ export default function Navbar() {
                   onChange={(e) => setSearch(e.target.value)}
                   className="text-xs lg:text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none w-32 lg:w-44"
                 />
+                {search && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="text-gray-400 hover:text-gray-600 transition cursor-pointer p-0.5"
+                  >
+                    <FiX size={14} />
+                  </button>
+                )}
               </form>
 
               <Link
@@ -149,6 +176,15 @@ export default function Navbar() {
                   onChange={(e) => setSearch(e.target.value)}
                   className="text-xs text-gray-700 placeholder-gray-400 bg-transparent outline-none w-24 sm:w-32"
                 />
+                {search && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="text-gray-400 hover:text-gray-600 transition cursor-pointer p-0.5"
+                  >
+                    <FiX size={14} />
+                  </button>
+                )}
               </form>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ScrollRestoration, useLocation } from "react-router-dom";
+import { useGetCategoriesQuery } from "../../Api/businessDirectoryApi";
+import { IMAGES } from "../../assets";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { useNavigate, useLocation, ScrollRestoration } from "react-router-dom";
-import { IMAGES } from "../../assets";
-import { useGetCategoriesQuery } from "../../Api/businessDirectoryApi";
 
 const LOCAL_CAT_IMAGES = {
   "Upsherin": IMAGES.categoryImage1,
@@ -131,9 +131,13 @@ export default function BusinessSearch({ showAllStores = false }) {
   const [selTov, setSelTov] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const searchParams = new URLSearchParams(location.search);
+  const hasUrlSearch = Boolean(searchParams.get("search")?.trim());
+
   const isStoresView =
     showAllStores ||
     location.pathname === "/all-stores" ||
+    hasUrlSearch ||
     selCats.length > 0 ||
     selOccasions.length > 0 ||
     selLocs.length > 0 ||
@@ -155,16 +159,20 @@ export default function BusinessSearch({ showAllStores = false }) {
   useEffect(() => {
     if (categoryStateName) {
       setSelCats((prev) => (prev.includes(categoryStateName) ? prev : [categoryStateName]));
+    } else if (hasUrlSearch) {
+      setSelCats([]);
     }
-  }, [categoryStateName]);
+  }, [categoryStateName, hasUrlSearch]);
 
   function toggle(arr, setArr, val) {
+    const rawVal = typeof val === "object" && val !== null ? val.name : val;
+    if (!rawVal || typeof rawVal !== "string") return;
     setArr((p) => {
-      const valLower = val.toLowerCase().trim();
+      const valLower = rawVal.toLowerCase().trim();
       const valCity = valLower.includes(",") ? valLower.split(",")[0].trim() : valLower;
 
       const isAlreadySelected = p.some((x) => {
-        if (!x) return false;
+        if (!x || typeof x !== "string") return false;
         const xLower = x.toLowerCase().trim();
         const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
         return (
@@ -175,7 +183,7 @@ export default function BusinessSearch({ showAllStores = false }) {
 
       if (isAlreadySelected) {
         return p.filter((x) => {
-          if (!x) return false;
+          if (!x || typeof x !== "string") return false;
           const xLower = x.toLowerCase().trim();
           const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
           return !(
@@ -184,7 +192,7 @@ export default function BusinessSearch({ showAllStores = false }) {
           );
         });
       } else {
-        return [...p, val];
+        return [...p, rawVal];
       }
     });
   }

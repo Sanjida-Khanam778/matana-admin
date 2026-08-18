@@ -1,23 +1,21 @@
-import { useState, useMemo, useEffect } from "react";
-import {
-  IoSearchOutline,
-  IoLocationOutline,
-  IoChevronDown,
-  IoChevronForward,
-  IoChevronBack,
-  IoArrowForwardOutline,
-} from "react-icons/io5";
-import BusinessResults from "../Businessresults/Businessresults";
-import SidebarFilter from "../SidebarFilter/SidebarFilter";
-import { ScrollRestoration, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
+import {
+  IoArrowForwardOutline,
+  IoChevronBack,
+  IoChevronForward,
+  IoLocationOutline
+} from "react-icons/io5";
+import { ScrollRestoration, useLocation, useNavigate } from "react-router-dom";
 import {
   useFilterBusinessesQuery,
   useGetCategoriesQuery,
   useGetCommunitiesQuery,
   useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
+import BusinessResults from "../Businessresults/Businessresults";
+import SidebarFilter from "../SidebarFilter/SidebarFilter";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -129,10 +127,17 @@ export default function AllCommunity() {
 
   // Fetch filtered businesses using /api/business/filter/
   const filterArgs = {
-    categories: selCats.join(","),
-    occasions: selOccasions.join(","),
-    locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
-    services_tags: selServices.join(","),
+    categories: (Array.isArray(selCats) ? selCats : []).filter(Boolean).map(String).join(","),
+    occasions: (Array.isArray(selOccasions) ? selOccasions : []).filter(Boolean).map(String).join(","),
+    locations: (Array.isArray(selLocs) ? selLocs : [])
+      .filter(Boolean)
+      .map((loc) => {
+        const str = typeof loc === "object" && loc !== null ? loc.name || "" : String(loc || "");
+        return str.includes(",") ? str.split(",")[0].trim() : str;
+      })
+      .filter(Boolean)
+      .join(","),
+    services_tags: (Array.isArray(selServices) ? selServices : []).filter(Boolean).map(String).join(","),
   };
 
   const { data: filterData, isLoading } = useFilterBusinessesQuery(filterArgs);
@@ -158,7 +163,7 @@ export default function AllCommunity() {
 
   const matchedCommunity = useMemo(() => {
     if (!communitiesData || !activeLocName) return null;
-    const clean = activeLocName.includes(",") ? activeLocName.split(",")[0].trim() : activeLocName.trim();
+    const clean = typeof activeLocName === "string" && activeLocName.includes(",") ? activeLocName.split(",")[0].trim() : String(activeLocName || "").trim();
     return communitiesData.find(
       (c) =>
         c.name.toLowerCase() === clean.toLowerCase() ||
@@ -183,7 +188,7 @@ export default function AllCommunity() {
     const rawList = filterData?.businesses || [];
     return rawList.map((b) => ({
       id: b.id,
-      tag: b.services_tags
+      tag: typeof b.services_tags === "string" && b.services_tags.trim()
         ? b.services_tags.split(",")[0].trim()
         : b.categories && b.categories.length > 0
         ? typeof b.categories[0] === "object"
@@ -252,12 +257,14 @@ export default function AllCommunity() {
   };
 
   function toggle(arr, setArr, val) {
+    const rawVal = typeof val === "object" && val !== null ? val.name : val;
+    if (!rawVal || typeof rawVal !== "string") return;
     setArr((p) => {
-      const valLower = val.toLowerCase().trim();
+      const valLower = rawVal.toLowerCase().trim();
       const valCity = valLower.includes(",") ? valLower.split(",")[0].trim() : valLower;
 
       const isAlreadySelected = p.some((x) => {
-        if (!x) return false;
+        if (!x || typeof x !== "string") return false;
         const xLower = x.toLowerCase().trim();
         const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
         return (
@@ -268,7 +275,7 @@ export default function AllCommunity() {
 
       if (isAlreadySelected) {
         return p.filter((x) => {
-          if (!x) return false;
+          if (!x || typeof x !== "string") return false;
           const xLower = x.toLowerCase().trim();
           const xCity = xLower.includes(",") ? xLower.split(",")[0].trim() : xLower;
           return !(
@@ -277,7 +284,7 @@ export default function AllCommunity() {
           );
         });
       } else {
-        return [...p, val];
+        return [...p, rawVal];
       }
     });
   }
@@ -372,7 +379,7 @@ export default function AllCommunity() {
                       <IoSearchOutline size={16} color="#9ca3af" />
                       <input
                         type="text"
-                        placeholder={`What are you looking for in ${communityName.split(",")[0]}?`}
+                        placeholder={`What are you looking for in ${String(communityName || "").split(",")[0]}?`}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none"
@@ -536,7 +543,7 @@ export default function AllCommunity() {
 
                 {!isLoading && currentPageBusinesses.length === 0 && (
                   <div className="col-span-full py-12 text-center text-gray-500">
-                    No businesses found in {communityName.split(",")[0]}.
+                    No businesses found in {String(communityName || "").split(",")[0]}.
                   </div>
                 )}
 

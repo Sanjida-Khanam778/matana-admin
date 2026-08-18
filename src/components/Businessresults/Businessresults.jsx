@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiSearch, FiX } from "react-icons/fi";
 import { IMAGES } from "../../assets";
@@ -72,8 +72,22 @@ export default function BusinessResults({
   selServices = [],
 }) {
   const navigate = useNavigate();
-  const locationState = useLocation().state;
-  const [searchTerm, setSearchTerm] = useState(locationState?.search || "");
+  const location = useLocation();
+  const locationState = location.state;
+  const searchParams = new URLSearchParams(location.search);
+  const urlSearch = searchParams.get("search");
+  const initialSearch = urlSearch !== null ? urlSearch : (locationState?.search || "");
+
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
+
+  useEffect(() => {
+    const currentUrlSearch = new URLSearchParams(location.search).get("search");
+    if (currentUrlSearch !== null) {
+      setSearchTerm(currentUrlSearch);
+    } else if (locationState?.search !== undefined) {
+      setSearchTerm(locationState.search);
+    }
+  }, [location.search, locationState?.search]);
 
   const effectiveCats =
     selCats.length > 0
@@ -82,19 +96,30 @@ export default function BusinessResults({
       ? [categoryName]
       : [];
 
+  const activeUrlSearch = new URLSearchParams(location.search).get("search");
+  const currentSearch = activeUrlSearch !== null ? activeUrlSearch : (locationState?.search || "");
+  const effectiveSearch = (searchTerm || currentSearch || "").trim();
+
   const hasFilterParams =
     effectiveCats.length > 0 ||
     selOccasions.length > 0 ||
     selLocs.length > 0 ||
     selServices.length > 0 ||
-    Boolean(searchTerm.trim());
+    Boolean(effectiveSearch);
 
   const filterArgs = {
-    categories: effectiveCats.join(","),
-    occasions: selOccasions.join(","),
-    locations: selLocs.map((loc) => (loc.includes(",") ? loc.split(",")[0].trim() : loc)).join(","),
-    services_tags: selServices.join(","),
-    search: searchTerm.trim(),
+    categories: (Array.isArray(selCats) ? selCats : []).filter(Boolean).map(String).join(","),
+    occasions: (Array.isArray(selOccasions) ? selOccasions : []).filter(Boolean).map(String).join(","),
+    locations: (Array.isArray(selLocs) ? selLocs : [])
+      .filter(Boolean)
+      .map((loc) => {
+        const str = typeof loc === "object" && loc !== null ? loc.name || "" : String(loc || "");
+        return str.includes(",") ? str.split(",")[0].trim() : str;
+      })
+      .filter(Boolean)
+      .join(","),
+    services_tags: (Array.isArray(selServices) ? selServices : []).filter(Boolean).map(String).join(","),
+    search: effectiveSearch,
   };
 
   const targetCategoryId =
@@ -160,7 +185,7 @@ export default function BusinessResults({
           ? typeof b.categories[0] === "object"
             ? b.categories[0].name
             : "Business"
-          : b.services_tags
+          : typeof b.services_tags === "string" && b.services_tags.trim()
           ? b.services_tags.split(",")[0].trim()
           : groupLabel;
 
@@ -176,21 +201,7 @@ export default function BusinessResults({
     });
   }, [rawBusinesses, groupLabel]);
 
-  const displayBusinesses = useMemo(() => {
-    if (!searchTerm.trim()) return mappedBusinesses;
-    const term = searchTerm.toLowerCase().trim();
-    return mappedBusinesses.filter((b) => {
-      const raw = b.raw || {};
-      const nameMatch = b.name && b.name.toLowerCase().includes(term);
-      const catMatch = b.category && b.category.toLowerCase().includes(term);
-      const locMatch = b.location && b.location.toLowerCase().includes(term);
-      const descMatch = raw.description && raw.description.toLowerCase().includes(term);
-      const tagMatch = raw.services_tags && raw.services_tags.toLowerCase().includes(term);
-      const occasionMatch = raw.occasions && raw.occasions.toLowerCase().includes(term);
-
-      return nameMatch || catMatch || locMatch || descMatch || tagMatch || occasionMatch;
-    });
-  }, [mappedBusinesses, searchTerm]);
+  const displayBusinesses = mappedBusinesses;
 
   const [recordPageVisit] = useRecordPageVisitMutation();
 
@@ -204,6 +215,16 @@ export default function BusinessResults({
     });
   };
 
+  const handleSearchInputChange = (val) => {
+    setSearchTerm(val);
+    const trimmed = val.trim();
+    if (trimmed) {
+      navigate(`/all-stores?search=${encodeURIComponent(trimmed)}`, { replace: true });
+    } else if (location.pathname === "/all-stores" || location.pathname === "/all-community-stores") {
+      navigate("/all-stores", { replace: true });
+    }
+  };
+
   return (
     <div className="py-2 space-y-5">
       {/* Search Input Bar & Result Count Header */}
@@ -214,12 +235,12 @@ export default function BusinessResults({
             type="text"
             placeholder="Search businesses, services, location or tags..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearchInputChange(e.target.value)}
             className="flex-1 text-xs sm:text-sm text-gray-800 placeholder-gray-400 bg-transparent outline-none"
           />
           {searchTerm && (
             <button
-              onClick={() => setSearchTerm("")}
+              onClick={() => handleSearchInputChange("")}
               className="text-gray-400 hover:text-gray-600 transition cursor-pointer p-1"
             >
               <FiX size={16} />

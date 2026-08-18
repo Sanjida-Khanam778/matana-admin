@@ -253,14 +253,14 @@ export default function CommunityDetails({ data, onBack }) {
 
     video: b?.promo_video_link && { src: b.promo_video_link },
 
-    tags: b?.services_tags
+    tags: typeof b?.services_tags === "string" && b.services_tags.trim()
       ? b.services_tags.split(",").map((t) => t.trim()).filter(Boolean)
       : data?.tags,
 
     related: (b?.related_businesses || []).slice(0, 4).map((r) => ({
       id: r.id,
       name: r.name,
-      category: r.services_tags ? r.services_tags.split(",")[0].trim() : "Business Services",
+      category: typeof r.services_tags === "string" && r.services_tags.trim() ? r.services_tags.split(",")[0].trim() : "Business Services",
       location: r.community ? `${r.community.name}, ${r.community.state}` : r.business_address || "",
       image: r.flyer_image || r.community?.image || "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80",
       raw: r,

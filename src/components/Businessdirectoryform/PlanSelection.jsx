@@ -64,7 +64,7 @@ export default function PlanSelection({ plans, currentPlan, plansLoading, onSele
                   : "bg-transparent border-green-900 text-green-900 hover:bg-green-50"
               }`}
             >
-              Choose {p.name.split(" ")[0]}
+              Choose {typeof p.name === "string" ? p.name.split(" ")[0] : ""}
             </button>
           </div>
         );

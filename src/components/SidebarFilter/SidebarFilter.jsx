@@ -101,10 +101,13 @@ function SidebarSection({ title, items, selected, onToggle }) {
                 Array.isArray(selected) &&
                 selected.some((s) => {
                   if (!s || !item || !item.name) return false;
-                  const sClean = s.toLowerCase().trim();
-                  const itemNameClean = item.name.toLowerCase().trim();
+                  const sStr = typeof s === "object" ? s.name || "" : String(s);
+                  if (!sStr) return false;
+
+                  const sClean = sStr.toLowerCase().trim();
+                  const itemNameClean = String(item.name).toLowerCase().trim();
                   const itemFullNameClean = item.fullName
-                    ? item.fullName.toLowerCase().trim()
+                    ? String(item.fullName).toLowerCase().trim()
                     : null;
 
                   if (sClean === itemNameClean) return true;
