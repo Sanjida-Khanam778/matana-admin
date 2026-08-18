@@ -67,24 +67,6 @@ function ChevronRightSmIcon() {
     </svg>
   );
 }
-function ArrowLeftIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="15"
-      height="15"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#374151"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="19" y1="12" x2="5" y2="12" />
-      <polyline points="12 19 5 12 12 5" />
-    </svg>
-  );
-}
 
 // ── Grid Card ──────────────────────────────────────
 function GridCard({ name, count, image, onClick }) {
@@ -138,7 +120,6 @@ function GridCard({ name, count, image, onClick }) {
 
 // ── Main Component ──
 export default function BusinessSearch({ showAllStores = false }) {
-  const navigate = useNavigate();
   const location = useLocation();
   const categoryStateName = location.state?.categoryName;
 

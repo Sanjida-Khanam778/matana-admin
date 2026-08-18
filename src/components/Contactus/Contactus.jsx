@@ -37,6 +37,25 @@ function PhoneIcon() {
     </svg>
   );
 }
+
+function WhatsappIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#25D366"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+  );
+}
+
 function InstagramIcon() {
   return (
     <svg
@@ -71,7 +90,8 @@ const contactItems = [
     title: "Email Us",
     subtitle: "Send us an email anytime",
     value: "info@matanashop.com",
-    valueColor: "text-gray-900",
+    href: "mailto:info@matanashop.com",
+    target: "_self",
   },
   {
     icon: <PhoneIcon />,
@@ -79,7 +99,17 @@ const contactItems = [
     title: "Call Us",
     subtitle: "Mon-Fri from 9am to 6pm EST",
     value: "929-205-6513",
-    valueColor: "text-gray-900 font-semibold",
+    href: "tel:9292056513",
+    target: "_self",
+  },
+  {
+    icon: <WhatsappIcon />,
+    iconBg: "bg-emerald-50",
+    title: "WhatsApp",
+    subtitle: "Chat with us on WhatsApp",
+    value: "718-382-6070",
+    href: "https://wa.me/17183826070",
+    target: "_blank",
   },
   {
     icon: <InstagramIcon />,
@@ -87,7 +117,8 @@ const contactItems = [
     title: "Follow Us",
     subtitle: "Stay updated on social media",
     value: "Matana_official_",
-    valueColor: "text-gray-900",
+    href: "https://www.instagram.com/Matana_official_",
+    target: "_blank",
   },
 ];
 
@@ -116,7 +147,7 @@ export default function ContactUs() {
   }
 
   return (
-    <section id="contact" className="w-full bg-[#FAF5ED] py-8 lg:py16 px-6">
+    <section id="contact" className="w-full bg-[#FAF5ED] py-8 lg:py-16 px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -135,30 +166,31 @@ export default function ContactUs() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {/* LEFT — contact info cards */}
           <div className="flex flex-col gap-4">
-            {contactItems.map((item, index) => (
-              <div
+            {contactItems.map((item) => (
+              <a
                 key={item.title}
-                className={`bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-5 flex items-start gap-4`}
+                href={item.href}
+                target={item.target || "_self"}
+                rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-5 flex items-start gap-4 hover:shadow-md hover:border-teal-200 transition-all group"
               >
                 <div
-                  className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}
+                  className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform`}
                 >
                   {item.icon}
                 </div>
                 <div>
-                  <p className="text-sm lg:text-base font-bold text-gray-900 mb-0.5">
+                  <p className="text-sm lg:text-base font-bold text-gray-900 mb-0.5 group-hover:text-primary transition-colors">
                     {item.title}
                   </p>
                   <p className="text-xs lg:text-sm text-gray-500 mb-1.5">
                     {item.subtitle}
                   </p>
-                  <p
-                    className={`text-sm lg:text-base text-primary font-semibold`}
-                  >
+                  <p className="text-sm lg:text-base text-primary font-semibold group-hover:underline">
                     {item.value}
                   </p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
 

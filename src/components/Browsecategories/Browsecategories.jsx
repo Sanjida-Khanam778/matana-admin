@@ -135,7 +135,7 @@ export default function BrowseCategories() {
         {/* Browse All Button */}
         <div className="flex justify-center">
           <Link
-            to={"/all-stores"}
+            to={"/all-categories"}
             className="border text-sm sm:text-base border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 md:px-8 py-1.5 md:py-3 rounded-full transition-colors shadow-sm"
           >
             Browse All Categories
