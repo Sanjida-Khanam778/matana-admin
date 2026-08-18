@@ -137,7 +137,7 @@ function GridCard({ name, count, image, onClick }) {
 }
 
 // ── Main Component ──
-export default function BusinessSearch() {
+export default function BusinessSearch({ showAllStores = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const categoryStateName = location.state?.categoryName;
@@ -149,6 +149,14 @@ export default function BusinessSearch() {
   const [selOccasions, setSelOccasions] = useState([]);
   const [selTov, setSelTov] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const isStoresView =
+    showAllStores ||
+    location.pathname === "/all-stores" ||
+    selCats.length > 0 ||
+    selOccasions.length > 0 ||
+    selLocs.length > 0 ||
+    selServices.length > 0;
 
   const { data: categoriesData, isLoading } = useGetCategoriesQuery();
 
@@ -265,7 +273,7 @@ export default function BusinessSearch() {
 
         {/* ── Main content ── */}
         <div className="flex-1 min-w-0">
-          {selCats.length > 0 || selOccasions.length > 0 || selLocs.length > 0 || selServices.length > 0 ? (
+          {isStoresView ? (
             <BusinessResults
               selCats={selCats}
               selOccasions={selOccasions}

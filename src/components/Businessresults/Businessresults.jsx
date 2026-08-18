@@ -97,14 +97,14 @@ export default function BusinessResults({
     search: searchTerm.trim(),
   };
 
-  const { data: filterData, isLoading: isFilterLoading } = useFilterBusinessesQuery(filterArgs, {
-    skip: !hasFilterParams,
-  });
-
   const targetCategoryId =
     categoryId ||
     locationState?.categoryId ||
     (typeof categoryName === "number" || !isNaN(Number(categoryName)) ? categoryName : null);
+
+  const { data: filterData, isLoading: isFilterLoading } = useFilterBusinessesQuery(filterArgs, {
+    skip: Boolean(targetCategoryId) && !hasFilterParams,
+  });
 
   const { data: categoryData, isLoading: isCategoryLoading } = useGetCategoryStoresQuery(
     targetCategoryId,
@@ -113,14 +113,15 @@ export default function BusinessResults({
     }
   );
 
-  const isLoading = hasFilterParams ? isFilterLoading : isCategoryLoading;
+  const isLoading = targetCategoryId && !hasFilterParams ? isCategoryLoading : isFilterLoading;
 
   const groupLabel =
     categoryName || locationState?.categoryName || categoryData?.name || "Businesses";
 
-  const rawBusinesses = hasFilterParams
-    ? filterData?.businesses || []
-    : categoryData?.businesses || [];
+  const rawBusinesses =
+    targetCategoryId && !hasFilterParams
+      ? categoryData?.businesses || []
+      : filterData?.businesses || [];
 
   const mappedBusinesses = useMemo(() => {
     return rawBusinesses.map((b) => {

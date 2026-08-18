@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-stores",
-        element: <AllCategories />,
+        element: <AllCategories showAllStores={true} />,
       },
       {
         path: "all-events",
@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-community",
-        element: <AllCommunity />,
+        element: <AllCommunities />,
       },
       {
         path: "all-community-stores",
