@@ -235,7 +235,7 @@ export default function BusinessSearch({ showAllStores = false }) {
         </button>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-0 px-4 sm:px-8 pb-12">
+      <div className="flex flex-col lg:flex-row gap-0 pb-12 w-11/12 lg:w-10/12 mx-auto px-4 md:px-8 lg:px-0">
         {/* ── Sidebar ── */}
         <SidebarFilter
           selectedCategories={selCats}
