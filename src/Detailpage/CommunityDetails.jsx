@@ -24,17 +24,123 @@ import ubereats from "../assets/images/ubereats.png"
 import whatsapp from "../assets/images/whatsapp.png"
 import detailsHeader from "../assets/images/detailsHeader.png"
 
+function getEmbedVideoUrl(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== "string") return null;
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return null;
+
+  // 1. Specific YouTube Video ID matching (watch, shorts, embed, short link)
+  const ytRegex = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/;
+  const ytMatch = trimmed.match(ytRegex);
+  if (ytMatch && ytMatch[1]) {
+    return {
+      type: "iframe",
+      src: `https://www.youtube.com/embed/${ytMatch[1]}?rel=0`,
+      originalUrl: trimmed,
+    };
+  }
+
+  // 2. YouTube Channel / Handle / Custom link -> redirect directly to YouTube
+  if (trimmed.includes("youtube.com") || trimmed.includes("youtu.be")) {
+    return {
+      type: "redirect",
+      src: trimmed,
+      label: "Watch Promo Video on YouTube",
+    };
+  }
+
+  // 3. Vimeo
+  const vimeoMatch = trimmed.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeoMatch && vimeoMatch[1]) {
+    return {
+      type: "iframe",
+      src: `https://player.vimeo.com/video/${vimeoMatch[1]}`,
+      originalUrl: trimmed,
+    };
+  }
+
+  // 4. Direct video file
+  if (trimmed.match(/\.(mp4|webm|ogg|mov)$/i)) {
+    return {
+      type: "video",
+      src: trimmed,
+      originalUrl: trimmed,
+    };
+  }
+
+  // Fallback for generic video link -> redirect
+  return {
+    type: "redirect",
+    src: trimmed,
+    label: "Watch Promo Video",
+  };
+}
+
 function VideoPlayer({ video }) {
   const [playing, setPlaying] = useState(false);
   const ref = useRef();
+
+  const rawUrl = typeof video === "string" ? video : video?.src || video?.url || "";
+  const embed = getEmbedVideoUrl(rawUrl);
+
+  if (!embed || !embed.src) return null;
+
+  if (embed.type === "redirect") {
+    return (
+      <a
+        href={embed.src}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 via-stone-900 to-black shadow-md w-full h-[180px] sm:h-[240px] flex flex-col items-center justify-center p-6 text-center group border border-gray-800 hover:border-red-600 transition-all cursor-pointer"
+      >
+        <div className="w-16 h-16 rounded-full bg-red-600 group-hover:bg-red-700 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform mb-3">
+          <FiPlay size={26} className="ml-1 fill-white" />
+        </div>
+        <span className="text-sm sm:text-base font-bold text-white group-hover:text-red-400 transition-colors">
+          {embed.label || "Watch Video on YouTube"}
+        </span>
+        <span className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+          Click to view promo video on YouTube <FiGlobe size={12} />
+        </span>
+      </a>
+    );
+  }
+
+  if (embed.type === "iframe") {
+    return (
+      <div className="space-y-2">
+        <div className="relative rounded-2xl overflow-hidden bg-black shadow-md w-full h-[220px] sm:h-[320px] md:h-[380px]">
+          <iframe
+            src={embed.src}
+            title="Promo Video"
+            className="w-full h-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
+        {embed.originalUrl && (
+          <div className="flex justify-end">
+            <a
+              href={embed.originalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-600 font-medium transition-colors"
+            >
+              <FiGlobe size={13} /> Open video in YouTube
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-black"
-      style={{ height: 220 }}
+      className="relative rounded-2xl overflow-hidden bg-black shadow-md w-full h-[220px] sm:h-[320px] md:h-[380px]"
     >
       <video
         ref={ref}
-        src={video.src}
+        src={embed.src}
         className="w-full h-full object-cover"
         controls={playing}
         onClick={() => {
@@ -50,7 +156,7 @@ function VideoPlayer({ video }) {
             ref.current?.play();
           }}
         >
-          <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+          <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
             <FiPlay size={22} color="#085027" fill="#085027" />
           </div>
         </div>
@@ -324,8 +430,8 @@ export default function CommunityDetails({ data, onBack }) {
       </div>
 
       {/* Header */}
-      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col md:flex-row items-start gap-3 xl:gap-6 my-2 md:my-6">
-        <div className="md:w-44 flex items-center justify-center flex-shrink-0 overflow-hidden">
+      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col md:flex-row items-center gap-3 xl:gap-6 my-2 md:my-6">
+        <div className="md:h-56 flex items-center justify-center flex-shrink-0 overflow-hidden">
           {d.logoImage ? (
             <img
               src={d.logoImage}
