@@ -16,6 +16,7 @@ import {
 } from "../../Api/businessDirectoryApi";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
+import LoadingSpinner from "../Common/LoadingSpinner";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -532,30 +533,23 @@ export default function AllCommunity() {
               />
             ) : (
               <div className="w-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                {isLoading &&
-                  Array.from({ length: 6 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="bg-white border border-gray-200 rounded-2xl h-64 animate-pulse"
-                    />
-                  ))}
-
-                {!isLoading && currentPageBusinesses.length === 0 && (
+                {isLoading ? (
+                  <LoadingSpinner text="Loading community stores..." />
+                ) : currentPageBusinesses.length === 0 ? (
                   <div className="col-span-full py-12 text-center text-gray-500">
                     No businesses found in {String(communityName || "").split(",")[0]}.
                   </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    {currentPageBusinesses.map((b) => (
+                      <BusinessCard
+                        key={b.id}
+                        business={b}
+                        onClick={() => openBusinessDetails(b)}
+                      />
+                    ))}
+                  </div>
                 )}
-
-                {!isLoading &&
-                  currentPageBusinesses.map((b) => (
-                    <BusinessCard
-                      key={b.id}
-                      business={b}
-                      onClick={() => openBusinessDetails(b)}
-                    />
-                  ))}
-              </div>
 
               {/* Pagination */}
               {totalPages > 1 && (

@@ -5,6 +5,7 @@ import {
 } from "react-icons/io5";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
+import LoadingSpinner from "../Common/LoadingSpinner";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa";
 import { IMAGES } from "../../assets";
@@ -170,19 +171,15 @@ export default function AllCommunities() {
                             />
                         ) : (
                             <div className="w-full">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                                    {isLoading &&
-                                        Array.from({ length: 6 }).map((_, index) => (
-                                            <div
-                                                key={index}
-                                                className="bg-white border border-gray-200 rounded-2xl h-40 md:h-60 animate-pulse"
-                                            />
-                                        ))}
-                                    {!isLoading &&
-                                        currentPageCommunities.map((c) => (
-                                            <CommunityCard key={c.id} {...c} />
-                                        ))}
-                                </div>
+                                    {isLoading ? (
+                                        <LoadingSpinner text="Loading locations..." />
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                                            {currentPageCommunities.map((c) => (
+                                                <CommunityCard key={c.id} {...c} />
+                                            ))}
+                                        </div>
+                                    )}
 
                                 {/* Pagination */}
                                 {totalPages > 1 && (

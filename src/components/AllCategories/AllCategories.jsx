@@ -4,6 +4,7 @@ import { useGetCategoriesQuery } from "../../Api/businessDirectoryApi";
 import { IMAGES } from "../../assets";
 import BusinessResults from "../Businessresults/Businessresults";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
+import LoadingSpinner from "../Common/LoadingSpinner";
 
 const LOCAL_CAT_IMAGES = {
   "Upsherin": IMAGES.categoryImage1,
@@ -271,24 +272,19 @@ export default function BusinessSearch({ showAllStores = false }) {
             />
           ) : (
             <>
-              {/* 3-col grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {isLoading &&
-                  Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="bg-white border border-gray-200 rounded-2xl p-4 h-64 animate-pulse"
-                    />
-                  ))}
-                {!isLoading &&
-                  paginatedCategories.map((item) => (
+              {isLoading ? (
+                <LoadingSpinner text="Loading categories..." />
+              ) : (
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {paginatedCategories.map((item) => (
                     <GridCard
                       key={item.id || item.name}
                       {...item}
                       onClick={() => setSelCats([item.name])}
                     />
                   ))}
-              </div>
+                </div>
+              )}
 
               {/* Pagination */}
               {totalPages > 1 && (

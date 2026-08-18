@@ -8,6 +8,8 @@ import {
   useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
 
+import LoadingSpinner from "../Common/LoadingSpinner";
+
 function LocationIcon() {
   return (
     <svg
@@ -256,7 +258,9 @@ export default function BusinessResults({
     
 
       {/* Grid or Empty Search Result State */}
-      {displayBusinesses.length === 0 && !isLoading ? (
+      {isLoading ? (
+        <LoadingSpinner text="Searching businesses..." />
+      ) : displayBusinesses.length === 0 ? (
         <div className="py-12 text-center bg-white rounded-2xl border border-gray-100 p-8 space-y-2">
           <p className="text-sm font-bold text-gray-800">No businesses found matching &quot;{searchTerm}&quot;</p>
           <p className="text-xs text-gray-500">
