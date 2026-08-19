@@ -50,7 +50,7 @@ export default function Footer() {
               <ul className="space-y-2 sm:space-y-3">
                 <li>
                   <Link
-                    to="/all-categories"
+                    to="/all-stores"
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
                   >
                     All Businesses
