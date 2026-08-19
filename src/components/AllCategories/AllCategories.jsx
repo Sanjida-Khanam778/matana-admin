@@ -275,7 +275,7 @@ export default function BusinessSearch({ showAllStores = false }) {
               {isLoading ? (
                 <LoadingSpinner text="Loading categories..." />
               ) : (
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                <div className="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                   {paginatedCategories.map((item) => (
                     <GridCard
                       key={item.id || item.name}

@@ -430,7 +430,7 @@ export default function CommunityDetails({ data, onBack }) {
       </div>
 
       {/* Header */}
-      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col sm:flex-row items-center gap-3 xl:gap-6 my-2">
+      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col sm:flex-row items-start md:items-center gap-3 xl:gap-6 my-2">
         <div className="sm:h-56 sm:max-w-56 flex items-center justify-center flex-shrink-0 overflow-hidden">
           {d.logoImage ? (
             <img

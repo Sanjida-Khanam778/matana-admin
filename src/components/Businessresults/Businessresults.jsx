@@ -8,6 +8,7 @@ import {
   useRecordPageVisitMutation,
 } from "../../Api/businessDirectoryApi";
 
+import { FaStar } from "react-icons/fa";
 import LoadingSpinner from "../Common/LoadingSpinner";
 
 function LocationIcon() {
@@ -29,7 +30,32 @@ function LocationIcon() {
   );
 }
 
-function BusinessCard({ name, category, location, image, onClick }) {
+function PlanBadge({ plan, isFeatured }) {
+  const tier = (plan?.tier || (isFeatured ? "featured" : "")).toLowerCase().trim();
+
+  if (tier === "premium") {
+    return (
+      <div className="flex items-center gap-1 bg-[#085027] text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-full shadow-md tracking-wider uppercase">
+        <FaStar size={10} className="text-amber-400" /> Premium
+      </div>
+    );
+  }
+
+  if (tier === "featured") {
+    return (
+      <div className="flex items-center gap-1 bg-[#f59e0b] text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-full shadow-md tracking-wider uppercase">
+        <FaStar size={10} className="text-white" /> Featured
+      </div>
+    );
+  }
+
+  return null;
+}
+
+function BusinessCard({ name, category, location, image, raw, onClick }) {
+  const plan = raw?.plan;
+  const isFeatured = raw?.is_featured;
+
   return (
     <div
       onClick={onClick}
@@ -46,6 +72,10 @@ function BusinessCard({ name, category, location, image, onClick }) {
             e.target.src = IMAGES.business1;
           }}
         />
+        {/* Top badge */}
+        <div className="absolute top-2.5 left-2.5 z-10">
+          <PlanBadge plan={plan} isFeatured={isFeatured} />
+        </div>
       </div>
 
       {/* Content */}

@@ -41,7 +41,33 @@ function FeaturedBadge() {
   );
 }
 
+function PlanBadge({ plan, isFeatured }) {
+  const tier = (plan?.tier || (isFeatured ? "featured" : "")).toLowerCase().trim();
+
+  if (tier === "premium") {
+    return (
+      <div className="flex items-center gap-1 bg-[#085027] text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-full shadow-md tracking-wider uppercase">
+        <FaStar size={10} className="text-amber-400" /> Premium
+      </div>
+    );
+  }
+
+  if (tier === "featured") {
+    return (
+      <div className="flex items-center gap-1 bg-[#f59e0b] text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-full shadow-md tracking-wider uppercase">
+        <FaStar size={10} className="text-white" /> Featured
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function BusinessCard({ business, onClick }) {
+  const raw = business?.raw || business;
+  const plan = raw?.plan;
+  const isFeatured = raw?.is_featured || business?.badge === "FEATURED";
+
   return (
     <div
       onClick={onClick}
@@ -50,14 +76,14 @@ function BusinessCard({ business, onClick }) {
       {/* Image */}
       <div className="relative h-44 flex-shrink-0 overflow-hidden">
         <img
-          src={business?.raw?.banner || business?.raw?.flyer_image}
+          src={business?.raw?.banner || business?.raw?.flyer_image || business.image}
           alt={business.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           draggable={false}
         />
         {/* Top badge */}
-        <div className="absolute top-3 left-3">
-          {business.badge === "FEATURED" && <FeaturedBadge />}
+        <div className="absolute top-3 left-3 z-10">
+          <PlanBadge plan={plan} isFeatured={isFeatured} />
         </div>
       </div>
 
