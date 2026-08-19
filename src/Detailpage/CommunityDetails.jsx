@@ -411,7 +411,7 @@ export default function CommunityDetails({ data, onBack }) {
     <div className="min-h-screen bg-[#f8f7f3] font-sans">
 
       {/* Cover */}
-      <div className="overflow-hidden relative" style={{ height: 200, md: 380 }}>
+      <div className="overflow-hidden relative h-60 md:h-80">
         <img
           src={d.coverImage}
           alt={d.name}
@@ -430,8 +430,8 @@ export default function CommunityDetails({ data, onBack }) {
       </div>
 
       {/* Header */}
-      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col md:flex-row items-center gap-3 xl:gap-6 my-2 md:my-6">
-        <div className="md:h-56 flex items-center justify-center flex-shrink-0 overflow-hidden">
+      <div className="lg:w-10/12 w-11/12 mx-auto flex flex-col sm:flex-row items-center gap-3 xl:gap-6 my-2">
+        <div className="sm:h-56 sm:max-w-56 flex items-center justify-center flex-shrink-0 overflow-hidden">
           {d.logoImage ? (
             <img
               src={d.logoImage}
