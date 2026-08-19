@@ -553,7 +553,7 @@ export default function CommunityDetails({ data, onBack }) {
                 Gallery
               </h2>
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                {d.photos.map((img, i) => (
+                {d.photos.slice(0, 5).map((img, i) => (
                   <div
                     key={i}
                     className="overflow-hidden rounded-xl aspect-[4/3] bg-gray-100"
