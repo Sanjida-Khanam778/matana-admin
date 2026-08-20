@@ -103,7 +103,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-6 lg:gap-8">
+            <div className="hidden xl:flex items-center gap-6 lg:gap-8">
               {NAV_CONFIG.map((item) => (
                 <button
                   key={item.label}
@@ -116,7 +116,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Search & CTA */}
-            <div className="hidden lg:flex items-center gap-2 lg:gap-4">
+            <div className="hidden xl:flex items-center gap-2 xl:gap-4">
               <form onSubmit={handleSearchSubmit} className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 lg:px-4 py-2 shadow-sm focus-within:border-[#085027] transition">
                 <button type="submit" className="cursor-pointer text-gray-400 hover:text-[#085027] transition-colors">
                   <SearchIcon />
@@ -164,7 +164,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile: Hamburger Menu */}
-            <div className="flex lg:hidden items-center gap-2">
+            <div className="flex xl:hidden items-center gap-2">
               <form onSubmit={handleSearchSubmit} className="flex bg-white/70 items-center gap-2 border border-gray-300 rounded-full px-3 py-2 shadow-sm focus-within:border-[#085027] transition">
                 <button type="submit" className="cursor-pointer text-gray-400 hover:text-[#085027] transition-colors">
                   <SearchIcon />
@@ -197,7 +197,7 @@ export default function Navbar() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="lg:hidden w-full mx-auto mt-4 pb-4 flex flex-col border-t border-gray-200/60 pt-4 gap-2">
+            <div className="xl:hidden max-w-md mx-auto mt-4 pb-4 flex flex-col border-t border-gray-200/60 pt-4 gap-2">
               <div className="space-y-3 mb-2">
                 {NAV_CONFIG.map ((item) => (
                   <button
