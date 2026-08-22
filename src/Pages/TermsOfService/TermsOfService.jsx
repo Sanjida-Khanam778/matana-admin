@@ -15,9 +15,9 @@ export default function TermsOfService() {
   }, []);
 
   return (
-    <div className="bg-[#f8f7f3] min-h-screen pb-16">
+    <div className="bg-[#f8f7f3] min-h-screen pb-8 md:pb-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-10 mt-4 md:mt-6 space-y-10">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-10 mt-4 md:mt-6 space-y-4 md:space-y-10">
           <div className="mx-auto text-center space-y-2 md:space-y-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
               Terms of Service
