@@ -105,6 +105,14 @@ export default function Footer() {
                     Community
                   </Link>
                 </li>
+                 <li>
+                  <Link
+                 to={'/pricing'}
+                    className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors text-left"
+                  >
+                    List Your Business
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -122,14 +130,7 @@ export default function Footer() {
                     About MATANA
                   </button>
                 </li>
-                <li>
-                  <Link
-                 to={'/pricing'}
-                    className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors text-left"
-                  >
-                    List Your Business
-                  </Link>
-                </li>
+               
                 <li>
                   <button
                     onClick={() => scrollToSection("contact")}
@@ -139,12 +140,20 @@ export default function Footer() {
                   </button>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/privacy-policy"
                     className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/terms-and-conditions"
+                    className="text-white/80 text-xs sm:text-sm lg:text-base hover:text-white transition-colors"
+                  >
+                    Terms & Conditions
+                  </Link>
                 </li>
               </ul>
             </div>

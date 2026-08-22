@@ -10,6 +10,8 @@ import Pricing from "../components/Businessdirectoryform/Businessdirectoryform";
 
 import BusinessDashboard from "../Pages/BusinessDashboard/BusinessDashboard";
 import BusinessLogin from "../Pages/BusinessLogin/BusinessLogin";
+import PrivacyPolicy from "../Pages/PrivacyPolicy/PrivacyPolicy";
+import TermsOfService from "../Pages/TermsOfService/TermsOfService";
 
 export const router = createBrowserRouter([
   {
@@ -51,7 +53,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <h1>Home</h1>,
+        element: <Home />,
       },
       {
         path: "/pricing",
@@ -64,6 +66,18 @@ export const router = createBrowserRouter([
       {
         path: "/business-dashboard",
         element: <BusinessDashboard />,
+      },
+      {
+        path: "/privacy-policy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/terms-and-conditions",
+        element: <TermsOfService />,
+      },
+      {
+        path: "/terms-of-service",
+        element: <TermsOfService />,
       },
     ],
   },
